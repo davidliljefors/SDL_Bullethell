@@ -13,7 +13,7 @@ namespace FG
 class Player : public FG::Entity
 {
 public:
-	float playerSpeed = 100.0f;
+	float playerSpeed = 150.0f;
 
 	Player(FG::InputManager* inputManager, FG::Camera* camera);
 	void Update(float deltaTime);

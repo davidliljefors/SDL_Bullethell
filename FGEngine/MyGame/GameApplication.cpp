@@ -42,12 +42,21 @@ void GameApplication::Run()
 	while (!quit)
 	{
 		time.StartFrame();
+		
 		inputManager->Update(quit);
 		entityManager->Update(time.DeltaTime());
 		camera->StartRenderFrame();
 		entityManager->Render(camera);
 		camera->EndRenderFrame();
+		// Wait to achieve target framerate 
+		if (time.DeltaTime() < frameDelay)
+		{
+			SDL_Delay(frameDelay - time.DeltaTime());
+		}
 		time.EndFrame();
+
+		
+
 	}
 }
 
