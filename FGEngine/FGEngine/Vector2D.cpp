@@ -1,4 +1,5 @@
 #include "Vector2D.h"
+#include <cmath>
 
 namespace FG
 {
@@ -42,5 +43,10 @@ namespace FG
 		x -= other.x;
 		y -= other.y;
 		return *this;
+	}
+	float Vector2D::Magnitude() const
+	{
+		float result = pow(x, 2) + pow(y, 2);
+		return sqrt(result);
 	}
 }

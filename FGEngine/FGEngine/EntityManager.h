@@ -16,6 +16,9 @@ namespace FG
 		// Todo: Fix smarter rendering system.
 		void Render(Camera* const camera);
 
+		/// Todo David: make it actually good
+		void CheckCollisions();
+		/// Add entity and put last in internal list
 		void AddEntity(Entity* entity);
 	private:
 		std::vector<Entity*> entities;

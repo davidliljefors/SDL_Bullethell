@@ -9,24 +9,37 @@ namespace FG
 	{
 		for (auto it = entities.begin(); it != entities.end(); it++)
 		{
-			delete *it;
+			delete* it;
 		}
 		entities.clear();
 	}
 
 	void EntityManager::Update(float deltaTime)
 	{
-		for (auto it = entities.begin(); it != entities.end(); it++)
+		for (auto& entity : entities)
 		{
-			(*it)->Update(deltaTime);
+			entity->Update(deltaTime);
 		}
+		CheckCollisions();
 	}
 
 	void EntityManager::Render(Camera* const camera)
 	{
-		for (auto it = entities.begin(); it != entities.end(); it++)
+		for (auto& entity : entities)
 		{
-			(*it)->Render(camera);
+			entity->Render(camera);
+		}
+	}
+
+	void EntityManager::CheckCollisions()
+	{
+		if (entities.size() > 1)
+		{
+			for (size_t i = 1; i < entities.size(); i++)
+			{
+				entities[i]->CheckCollision(*entities[i - 1LL]);
+			}
+
 		}
 	}
 

@@ -7,6 +7,7 @@
 #include <EntityManager.h>
 
 #include "Player.h"
+#include "Enemy.h"
 
 #include <SDL.h>
 
@@ -32,7 +33,14 @@ bool GameApplication::Initialize()
 	camera->Initialize(window);
 
 	entityManager = new FG::EntityManager();
-	entityManager->AddEntity(new Player(inputManager, camera));
+
+	Player* p;
+	Enemy* e;
+	entityManager->AddEntity(p = new Player(inputManager, camera));
+	entityManager->AddEntity(e = new Enemy(camera, FG::Vector2D(150, 250)));
+	entityManager->AddEntity(new Enemy(camera, FG::Vector2D(450, 250)));
+	e->collider.SetSize(25);
+	p->collider.SetSize(25);
 
 	return true;
 }
@@ -42,7 +50,7 @@ void GameApplication::Run()
 	while (!quit)
 	{
 		time.StartFrame();
-		
+
 		inputManager->Update(quit);
 		entityManager->Update(time.DeltaTime());
 		camera->StartRenderFrame();
@@ -55,7 +63,7 @@ void GameApplication::Run()
 		}
 		time.EndFrame();
 
-		
+
 
 	}
 }
