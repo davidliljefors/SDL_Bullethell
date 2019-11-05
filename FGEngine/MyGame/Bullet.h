@@ -1,8 +1,8 @@
 #pragma once
 
+
 #include <Entity.h>
 #include <Vector2D.h>
-#include <vector>
 
 
 namespace FG
@@ -12,25 +12,18 @@ namespace FG
 	class Camera;
 }
 
-class Enemy : public FG::Entity
+class Bullet : public FG::Entity
 {
 public:
-	Enemy(FG::EntityManager& manager, FG::Camera* camera, FG::Vector2D pos);
+	Bullet(FG::EntityManager& manager, FG::Camera* camera, FG::Vector2D pos, FG::Vector2D vel);
 	void Update(float deltaTime);
 	void Render(FG::Camera* const camera);
 	void Collided(Entity& other) override
 	{
 	}
 
-private:
-	
+protected:
 	FG::Camera* camera = nullptr;
+	FG::Vector2D velocity;
 
-	void Shoot();
-	float fireSpeed = 1.0f;
-	float shotDelay = 0.f;
-
-	std::vector<Entity*> children;
-
-	Enemy() = delete;
 };
