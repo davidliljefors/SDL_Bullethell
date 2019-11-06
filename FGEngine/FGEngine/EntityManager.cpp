@@ -1,6 +1,6 @@
 #include "EntityManager.h"
 #include "Entity.h"
-
+#include <iostream>
 #include <assert.h>
 
 namespace FG
@@ -16,10 +16,15 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
-		for (auto& entity : entities)
+		auto size = entities.size();
+		for (size_t i = 0; i < size; i++)
 		{
-			entity->Update(deltaTime);
+			entities[i]->Update(deltaTime);
 		}
+		//for (auto it = entities.begin(); it != end; ++it)
+		//{
+		//	(*it)->Update(deltaTime);
+		//}
 		CheckCollisions();
 	}
 
@@ -31,21 +36,47 @@ namespace FG
 		}
 	}
 
-	void EntityManager::CheckCollisions()
+	bool EntityManager::CheckCollisions()
 	{
 		if (entities.size() > 1)
 		{
 			for (size_t i = 1; i < entities.size(); i++)
 			{
-				entities[i]->CheckCollision(*entities[i - 1LL]);
+				for (size_t j = i; j < entities.size(); j++)
+				{
+					//std::cout << "check col";
+					if (entities[j]->CheckCollision(*entities[i - 1]))
+					{
+						if (entities[j]->GetID() == entities[i - 1]->GetID())
+						{
+							std::cout << "no" << std::endl;
+						}
+						entities[j]->Collided(*entities[i - 1]);
+						entities[i-1]->Collided(*entities[j]);
+						return true;
+					}
+				}
 			}
 
 		}
+		return false;
 	}
 
 	void EntityManager::AddEntity(Entity* entity)
 	{
 		assert(entity);
-		entities.push_back(entity);
+		entities.emplace_back(entity);
+	}
+	void EntityManager::DeleteEntity(Entity* entity)
+	{
+		std::vector<Entity*>::iterator it;
+		for (auto it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it) == entity)
+			{
+				entities.erase(it);
+				break;
+			}
+		}
 	}
 }

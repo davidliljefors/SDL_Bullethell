@@ -17,9 +17,10 @@ namespace FG
 		void Render(Camera* const camera);
 
 		/// Todo David: make it actually good
-		void CheckCollisions();
+		bool CheckCollisions();
 		/// Add entity and put last in internal list
 		void AddEntity(Entity* entity);
+		void DeleteEntity(Entity* entity);
 	private:
 		std::vector<Entity*> entities;
 	};

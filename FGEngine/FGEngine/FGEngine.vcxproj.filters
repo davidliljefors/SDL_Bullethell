@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\ECS">
-      <UniqueIdentifier>{11fac81c-58eb-45a0-8c38-b761be3816ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ECS">
-      <UniqueIdentifier>{04e4418a-a7ac-4834-9a35-4766af526588}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -51,15 +45,6 @@
     <ClInclude Include="CircleCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ECS.h">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -88,9 +73,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ECS.cpp">
-      <Filter>Source Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
