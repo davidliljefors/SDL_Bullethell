@@ -36,9 +36,10 @@ bool GameApplication::Initialize()
 
 	Player* p;
 	Enemy* e;
-	entityManager->AddEntity(p = new Player(*entityManager, inputManager, camera));
-	entityManager->AddEntity(e = new Enemy(*entityManager, camera, FG::Vector2D(150, 250)));
-	entityManager->AddEntity(new Enemy(*entityManager,camera, FG::Vector2D(450, 250)));
+	entityManager->AddEntity(p = new Player(inputManager, camera));
+	entityManager->AddEntity(e = new Enemy(camera, FG::Vector2D(150, 250)));
+	entityManager->AddEntity(new Enemy(camera, FG::Vector2D(450, 250)));
+	e->collider.SetSize(25);
 	p->collider.SetSize(25);
 
 	return true;

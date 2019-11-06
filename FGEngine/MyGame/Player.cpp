@@ -4,10 +4,8 @@
 #include <Camera.h>
 #include <SDL_render.h>
 
-Player::Player(FG::EntityManager& manager, FG::InputManager* inputManager, FG::Camera* camera) 
-	: FG::Entity(manager), inputManager(inputManager), camera(camera)
-{
-}
+Player::Player(FG::InputManager* inputManager, FG::Camera* camera) : inputManager(inputManager), camera(camera)
+{}
 
 void Player::Update(float deltaTime)
 {
