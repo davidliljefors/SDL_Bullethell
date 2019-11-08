@@ -11,7 +11,7 @@ namespace FG
 		lastKeys = keys;
 	}
 
-	void InputManager::Update(bool& outQuit)
+	void InputManager::Update(bool& shouldQuit)
 	{
 		SDL_Event event;
 		lastKeys = keys;
@@ -36,7 +36,7 @@ namespace FG
 				mouseButtonTimes[event.button.button] = 0;
 				break;
 			case SDL_QUIT:
-				outQuit = true;
+				shouldQuit = true;
 				break;
 			}
 		}
@@ -58,28 +58,25 @@ namespace FG
 
 	float InputManager::ElapsedKeyTime(SDL_Scancode key) const
 	{
-		Uint32 now = SDL_GetTicks();
-		return (now - keyTimes[key]) * 0.001f;
+		return (SDL_GetTicks() - keyTimes[key] * 0.001f);
 	}
 
-	bool InputManager::IsMousePressed(unsigned int mouseButton) const
+	bool InputManager::IsMouseButtonPressed(unsigned int mouseButton) const
 	{
 		if (!lastMouseButtons[mouseButton] && mouseButtons[mouseButton])
 		{ return true; }
 		return false;
 	}
 
-	bool InputManager::IsMouseReleased(unsigned int mouseButton) const
+	bool InputManager::IsMouseButtonReleased(unsigned int mouseButton) const
 	{
 		if (lastMouseButtons[mouseButton] && !mouseButtons[mouseButton])
 		{ return true; }
 		return false;
 	}
 
-	float InputManager::ElapsedMouseButtonTime(unsigned int mouseButton) const
+	float InputManager::ElapsedMouseButtonTime(unsigned int mousebutton) const
 	{
-		Uint32 now = SDL_GetTicks();
-		return (now - mouseButtonTimes[mouseButton]) * 0.001f;
+		return (SDL_GetTicks() - mouseButtonTimes[mousebutton] * 0.001f);
 	}
-
 }

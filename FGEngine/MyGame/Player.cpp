@@ -1,57 +1,37 @@
-#include <iostream>
-
 #include "Player.h"
 
 #include <InputManager.h>
 #include <Camera.h>
-#include <SDL_render.h>
-#include "Bullet.h"
-#include <TextureManager.h>
 #include <Sprite.h>
+#include <SDL_render.h>
 
-Player::Player(FG::EntityManager* manager, FG::InputManager* inputManager, FG::Camera* camera)
-	: FG::Entity(manager), inputManager(inputManager), camera(camera)
-{
-	// todo set sprite
-}
+Player::Player(FG::InputManager* inputManager, FG::Camera* camera) :
+	inputManager(inputManager), camera(camera)
+{}
 
 void Player::Update(float deltaTime)
 {
+	isColliding = false;
 	MovePlayer(deltaTime);
-	MoveCamera(deltaTime);
-	if (shotDelay < 0.0f && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
-	{
-		Shoot();
-		shotDelay = fireSpeed;
-	}
-	shotDelay -= deltaTime;
+	//MoveCamera(deltaTime);
 }
 
 void Player::Render(FG::Camera* const camera)
 {
-	Entity::Render(camera);
-
-	/*SDL_Color oldDrawColor;
-	SDL_Color color = SDL_Color{ 255, 0, 0, 255 };
-	SDL_GetRenderDrawColor(camera->GetInternalRenderer(), &oldDrawColor.r, &oldDrawColor.g, &oldDrawColor.b, &oldDrawColor.a);
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
-
-	FG::Vector2D finalPosition = position - camera->position;
-	SDL_Rect finalRect = SDL_Rect{ (int)finalPosition.x, (int)finalPosition.y, 50, 50 };
-	SDL_RenderFillRect(camera->GetInternalRenderer(), &finalRect);
-
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), oldDrawColor.r, oldDrawColor.g, oldDrawColor.b, oldDrawColor.a);*/
+	sprite->Render(camera, position);
+	DrawBoundingBox();
 }
 
-void Player::Shoot()
+SDL_Rect Player::GetColliderRect()
 {
-	Bullet* b = new Bullet(manager, camera, position, FG::Vector2D(0.f, -4.f));
-	b->collider.groupID = this->collider.groupID;
-	b->collider.SetSize(16);
-	FG::Sprite* bulletS = new FG::Sprite(b, FG::TextureManager::GetTexture("assets/mild_panic.bmp"), 600, 600, 32, 32);
-	b->SetSprite(bulletS);
-	manager->AddEntity(b);
+	FG::Vector2D finalPosition = position - camera->position;
+	return { static_cast<int>(finalPosition.x), static_cast<int>(finalPosition.y),
+	static_cast<int>(sprite->size.x), static_cast<int>(sprite->size.y) };
+}
 
+void Player::OnCollision(FG::Entity* other)
+{
+	isColliding = true;
 }
 
 void Player::MovePlayer(float deltaTime)
@@ -59,23 +39,25 @@ void Player::MovePlayer(float deltaTime)
 	FG::Vector2D movement;
 	if (inputManager->IsKeyDown(SDL_SCANCODE_A))
 	{
-		movement.x -= 1.0f;
+		movement.x = -1.0f;
 	}
+
 	if (inputManager->IsKeyDown(SDL_SCANCODE_D))
 	{
-		movement.x += 1.0f;
+		movement.x = 1.0f;
 	}
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_W))
 	{
-		movement.y -= 1.0f;
-	}
-	if (inputManager->IsKeyDown(SDL_SCANCODE_S))
-	{
-		movement.y += 1.0f;
+		movement.y = -1.0f;
 	}
 
-	position += movement * playerSpeed * deltaTime;
+	if (inputManager->IsKeyDown(SDL_SCANCODE_S))
+	{
+		movement.y = 1.0f;
+	}
+
+	position += movement * speed * deltaTime;
 }
 
 void Player::MoveCamera(float deltaTime)
@@ -83,21 +65,37 @@ void Player::MoveCamera(float deltaTime)
 	FG::Vector2D movement;
 	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
-		movement.x -= 1.0f;
+		movement.x = -1.0f;
 	}
+
 	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		movement.x += 1.0f;
+		movement.x = 1.0f;
 	}
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
 	{
-		movement.y -= 1.0f;
-	}
-	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
-	{
-		movement.y += 1.0f;
+		movement.y = -1.0f;
 	}
 
-	camera->position += movement * playerSpeed * deltaTime;
+	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
+	{
+		movement.y = 1.0f;
+	}
+
+	camera->position += movement * speed * deltaTime;
+}
+
+void Player::DrawBoundingBox()
+{
+	SDL_Color color = notCollidingColor;
+	if (isColliding)
+	{
+		color = CollidingColor;
+	}
+
+	SDL_Rect finalRect = GetColliderRect();
+	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
+	SDL_RenderDrawRect(camera->GetInternalRenderer(), &finalRect);
+	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
 }

@@ -7,10 +7,10 @@ namespace FG
 	class Time
 	{
 	public:
-		float DeltaTime() { return deltaTime * timeScale; }
 
-		float GetTimeScale() const { return timeScale; }
-		float SetTimeScale(float timeScale) { this->timeScale = timeScale; }
+		float DeltaTime() const { return deltaTime * timeScale; }
+
+		float& TimeScale() { return timeScale; }
 
 		void StartFrame();
 		void EndFrame();
@@ -19,7 +19,6 @@ namespace FG
 		Uint64 startTime = 0;
 		Uint64 endTime = 0;
 		float timeScale = 1.0f;
-
 		float deltaTime = 0.0f;
 	};
 }

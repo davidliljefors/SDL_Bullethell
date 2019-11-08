@@ -1,7 +1,6 @@
 #include "EntityManager.h"
 #include "Entity.h"
-#include <iostream>
-#include <assert.h>
+#include "Collision.h"
 
 namespace FG
 {
@@ -16,79 +15,37 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
-		auto size = entities.size();
-		for (size_t i = 0; i < size; i++)
+		for (auto entity : entities)
 		{
-			entities[i]->Update(deltaTime);
+			entity->Update(deltaTime);
 		}
-		//for (auto it = entities.begin(); it != end; ++it)
-		//{
-		//	(*it)->Update(deltaTime);
-		//}
-		CheckCollisions();
 	}
 
 	void EntityManager::Render(Camera* const camera)
 	{
-		for (auto& entity : entities)
+		for (auto entity : entities)
 		{
 			entity->Render(camera);
 		}
 	}
 
-	bool EntityManager::CheckCollisions()
+	void EntityManager::DoCollisions()
 	{
-		if (entities.size() > 1)
+		for (int x = 0; x < entities.size() - 1; x++)
 		{
-			for (size_t i = 1; i < entities.size(); i++)
+			for (int y = x + 1; y < entities.size(); y++)
 			{
-				for (size_t j = i; j < entities.size(); j++)
+				if (Collision::AABB(entities[x]->GetColliderRect(), entities[y]->GetColliderRect()))
 				{
-					//std::cout << "check col";
-					if (entities[j]->CheckCollision(*entities[i - 1]))
-					{
-						if (entities[j]->collider.groupID != entities[i - 1]->collider.groupID)
-						{
-							entities[j]->Collided(*entities[i - 1]);
-							entities[i - 1]->Collided(*entities[j]);
-							return true;
-
-						}
-					}
+					entities[x]->OnCollision(entities[y]);
+					entities[y]->OnCollision(entities[x]);
 				}
 			}
-
 		}
-		return false;
 	}
 
 	void EntityManager::AddEntity(Entity* entity)
 	{
-		assert(entity);
-		entities.emplace_back(entity);
-	}
-	void EntityManager::DeleteEntity(Entity* entity)
-	{
-		std::vector<Entity*>::iterator it;
-		for (auto it = entities.begin(); it != entities.end(); it++)
-		{
-			if ((*it) == entity)
-			{
-				entities.erase(it);
-				break;
-			}
-		}
-	}
-	void EntityManager::Clean()
-	{
-		std::vector<Entity*>::iterator it;
-		for (auto it = entities.begin(); it != entities.end(); it++)
-		{
-			if ((*it)->markedForDestroy)
-			{
-				entities.erase(it);
-				break;
-			}
-		}
+		entities.push_back(entity);
 	}
 }

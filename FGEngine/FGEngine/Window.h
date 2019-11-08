@@ -11,7 +11,7 @@ namespace FG
 	public:
 		virtual ~Window() {}
 
-		virtual bool Initialize(const std::string& title, int width, int height, bool fullscreen = false);
+		virtual bool Initialize(const std::string& title, int width, int height);
 		virtual void Shutdown();
 
 		void SetTitle(const std::string& title);

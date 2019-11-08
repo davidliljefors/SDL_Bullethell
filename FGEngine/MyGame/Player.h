@@ -2,41 +2,42 @@
 
 #include <Entity.h>
 #include <Vector2D.h>
-#include "SDL.h"
-
 
 namespace FG
 {
-class EntityManager;
 	class Window;
 	class InputManager;
 	class Camera;
+	class Sprite;
 }
 
 class Player : public FG::Entity
 {
 public:
-	Player(FG::EntityManager* manager, FG::InputManager* inputManager, FG::Camera* camera);
+	float speed = 800.0f;
+	FG::Sprite* sprite = nullptr;
+	Player(FG::InputManager* inputManager, FG::Camera* camera);
 
-	void Update(float deltaTime);
-	void Render(FG::Camera* const camera);
-	void Shoot() override;
-	void Collided(Entity& other) override
-	{
-		other.Destroy();
-	}
+	void Update(float deltaTime) override;
+	void Render(FG::Camera* const camera) override;
 
-	float playerSpeed = 150.0f;
+
+	virtual SDL_Rect GetColliderRect() override;
+	void OnCollision(FG::Entity* other) override;
 
 private:
 	FG::InputManager* inputManager = nullptr;
 	FG::Camera* camera = nullptr;
 
-	Player() = delete;
+	FG::Vector2D position;
 
-	float fireSpeed = 0.15f;
-	float shotDelay = 0.f;
+	bool isColliding = false;
+	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
+	SDL_Color CollidingColor = { 255, 0, 0, 255 };
 
+	Player() {}
+
+	void DrawBoundingBox();
 	void MovePlayer(float deltaTime);
 	void MoveCamera(float deltaTime);
 };

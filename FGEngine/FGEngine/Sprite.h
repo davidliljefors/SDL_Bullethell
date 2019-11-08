@@ -1,18 +1,27 @@
 #pragma once
-#include <SDL.h>
+#include "IResource.h"
 #include "Vector2D.h"
-#include "Camera.h"
-#include "Entity.h"
+
+#include <string>
+
+struct SDL_Texture;
+struct SDL_Renderer;
 
 namespace FG
 {
-	struct Sprite
+	class Camera;
+
+	class Sprite : public IResource
 	{
-		Sprite(Entity* parent, SDL_Texture* tex, int srcW, int srcH, int w, int h);
-		
-		Entity* parent = nullptr;
-		SDL_Rect src;
-		SDL_Rect dst;
-		SDL_Texture* tex;
+	public:
+		Vector2D size;
+
+		void Dispose() override;
+		bool LoadImage(SDL_Renderer* renderer, const std::string& path);
+		void Render(Camera* camera, Vector2D& position);
+
+	protected:
+		SDL_Texture* texture = nullptr;
 	};
 }
+

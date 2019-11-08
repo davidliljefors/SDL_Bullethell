@@ -11,7 +11,7 @@ namespace FG
 		static const std::string logFile;
 
 		static void Log(const std::string& message, const std::string& inFile = "", int atLine = 0);
-		static void LogSDL(void* userdata, int category, SDL_LogPriority priority, const char* message);
+		static void LogSDL(void* userData, int category, SDL_LogPriority priority, const char* message);
 
 		static std::string RemovePathFromFile(const std::string& file);
 

@@ -1,13 +1,13 @@
 #pragma once
 
 #pragma warning( push )
-#pragma warning( disable : 26812 )
+#pragma warning (disable : 26812 )
 
 #include "Vector2D.h"
 
 #include <SDL_mouse.h>
-#include "SDL_scancode.h"
-#include "SDL_keycode.h"
+#include <SDL_keycode.h>
+#include <SDL_scancode.h>
 
 namespace FG
 {
@@ -15,24 +15,22 @@ namespace FG
 	{
 	public:
 		Vector2D mousePosition;
-		/// Delta movement since last update.
+		// Delta movement since last update.
 		Vector2D mouseMovement;
 
 		void Initialize();
-		void Update(bool& outQuit);
+		void Update(bool& shouldQuit);
 
 		bool IsKeyDown(SDL_Scancode key) const { return keys[key]; }
 		bool IsKeyPressed(SDL_Scancode key) const;
 		bool IsKeyReleased(SDL_Scancode key) const;
 
-		/// 1.0 is one second.
 		float ElapsedKeyTime(SDL_Scancode key) const;
 
 		bool IsMouseButtonDown(unsigned int mouseButton) const { return mouseButtons[mouseButton]; }
-		bool IsMousePressed(unsigned int mouseButton) const;
-		bool IsMouseReleased(unsigned int mouseButton) const;
+		bool IsMouseButtonPressed(unsigned int mouseButton) const;
+		bool IsMouseButtonReleased(unsigned int mouseButton) const;
 
-		/// 1.0 is one second.
 		float ElapsedMouseButtonTime(unsigned int mouseButton) const;
 
 	private:
@@ -42,9 +40,8 @@ namespace FG
 		const Uint8* lastKeys = nullptr;
 		bool lastMouseButtons[SDL_BUTTON_X2] = { false };
 
-		unsigned int keyTimes[SDL_BUTTON_X2] = { 0 };
+		unsigned int keyTimes[SDL_NUM_SCANCODES] = { 0 };
 		unsigned int mouseButtonTimes[SDL_BUTTON_X2] = { 0 };
 	};
 }
-
 #pragma warning( pop )

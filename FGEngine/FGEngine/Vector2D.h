@@ -9,16 +9,15 @@ namespace FG
 		float y = 0.0f;
 
 		Vector2D() {}
+		Vector2D(const Vector2D& other);
 		Vector2D(float x, float y);
-		Vector2D(const Vector2D& vector);
 
-		Vector2D operator+(const Vector2D& other);
-		Vector2D operator-(const Vector2D& other);
-		Vector2D operator*(float scalar);
+		Vector2D operator+(const Vector2D& other) const;
+		Vector2D operator-(const Vector2D& other) const;
+		Vector2D operator*(const Vector2D& other) const;
+		Vector2D operator*(float scalar) const;
 		Vector2D operator+=(const Vector2D& other);
 		Vector2D operator-=(const Vector2D& other);
-
-		float Magnitude() const;
 
 		static const Vector2D Zero;
 		static const Vector2D One;
