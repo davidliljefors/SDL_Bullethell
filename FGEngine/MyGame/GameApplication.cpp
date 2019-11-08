@@ -5,9 +5,11 @@
 #include <InputManager.h>
 #include <Camera.h>
 #include <EntityManager.h>
+#include <TextureManager.h>
 
 #include "Player.h"
 #include "Enemy.h"
+#include <Sprite.h>
 
 #include <SDL.h>
 
@@ -29,17 +31,29 @@ bool GameApplication::Initialize()
 	inputManager = new FG::InputManager();
 	inputManager->Initialize();
 
+
 	camera = new FG::Camera();
 	camera->Initialize(window);
 
+	FG::TextureManager::Initialize(camera->GetInternalRenderer());
 	entityManager = new FG::EntityManager();
+
+	
 
 	Player* p;
 	Enemy* e;
-	entityManager->AddEntity(p = new Player(*entityManager, inputManager, camera));
-	entityManager->AddEntity(e = new Enemy(*entityManager, camera, FG::Vector2D(150, 250)));
-	entityManager->AddEntity(new Enemy(*entityManager,camera, FG::Vector2D(450, 250)));
-	p->collider.SetSize(25);
+	entityManager->AddEntity(p = new Player(entityManager, inputManager, camera));
+	entityManager->AddEntity(e = new Enemy(entityManager, camera, FG::Vector2D(150, 250)));
+	entityManager->AddEntity(new Enemy(entityManager, camera, FG::Vector2D(450, 250)));
+	entityManager->AddEntity(new Enemy(entityManager, camera, FG::Vector2D(550, 250)));
+	entityManager->AddEntity(new Enemy(entityManager, camera, FG::Vector2D(400, 300)));
+	p->collider.SetSize(32);
+	p->collider.groupID = 1;
+
+	FG::Sprite* playerS = new FG::Sprite(p, FG::TextureManager::GetTexture("assets/feelswow.bmp"), 112, 112, 64, 64);
+	
+	p->SetSprite(playerS);
+	
 
 	return true;
 }
@@ -49,21 +63,19 @@ void GameApplication::Run()
 	while (!quit)
 	{
 		time.StartFrame();
-
 		inputManager->Update(quit);
 		entityManager->Update(time.DeltaTime());
 		camera->StartRenderFrame();
 		entityManager->Render(camera);
 		camera->EndRenderFrame();
+		entityManager->Clean();
 		// Wait to achieve target framerate 
 		if (time.DeltaTime() < frameDelay)
 		{
 			SDL_Delay(frameDelay - time.DeltaTime());
 		}
 		time.EndFrame();
-
-
-
+		
 	}
 }
 

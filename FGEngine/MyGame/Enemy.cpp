@@ -3,8 +3,9 @@
 
 #include <Camera.h>
 #include <SDL_render.h>
+#include <TextureManager.h>
 
-Enemy::Enemy(FG::EntityManager& manager,FG::Camera* camera, FG::Vector2D pos) 
+Enemy::Enemy(FG::EntityManager* manager,FG::Camera* camera, FG::Vector2D pos) 
 	: FG::Entity(manager), camera(camera)
 {
 	position = pos;
@@ -12,6 +13,7 @@ Enemy::Enemy(FG::EntityManager& manager,FG::Camera* camera, FG::Vector2D pos)
 
 void Enemy::Render(FG::Camera* const camera)
 {
+	Entity::Render(camera);
 	SDL_Color oldDrawColor;
 	SDL_Color color = SDL_Color{ 33, 33, 33, 255 };
 	SDL_GetRenderDrawColor(camera->GetInternalRenderer(), &oldDrawColor.r, &oldDrawColor.g, &oldDrawColor.b, &oldDrawColor.a);
@@ -27,9 +29,11 @@ void Enemy::Render(FG::Camera* const camera)
 void Enemy::Shoot()
 {
 	Bullet* b = new Bullet(manager, camera, position, FG::Vector2D(0.f, -1.f));
-	b->collider.SetSize(5);
+	b->collider.SetSize(16);
 	children.emplace_back(b);
-	manager.AddEntity(b);
+	FG::Sprite* bulletS = new FG::Sprite(b, FG::TextureManager::GetTexture("assets/mild_panic.bmp"), 600, 600, 32, 32);
+	b->SetSprite(bulletS);
+	manager->AddEntity(b);
 }
 
 void Enemy::Update(float deltaTime)

@@ -21,6 +21,7 @@ namespace FG
 		/// Add entity and put last in internal list
 		void AddEntity(Entity* entity);
 		void DeleteEntity(Entity* entity);
+		void Clean();
 	private:
 		std::vector<Entity*> entities;
 	};

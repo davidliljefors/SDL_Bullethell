@@ -40,6 +40,13 @@ namespace FG
 		SDL_RenderPresent(renderer);
 	}
 
+	void Camera::DrawSprite(Sprite* sprite)
+	{
+		sprite->dst.x = sprite->parent->GetPosition().x - (sprite->dst.w / 2);
+		sprite->dst.y = sprite->parent->GetPosition().y - (sprite->dst.h / 2);
+		SDL_RenderCopyEx(renderer, sprite->tex, &sprite->src, &sprite->dst, NULL, NULL, SDL_RendererFlip::SDL_FLIP_NONE);
+	}
+
 	void Camera::SetColor(const SDL_Color& color)
 	{
 		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);

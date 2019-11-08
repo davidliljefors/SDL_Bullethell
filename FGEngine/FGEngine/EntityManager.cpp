@@ -47,13 +47,13 @@ namespace FG
 					//std::cout << "check col";
 					if (entities[j]->CheckCollision(*entities[i - 1]))
 					{
-						if (entities[j]->GetID() == entities[i - 1]->GetID())
+						if (entities[j]->collider.groupID != entities[i - 1]->collider.groupID)
 						{
-							std::cout << "no" << std::endl;
+							entities[j]->Collided(*entities[i - 1]);
+							entities[i - 1]->Collided(*entities[j]);
+							return true;
+
 						}
-						entities[j]->Collided(*entities[i - 1]);
-						entities[i-1]->Collided(*entities[j]);
-						return true;
 					}
 				}
 			}
@@ -73,6 +73,18 @@ namespace FG
 		for (auto it = entities.begin(); it != entities.end(); it++)
 		{
 			if ((*it) == entity)
+			{
+				entities.erase(it);
+				break;
+			}
+		}
+	}
+	void EntityManager::Clean()
+	{
+		std::vector<Entity*>::iterator it;
+		for (auto it = entities.begin(); it != entities.end(); it++)
+		{
+			if ((*it)->markedForDestroy)
 			{
 				entities.erase(it);
 				break;

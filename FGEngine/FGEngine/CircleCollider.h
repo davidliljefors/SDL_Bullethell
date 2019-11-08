@@ -10,6 +10,7 @@ namespace FG
 		CircleCollider() : radius(0) {}
 
 		void SetSize(int radius) { this->radius = radius; }
+		int groupID = 0;
 		int radius;
 	};
 }

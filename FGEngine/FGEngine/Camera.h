@@ -3,11 +3,14 @@
 #include "Vector2D.h"
 
 #include <SDL_pixels.h>
+#include <SDL.h>
+#include "Sprite.h"
 
 struct SDL_Renderer;
 
 namespace FG
 {
+	struct Sprite;
 	class Window;
 	class Camera
 	{
@@ -19,6 +22,8 @@ namespace FG
 
 		virtual void StartRenderFrame();
 		virtual void EndRenderFrame();
+
+		void DrawSprite(Sprite* sprite);
 
 		void SetColor(const SDL_Color& color);
 

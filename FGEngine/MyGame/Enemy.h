@@ -15,19 +15,18 @@ namespace FG
 class Enemy : public FG::Entity
 {
 public:
-	Enemy(FG::EntityManager& manager, FG::Camera* camera, FG::Vector2D pos);
+	Enemy(FG::EntityManager* manager, FG::Camera* camera, FG::Vector2D pos);
 	void Update(float deltaTime);
 	void Render(FG::Camera* const camera);
-	void Collided(Entity& other) override
-	{
-	}
+	void Shoot() override;
+	void Collided(Entity& other) override {}
 
 private:
 	
 	FG::Camera* camera = nullptr;
 
-	void Shoot();
-	float fireSpeed = 1.0f;
+	
+	float fireSpeed = 0.7f;
 	float shotDelay = 0.f;
 
 	std::vector<Entity*> children;
