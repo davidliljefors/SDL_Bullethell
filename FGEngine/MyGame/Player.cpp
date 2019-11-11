@@ -18,6 +18,7 @@ void Player::Update(float deltaTime)
 
 void Player::Render(FG::Camera* const camera)
 {
+	Entity::Render(camera);
 	sprite->Render(camera, position);
 	DrawBoundingBox();
 }

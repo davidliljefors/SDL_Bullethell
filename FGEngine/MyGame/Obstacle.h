@@ -12,9 +12,6 @@ namespace FG
 class Obstacle : public FG::Entity
 {
 public:
-	FG::Vector2D position;
-	FG::Sprite* sprite = nullptr;
-
 	void Update(float deltaTime) override;
 	Obstacle(FG::Camera* camera) : camera(camera) {}
 	void Render(FG::Camera* const camera) override;

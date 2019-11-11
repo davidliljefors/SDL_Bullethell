@@ -10,7 +10,7 @@ void Obstacle::Update(float deltaTime)
 
 void Obstacle::Render(FG::Camera* const camera)
 {
-	sprite->Render(camera, position);
+	Entity::Render(camera);
 	DrawBoundingBox();
 }
 
