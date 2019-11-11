@@ -36,23 +36,25 @@ bool GameApplication::Initialize()
 
 	resourceManager = new FG::ResourceManager();
 	FG::Sprite* sprite = new FG::Sprite();
-	sprite->LoadImage(camera->GetInternalRenderer(), "sports_car.png");
-	resourceManager->AddResource("sports_car.png", sprite);
+	sprite->LoadImage(camera->GetInternalRenderer(), "dodonpachi.png");
+	resourceManager->AddResource("dodonpachi.png", sprite);
 
 	sprite = new FG::Sprite();
-	sprite->LoadImage(camera->GetInternalRenderer(), "rocks.png");
-	resourceManager->AddResource("rocks.png", sprite);
+	sprite->LoadImage(camera->GetInternalRenderer(), "hippie.png");
+	resourceManager->AddResource("hippie.png", sprite);
 
 	entityManager = new FG::EntityManager();
 
 	Player* player = new Player(inputManager, camera);
-	player->sprite = resourceManager->GetResource<FG::Sprite>("sports_car.png");
+	player->sprite = resourceManager->GetResource<FG::Sprite>("dodonpachi.png");
+	player->position.x = 500.f;
+	player->position.y = 600.f;
 	entityManager->AddEntity(player);
 
 	Obstacle* obstacle = new Obstacle(camera);
-	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("rocks.png");
+	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");
 	obstacle->position.x = 500.f;
-	obstacle->position.y = 500.f;
+	obstacle->position.y = 100.f;
 	entityManager->AddEntity(obstacle);
 
 	return true;

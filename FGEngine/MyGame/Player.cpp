@@ -4,6 +4,7 @@
 #include <Camera.h>
 #include <Sprite.h>
 #include <SDL_render.h>
+#include <Circle.h>
 
 Player::Player(FG::InputManager* inputManager, FG::Camera* camera) :
 	inputManager(inputManager), camera(camera)
@@ -38,22 +39,22 @@ void Player::OnCollision(FG::Entity* other)
 void Player::MovePlayer(float deltaTime)
 {
 	FG::Vector2D movement;
-	if (inputManager->IsKeyDown(SDL_SCANCODE_A))
+	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
 		movement.x = -1.0f;
 	}
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_D))
+	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
 	{
 		movement.x = 1.0f;
 	}
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_W))
+	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
 	{
 		movement.y = -1.0f;
 	}
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_S))
+	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
 	{
 		movement.y = 1.0f;
 	}
