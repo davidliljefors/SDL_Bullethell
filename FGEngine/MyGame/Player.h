@@ -14,7 +14,7 @@ namespace FG
 class Player : public FG::Entity
 {
 public:
-	float speed = 800.0f;
+	float speed = 80.0f;
 	
 	Player(FG::InputManager* inputManager, FG::Camera* camera);
 
@@ -35,6 +35,7 @@ private:
 	Player() {}
 
 	void DrawBoundingBox();
+	void DrawColliderCircle();
 	void MovePlayer(float deltaTime);
 	void MoveCamera(float deltaTime);
 };

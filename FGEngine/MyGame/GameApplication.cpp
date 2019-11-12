@@ -49,12 +49,14 @@ bool GameApplication::Initialize()
 	player->sprite = resourceManager->GetResource<FG::Sprite>("dodonpachi.png");
 	player->position.x = 500.f;
 	player->position.y = 600.f;
+	player->AddCircleCollider(26.f, 30.f, 32.f);
 	entityManager->AddEntity(player);
 
 	Obstacle* obstacle = new Obstacle(camera);
 	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");
 	obstacle->position.x = 500.f;
 	obstacle->position.y = 100.f;
+	obstacle->AddCircleCollider(25.f);
 	entityManager->AddEntity(obstacle);
 
 	return true;

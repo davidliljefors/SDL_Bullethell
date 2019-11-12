@@ -5,19 +5,31 @@ namespace FG
 {
 	struct Circle
 	{
-		Circle(float x, float y, float r)
+
+		Circle(const Vector2D* const vec, float r)
 		{
-			position.x = x;
-			position.y = y;
+			position = vec;
+			if (r < 0.f)
+				r = 0.f;
 			radius = r;
 		}
-		Circle(const Vector2D& vec, float r)
+		Circle(const Vector2D* const vec, float offsetX, float offsetY, float r)
 		{
-			position.x = vec.x;
-			position.y = vec.y;
+			offset.x = offsetX;
+			offset.y = offsetY;
+			position = vec;
+			if (r < 0.f)
+				r = 0.f;
 			radius = r;
 		}
-		Vector2D position = { 0.0f, 0.0f };
+
+		float GetRadius() const { return radius; }
+		Vector2D GetPosition() const { return *position + offset; }
+
+	private:
 		float radius = 0.0f;
+		Vector2D offset = { 0.f, 0.f };
+		const Vector2D* position;
+		Circle();
 	};
 }
