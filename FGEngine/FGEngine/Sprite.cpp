@@ -50,14 +50,14 @@ namespace FG
 			return false;
 		}
 
-		
+
 		return false;
 	}
 
 	void Sprite::Render(Camera* camera, Vector2D& position)
 	{
 		Vector2D finalPosition = position - camera->position;
-		SDL_Rect finalRect = { static_cast<int>(finalPosition.x), static_cast<int>(finalPosition.y),
+		SDL_Rect finalRect = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
 		static_cast<int>(size.x), static_cast<int>(size.y) };
 		SDL_RenderCopy(camera->GetInternalRenderer(), texture, nullptr, &finalRect);
 	}
