@@ -32,7 +32,9 @@ bool GameApplication::Initialize()
 
 	camera = new FG::Camera();
 	if (!camera->Initialize(window))
-	{ return false; }
+	{
+		return false;
+	}
 
 	resourceManager = new FG::ResourceManager();
 	FG::Sprite* sprite = new FG::Sprite();
@@ -45,7 +47,7 @@ bool GameApplication::Initialize()
 
 	entityManager = new FG::EntityManager();
 
-	Player* player = new Player(inputManager, camera);
+	Player* player = new Player(inputManager, camera, {(float)SCREENWIDTH, (float)SCREENHEIGHT});
 	player->sprite = resourceManager->GetResource<FG::Sprite>("dodonpachi.png");
 	player->position.x = 500.f;
 	player->position.y = 600.f;

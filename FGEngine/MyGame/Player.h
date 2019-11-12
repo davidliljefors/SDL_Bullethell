@@ -14,9 +14,9 @@ namespace FG
 class Player : public FG::Entity
 {
 public:
-	float speed = 80.0f;
+	float speed = 500.0f;
 	
-	Player(FG::InputManager* inputManager, FG::Camera* camera);
+	Player(FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries);
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
@@ -31,6 +31,9 @@ private:
 	bool isColliding = false;
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	SDL_Color CollidingColor = { 255, 0, 0, 255 };
+
+	FG::Vector2D minBoundaries;
+	FG::Vector2D maxBoundaries;
 
 	Player() {}
 

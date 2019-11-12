@@ -8,9 +8,12 @@
 
 #include <cmath>
 
-Player::Player(FG::InputManager* inputManager, FG::Camera* camera) :
+Player::Player(FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries) :
 	inputManager(inputManager), camera(camera)
-{}
+{
+	minBoundaries = FG::Vector2D::Zero;
+	maxBoundaries = boundaries;
+}
 
 void Player::Update(float deltaTime)
 {
@@ -62,6 +65,15 @@ void Player::MovePlayer(float deltaTime)
 	}
 
 	position += movement * speed * deltaTime;
+
+	if (position.x < minBoundaries.x + sprite->size.x / 2)
+		position.x = minBoundaries.x + sprite->size.x / 2;
+	else if (position.x > maxBoundaries.x - sprite->size.x / 2)
+		position.x = maxBoundaries.x - sprite->size.x / 2;
+	if (position.y < minBoundaries.y + sprite->size.y / 2)
+		position.y = minBoundaries.y + sprite->size.y / 2;
+	else if (position.y > maxBoundaries.y - sprite->size.y / 2)
+		position.y = maxBoundaries.y - sprite->size.y / 2;
 }
 
 void Player::MoveCamera(float deltaTime)
