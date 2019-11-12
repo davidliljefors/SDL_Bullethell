@@ -20,10 +20,20 @@ namespace FG
 		Vector2D operator+=(const Vector2D& other);
 		Vector2D operator-=(const Vector2D& other);
 
-		inline float Magnitude()
+		inline float Magnitude() const
 		{
 			return std::sqrt(x * x + y * y);
 		}
+
+		Vector2D Normalized() const
+		{
+			float mag = Magnitude();
+			return Vector2D(x / mag, y / mag);
+		}
+
+		//Returns a normalized Vector2D from an angle
+		static Vector2D AngleToVector2D(float angle);
+		static float Vector2DToAngle(const Vector2D& from, const Vector2D& to);
 
 		static const Vector2D Zero;
 		static const Vector2D One;

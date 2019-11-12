@@ -48,4 +48,14 @@ namespace FG
 		y -= other.y;
 		return *this;
 	}
+
+	Vector2D Vector2D::AngleToVector2D(float angle)
+	{
+		return Vector2D(cos(angle), sin(angle));
+	}
+
+	float Vector2D::Vector2DToAngle(const Vector2D& from, const Vector2D& to)
+	{
+		return acos((from.x * from.y + to.x * to.y) / (from.Magnitude() * to.Magnitude()));
+	}
 }
