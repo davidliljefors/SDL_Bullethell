@@ -21,7 +21,7 @@ bool GameApplication::Initialize()
 	}
 
 	window = new FG::Window();
-	if (!window->Initialize("My game", 1024, 768))
+	if (!window->Initialize("My game", SCREENWIDTH, SCREENHEIGHT))
 	{
 		FG::Logger::Log(SDL_GetError(), FG::Logger::RemovePathFromFile(__FILE__), __LINE__);
 		return false;
