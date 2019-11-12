@@ -13,7 +13,7 @@ namespace FG
 class Projectile : public FG::Entity
 {
 public:
-	Projectile(float speed, float lifetime, FG::Vector2D direction, FG::Camera* camera);
+	Projectile(float speed, float lifetime, bool playerFired, FG::Vector2D direction, FG::Camera* camera);
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
@@ -25,6 +25,7 @@ private:
 	FG::Camera* camera = nullptr;
 
 	bool isColliding = false;
+	bool playerFired;
 
 	float speed;
 	float lifetime;
@@ -33,7 +34,7 @@ private:
 	void DrawBoundingBox();
 	void Move(float deltaTime);
 
-	virtual void ProjectileUpdate() = 0;
+	virtual void ProjectileUpdate();
 	virtual void OnLifetimeEnd() = 0;
 
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };

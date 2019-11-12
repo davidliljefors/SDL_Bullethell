@@ -5,8 +5,8 @@
 #include <SDL_render.h>
 #include <Circle.h>
 
-Projectile::Projectile(float speed, float lifetime, FG::Vector2D direction, FG::Camera* camera) :
-	speed(speed), lifetime(lifetime), direction(direction), camera(camera) {}
+Projectile::Projectile(float speed, float lifetime, bool playerFired, FG::Vector2D direction, FG::Camera* camera) :
+	speed(speed), lifetime(lifetime), playerFired(playerFired), direction(direction), camera(camera) {}
 
 void Projectile::Update(float deltaTime)
 {
@@ -50,5 +50,11 @@ void Projectile::DrawBoundingBox()
 void Projectile::Move(float deltaTime)
 {
 	position += direction * speed * deltaTime;
+}
+
+void Projectile::ProjectileUpdate()
+{
+	//TODO if lifetime = -1 ignore it
+	//TODO if count lifetime down with time and destroy projectile it once it hits 0
 }
 
