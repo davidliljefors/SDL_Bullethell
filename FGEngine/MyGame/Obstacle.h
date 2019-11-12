@@ -26,6 +26,7 @@ private:
 	FG::Camera* camera = nullptr;
 
 	void DrawBoundingBox();
+	void DrawColliderCircle();
 };
 
 

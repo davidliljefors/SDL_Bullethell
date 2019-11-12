@@ -1,7 +1,8 @@
 #pragma once
+#include <cassert>
 #include <SDL_rect.h>
 #include "Sprite.h"
-#include <cassert>
+#include "Circle.h"
 namespace FG
 {
 	class Camera;
@@ -12,15 +13,26 @@ namespace FG
 		virtual ~Entity() {}
 
 		virtual void Update(float deltaTime) {}
-		virtual void Render(Camera* const camera)
-		{
-			assert(sprite);
-			sprite->Render(camera, position);
-		}
 		virtual SDL_Rect GetColliderRect() = 0;
+		virtual void Render(Camera* const camera);
+
+		void AddCircleCollider(float radius)
+		{
+			collider = new Circle(&position, radius);
+		}
+		void AddCircleCollider(float offsetX, float offsetY, float radius)
+		{
+			collider = new Circle(&position, offsetX, offsetY, radius);
+		}
+		Circle GetColliderCircle() const
+		{
+			assert(collider);
+			return *collider;
+		}
 		virtual void OnCollision(Entity* other) {}
 
-		FG::Sprite* sprite = nullptr;
-		FG::Vector2D position;
+		Sprite* sprite = nullptr;
+		Circle* collider = nullptr;
+		Vector2D position;
 	};
 }

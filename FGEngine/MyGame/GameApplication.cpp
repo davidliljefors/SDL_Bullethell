@@ -21,7 +21,7 @@ bool GameApplication::Initialize()
 	}
 
 	window = new FG::Window();
-	if (!window->Initialize("My game", 1024, 768))
+	if (!window->Initialize("My game", SCREENWIDTH, SCREENHEIGHT))
 	{
 		FG::Logger::Log(SDL_GetError(), FG::Logger::RemovePathFromFile(__FILE__), __LINE__);
 		return false;
@@ -32,7 +32,9 @@ bool GameApplication::Initialize()
 
 	camera = new FG::Camera();
 	if (!camera->Initialize(window))
-	{ return false; }
+	{
+		return false;
+	}
 
 	resourceManager = new FG::ResourceManager();
 	FG::Sprite* sprite = new FG::Sprite();
@@ -45,16 +47,18 @@ bool GameApplication::Initialize()
 
 	entityManager = new FG::EntityManager();
 
-	Player* player = new Player(inputManager, camera);
+	Player* player = new Player(inputManager, camera, {(float)SCREENWIDTH, (float)SCREENHEIGHT});
 	player->sprite = resourceManager->GetResource<FG::Sprite>("dodonpachi.png");
 	player->position.x = 500.f;
 	player->position.y = 600.f;
+	player->AddCircleCollider(32.f);
 	entityManager->AddEntity(player);
 
 	Obstacle* obstacle = new Obstacle(camera);
 	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");
 	obstacle->position.x = 500.f;
 	obstacle->position.y = 100.f;
+	obstacle->AddCircleCollider(250.f);
 	entityManager->AddEntity(obstacle);
 
 	return true;

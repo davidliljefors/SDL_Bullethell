@@ -17,7 +17,7 @@ namespace FG
 		}
 		static inline bool CircleIntersects(const Circle& a, const Circle& b)
 		{
-			return (a.position - b.position).Magnitude() < a.radius + b.radius;
+			return (a.GetPosition() - b.GetPosition()).Magnitude() < a.GetRadius() + b.GetRadius();
 		}
 
 	private:
