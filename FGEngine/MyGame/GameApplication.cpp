@@ -64,7 +64,7 @@ bool GameApplication::Initialize()
 	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");
 	obstacle->position.x = 500.f;
 	obstacle->position.y = 100.f;
-	obstacle->AddCircleCollider(250.f);
+	obstacle->AddCircleCollider(32);
 	entityManager->AddEntity(obstacle);
 
 	return true;
