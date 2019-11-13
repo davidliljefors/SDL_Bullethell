@@ -17,6 +17,7 @@ namespace FG
 		lastKeys = keys;
 		keys = SDL_GetKeyboardState(nullptr);
 
+
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -40,6 +41,9 @@ namespace FG
 				break;
 			}
 		}
+
+		if (IsKeyDown(SDL_SCANCODE_ESCAPE))
+			shouldQuit = true;
 	}
 
 	bool InputManager::IsKeyPressed(SDL_Scancode key) const

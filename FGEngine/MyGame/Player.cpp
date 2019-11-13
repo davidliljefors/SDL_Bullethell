@@ -15,6 +15,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
+	fireTime = 0;
 }
 
 void Player::Update(float deltaTime)
@@ -23,9 +24,14 @@ void Player::Update(float deltaTime)
 	MovePlayer(deltaTime);
 	//MoveCamera(deltaTime);
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
-	{
-		Shoot();
+	if (fireTime > 0)
+		fireTime -= deltaTime;
+	else {
+		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+		{
+			fireTime = fireCooldown;
+			Shoot();
+		}
 	}
 
 }
@@ -46,7 +52,8 @@ SDL_Rect Player::GetColliderRect()
 
 void Player::OnCollision(FG::Entity* other)
 {
-	isColliding = true;
+	if (other)
+		isColliding = true;
 }
 
 void Player::MovePlayer(float deltaTime)

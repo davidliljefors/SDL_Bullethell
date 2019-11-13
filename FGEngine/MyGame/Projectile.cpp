@@ -6,9 +6,11 @@
 #include <Circle.h>
 
 #include <iostream>
+#include "Player.h"
+#include "Obstacle.h"
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), camera(camera)
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), camera(camera), maxBoundaries(boundaries)
 {
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -21,19 +23,35 @@ Projectile::Projectile(const Projectile& other)
 	playerFired = other.playerFired;
 	lifetime = other.lifetime;
 	sprite = other.sprite;
+	maxBoundaries = other.maxBoundaries;
 	AddCircleCollider(sprite->size.x / 2.f);
 }
 
 void Projectile::Update(float deltaTime)
 {
-	elapsedTime += deltaTime;
 	isColliding = false;
 	//ProjectileUpdate();
+
+	if (m_ded)
+		return;
+
 	position += velocity * deltaTime;
+	
+	if (position.x < -OFFSCREEN_LIMIT ||
+		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
+		position.y < -OFFSCREEN_LIMIT ||
+		position.y > maxBoundaries.y + OFFSCREEN_LIMIT)
+		Reload();
+
+	elapsedTime += deltaTime;
+	if (Expired())
+		Reload();
 }
 
 void Projectile::Render(FG::Camera* const camera)
 {
+	if (m_ded)
+		return;
 	Entity::Render(camera);
 	sprite->Render(camera, position);
 	DrawColliderCircle();
@@ -48,7 +66,13 @@ SDL_Rect Projectile::GetColliderRect()
 
 void Projectile::OnCollision(FG::Entity* other)
 {
-	//TODO Destroy Projectile
+	/*if (typeid(other) == typeid(Obstacle)) {
+		Obstacle* ba = static_cast<Obstacle*>(other);
+	}*/
+
+	if (typeid(*other) == typeid(Obstacle)) {
+		Reload();
+	}
 }
 
 void Projectile::DrawBoundingBox()
@@ -68,6 +92,11 @@ void Projectile::DrawBoundingBox()
 void Projectile::Move(float deltaTime)
 {
 	position += velocity * deltaTime;
+}
+
+void Projectile::Reload()
+{
+	m_ded = true;
 }
 
 void Projectile::ProjectileUpdate()

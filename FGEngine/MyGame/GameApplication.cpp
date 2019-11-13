@@ -58,7 +58,7 @@ bool GameApplication::Initialize()
 	player->AddCircleCollider(32.f);
 	entityManager->AddEntity(player);
 	player->projectilePrefab = 
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.3f, true, FG::Vector2D::Down*1000.f, camera);
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.5f, true, FG::Vector2D::Down*2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT });
 
 	Obstacle* obstacle = new Obstacle(camera);
 	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");

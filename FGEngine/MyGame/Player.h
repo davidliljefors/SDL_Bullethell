@@ -19,6 +19,10 @@ class Player : public FG::Entity
 {
 public:
 	float speed = 500.0f;
+	int lives = 3;
+
+	float fireCooldown = .125f;
+	float fireTime;
 	
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries);
 
