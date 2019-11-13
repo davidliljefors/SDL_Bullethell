@@ -15,9 +15,18 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
+		for (auto& entity : addList)
+		{
+			entities.push_back(entity);
+		}
+		addList.clear();
+
 		for (auto entity : entities)
 		{
-			entity->Update(deltaTime);
+			if (entity)
+			{
+				entity->Update(deltaTime);
+			}
 		}
 	}
 
@@ -25,7 +34,10 @@ namespace FG
 	{
 		for (auto entity : entities)
 		{
-			entity->Render(camera);
+			if (entity)
+			{
+				entity->Render(camera);
+			}
 		}
 	}
 
@@ -35,21 +47,25 @@ namespace FG
 		{
 			for (int y = x + 1; y < entities.size(); y++)
 			{
-				if (Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
+				if (entities[x] && entities[y])
 				{
-					entities[x]->OnCollision(entities[y]);
-					entities[y]->OnCollision(entities[x]);
+
+					if (Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
+					{
+						entities[x]->OnCollision(entities[y]);
+						entities[y]->OnCollision(entities[x]);
+					}
 				}
-				if (Collision::AABB(entities[x]->GetColliderRect(), entities[y]->GetColliderRect()))
-				{
-					
-				}
+				//if (Collision::AABB(entities[x]->GetColliderRect(), entities[y]->GetColliderRect()))
+				//{
+
+				//}
 			}
 		}
 	}
 
 	void EntityManager::AddEntity(Entity* entity)
 	{
-		entities.push_back(entity);
+		addList.push_back(entity);
 	}
 }

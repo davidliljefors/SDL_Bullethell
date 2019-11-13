@@ -13,13 +13,14 @@ namespace FG
 class Projectile : public FG::Entity
 {
 public:
-	Projectile(float speed, float lifetime, bool playerFired, FG::Vector2D direction, FG::Camera* camera);
-
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera);
+	Projectile(const Projectile&);
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
+	bool Expired() { return elapsedTime > lifetime; }
 
 private:
 	FG::Camera* camera = nullptr;
@@ -27,15 +28,17 @@ private:
 	bool isColliding = false;
 	bool playerFired;
 
-	float speed;
+	float elapsedTime = 0.f;
 	float lifetime;
-	FG::Vector2D direction;
+	FG::Vector2D velocity;
 
+
+	void DrawColliderCircle();
 	void DrawBoundingBox();
 	void Move(float deltaTime);
 
 	virtual void ProjectileUpdate();
-	virtual void OnLifetimeEnd() = 0;
+	virtual void OnLifetimeEnd() {}
 
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	SDL_Color CollidingColor = { 255, 0, 0, 255 };

@@ -1,15 +1,17 @@
-#include "Player.h"
+#include <initializer_list>
+#include <cmath>
 
+#include "Player.h"
 #include <InputManager.h>
+#include <EntityManager.h>
 #include <Camera.h>
 #include <Sprite.h>
 #include <SDL_render.h>
 #include <Circle.h>
 
-#include <cmath>
 
-Player::Player(FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries) :
-	inputManager(inputManager), camera(camera)
+Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries) :
+	entityManager(entityManager), inputManager(inputManager), camera(camera)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
@@ -20,6 +22,12 @@ void Player::Update(float deltaTime)
 	isColliding = false;
 	MovePlayer(deltaTime);
 	//MoveCamera(deltaTime);
+
+	if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+	{
+		Shoot();
+	}
+
 }
 
 void Player::Render(FG::Camera* const camera)
@@ -100,6 +108,13 @@ void Player::MoveCamera(float deltaTime)
 	}
 
 	camera->position += movement * speed * deltaTime;
+}
+
+void Player::Shoot()
+{
+	Projectile* proj = new Projectile(*projectilePrefab);
+	proj->position = position;
+	entityManager->AddEntity(proj);
 }
 
 void Player::DrawBoundingBox()
