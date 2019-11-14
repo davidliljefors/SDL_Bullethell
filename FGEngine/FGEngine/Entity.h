@@ -1,8 +1,10 @@
 #pragma once
 #include <cassert>
+#include <bitset>
 #include <SDL_rect.h>
 #include "Sprite.h"
 #include "Circle.h"
+
 namespace FG
 {
 	class Camera;
@@ -11,8 +13,8 @@ namespace FG
 	{
 		friend class EntityManager;
 	public:
+		
 		virtual ~Entity() {}
-
 		virtual void Update(float deltaTime) {}
 		virtual SDL_Rect GetColliderRect() = 0;
 		virtual void Render(Camera* const camera);
@@ -37,6 +39,8 @@ namespace FG
 		Sprite* sprite = nullptr;
 		Circle* collider = nullptr;
 		Vector2D position;
+	protected:
+		std::bitset<8> collisionLayer;
 	private:
 		bool markedForDestroy = false;
 	};

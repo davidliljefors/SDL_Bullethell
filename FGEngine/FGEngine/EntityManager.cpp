@@ -55,8 +55,11 @@ namespace FG
 						continue;
 					if (Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
 					{
-						entities[x]->OnCollision(entities[y]);
-						entities[y]->OnCollision(entities[x]);
+						if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any())
+						{
+							entities[x]->OnCollision(entities[y]);
+							entities[y]->OnCollision(entities[x]);
+						}
 					}
 				}
 				//if (Collision::AABB(entities[x]->GetColliderRect(), entities[y]->GetColliderRect()))
@@ -79,7 +82,7 @@ namespace FG
 
 		for (auto& it = newEnd; it != entities.end(); it++)
 		{
-			delete *it;
+			delete* it;
 		}
 		entities.erase(newEnd, entities.end());
 	}
