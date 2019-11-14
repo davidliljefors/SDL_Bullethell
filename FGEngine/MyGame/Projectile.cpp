@@ -46,6 +46,9 @@ Projectile::Projectile(const Projectile& other) :
 
 void Projectile::Update(float deltaTime)
 {
+	//TODO Add acceleration
+	//TODO Add Ro tat e.
+
 	isColliding = false;
 
 	if (dead)
