@@ -26,6 +26,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 		entityManager->AddEntity(projectiles[i]);
 	}
 
+	collisionLayer.set(0);
 	//entityManager->AddEntities(projectiles, MAX_BULLETS);
 }
 

@@ -14,7 +14,11 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 {
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
-	
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+		collisionLayer.set(0);
 	Reload();
 }
 
@@ -27,7 +31,12 @@ Projectile::Projectile(const Projectile& other)
 	sprite = other.sprite;
 	maxBoundaries = other.maxBoundaries;
 	AddCircleCollider(sprite->size.x / 2.f);
-	
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+		collisionLayer.set(0);
+
 	Reload();
 }
 
@@ -78,9 +87,7 @@ void Projectile::OnCollision(FG::Entity* other)
 		Obstacle* ba = static_cast<Obstacle*>(other);
 	}*/
 
-	if (typeid(*other) == typeid(Obstacle)) {
 		Reload();
-	}
 }
 
 bool Projectile::IgnoreCollision()
