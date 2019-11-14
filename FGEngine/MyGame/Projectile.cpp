@@ -9,23 +9,36 @@
 #include "Player.h"
 #include "Obstacle.h"
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), camera(camera), maxBoundaries(boundaries)
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+	FG::Camera* camera, FG::Vector2D boundaries) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries)
 {
+	type = Regular;
+
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
 	
 	Reload();
 }
 
-Projectile::Projectile(const Projectile& other)
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed, 
+	FG::Camera* camera, FG::Vector2D boundaries, FG::EntityManager* entityManager, Projectile* explosionProjectile, int projectileCount) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries),
+	entityManager(entityManager), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
-	camera = other.camera;
-	velocity = other.velocity;
-	playerFired = other.playerFired;
-	lifetime = other.lifetime;
-	sprite = other.sprite;
-	maxBoundaries = other.maxBoundaries;
+	type = Exploding;
+
+	FG::Entity::sprite = sprite;
+	AddCircleCollider(sprite->size.x / 2.f);
+
+	Reload();
+}
+
+
+
+Projectile::Projectile(const Projectile& other) :
+	camera(other.camera), velocity(other.velocity), playerFired(other.playerFired), lifetime(other.lifetime), maxBoundaries(other.maxBoundaries)
+{
 	AddCircleCollider(sprite->size.x / 2.f);
 	
 	Reload();
@@ -34,7 +47,6 @@ Projectile::Projectile(const Projectile& other)
 void Projectile::Update(float deltaTime)
 {
 	isColliding = false;
-	//ProjectileUpdate();
 
 	if (dead)
 		return;
@@ -47,9 +59,19 @@ void Projectile::Update(float deltaTime)
 		position.y > maxBoundaries.y + OFFSCREEN_LIMIT)
 		Reload();
 
-	elapsedTime += deltaTime;
-	if (Expired())
-		Reload();
+	if (lifetime != -1)
+	{
+		elapsedTime += deltaTime;
+
+		if (Expired())
+		{
+			Reload();
+			if (type == Exploding)
+			{
+				SpawnProjectileExplosion();
+			}
+		}
+	}
 }
 
 void Projectile::Render(FG::Camera* const camera)
@@ -98,9 +120,16 @@ void Projectile::DrawBoundingBox()
 	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
 }
 
+void Projectile::SpawnProjectileExplosion()
+{
+	//TODO EXPLODE LOL
+	//Use Vector2D.AngleToVector2D() and make a circle based on how many projectileCount
+	//MATH IS FUN
+}
+
 void Projectile::Move(float deltaTime)
 {
-	position += velocity * deltaTime;
+	position += velocity * speedMult * deltaTime;
 }
 
 void Projectile::Fire(FG::Vector2D firePosition)
@@ -114,13 +143,6 @@ void Projectile::Reload()
 {
 	dead = true;
 }
-
-void Projectile::ProjectileUpdate()
-{
-	//TODO if lifetime = -1 ignore it
-	//TODO if count lifetime down with time and destroy projectile it once it hits 0
-}
-
 
 void Projectile::DrawColliderCircle()
 {
