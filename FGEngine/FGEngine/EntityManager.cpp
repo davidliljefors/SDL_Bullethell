@@ -49,7 +49,8 @@ namespace FG
 			{
 				if (entities[x] && entities[y])
 				{
-
+					if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
+						continue;
 					if (Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
 					{
 						entities[x]->OnCollision(entities[y]);

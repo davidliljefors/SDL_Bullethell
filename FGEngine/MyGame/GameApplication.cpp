@@ -51,14 +51,15 @@ bool GameApplication::Initialize()
 
 	entityManager = new FG::EntityManager();
 
-	Player* player = new Player(entityManager, inputManager, camera, {(float)SCREENWIDTH, (float)SCREENHEIGHT});
+	Player* player = new Player(entityManager, inputManager, camera, {(float)SCREENWIDTH, (float)SCREENHEIGHT},
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.5f, true, FG::Vector2D::Down * 2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
 	player->sprite = resourceManager->GetResource<FG::Sprite>("dodonpachi.png");
 	player->position.x = 500.f;
 	player->position.y = 600.f;
 	player->AddCircleCollider(32.f);
 	entityManager->AddEntity(player);
-	player->projectilePrefab = 
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.5f, true, FG::Vector2D::Down*2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT });
+	/*player->projectilePrefab = 
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.5f, true, FG::Vector2D::Down*2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT });*/
 
 	Obstacle* obstacle = new Obstacle(camera);
 	obstacle->sprite = resourceManager->GetResource<FG::Sprite>("hippie.png");

@@ -15,6 +15,7 @@ namespace FG
 		virtual void Update(float deltaTime) {}
 		virtual SDL_Rect GetColliderRect() = 0;
 		virtual void Render(Camera* const camera);
+		virtual bool IgnoreCollision();
 
 		void AddCircleCollider(float radius)
 		{

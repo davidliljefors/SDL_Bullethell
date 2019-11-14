@@ -10,12 +10,20 @@
 #include <Circle.h>
 
 
-Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries) :
-	entityManager(entityManager), inputManager(inputManager), camera(camera)
+Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
+	entityManager(entityManager), inputManager(inputManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
 	fireTime = 0;
+
+	for (int i = 0; i < MAX_BULLETS; i++)
+	{
+		projectiles[i] = new Projectile(*projectilePrefab);
+		entityManager->AddEntity(projectiles[i]);
+	}
+
+	//entityManager->AddEntities(projectiles, MAX_BULLETS);
 }
 
 void Player::Update(float deltaTime)
@@ -54,6 +62,11 @@ void Player::OnCollision(FG::Entity* other)
 {
 	if (other)
 		isColliding = true;
+}
+
+bool Player::IgnoreCollision()
+{
+	return false;
 }
 
 void Player::MovePlayer(float deltaTime)
@@ -119,9 +132,17 @@ void Player::MoveCamera(float deltaTime)
 
 void Player::Shoot()
 {
-	Projectile* proj = new Projectile(*projectilePrefab);
+	for (int i = 0; i < MAX_BULLETS; i++)
+	{
+		if (projectiles[i]->Dead())
+		{
+			projectiles[i]->Fire(position);
+			break;
+		}
+	}
+	/*Projectile* proj = new Projectile(*projectilePrefab);
 	proj->position = position;
-	entityManager->AddEntity(proj);
+	entityManager->AddEntity(proj);*/
 }
 
 void Player::DrawBoundingBox()

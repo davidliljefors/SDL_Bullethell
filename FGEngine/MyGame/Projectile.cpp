@@ -14,6 +14,8 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 {
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
+	
+	Reload();
 }
 
 Projectile::Projectile(const Projectile& other)
@@ -25,6 +27,8 @@ Projectile::Projectile(const Projectile& other)
 	sprite = other.sprite;
 	maxBoundaries = other.maxBoundaries;
 	AddCircleCollider(sprite->size.x / 2.f);
+	
+	Reload();
 }
 
 void Projectile::Update(float deltaTime)
@@ -32,7 +36,7 @@ void Projectile::Update(float deltaTime)
 	isColliding = false;
 	//ProjectileUpdate();
 
-	if (m_ded)
+	if (dead)
 		return;
 
 	position += velocity * deltaTime;
@@ -50,7 +54,7 @@ void Projectile::Update(float deltaTime)
 
 void Projectile::Render(FG::Camera* const camera)
 {
-	if (m_ded)
+	if (dead)
 		return;
 	Entity::Render(camera);
 	sprite->Render(camera, position);
@@ -75,6 +79,11 @@ void Projectile::OnCollision(FG::Entity* other)
 	}
 }
 
+bool Projectile::IgnoreCollision()
+{
+	return dead;
+}
+
 void Projectile::DrawBoundingBox()
 {
 	SDL_Color color = notCollidingColor;
@@ -94,9 +103,16 @@ void Projectile::Move(float deltaTime)
 	position += velocity * deltaTime;
 }
 
+void Projectile::Fire(FG::Vector2D firePosition)
+{
+	position = firePosition;
+	elapsedTime = 0.0f;
+	dead = false;
+}
+
 void Projectile::Reload()
 {
-	m_ded = true;
+	dead = true;
 }
 
 void Projectile::ProjectileUpdate()

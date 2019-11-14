@@ -22,4 +22,3 @@ namespace FG
 		std::vector<Entity*> addList;
 	};
 }
-

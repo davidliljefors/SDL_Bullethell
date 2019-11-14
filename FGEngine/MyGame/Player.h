@@ -24,7 +24,7 @@ public:
 	float fireCooldown = .125f;
 	float fireTime;
 	
-	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries);
+	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
@@ -32,6 +32,7 @@ public:
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
+	bool IgnoreCollision() override;
 
 private:
 	FG::InputManager* inputManager = nullptr;
@@ -44,7 +45,8 @@ private:
 	FG::Vector2D minBoundaries;
 	FG::Vector2D maxBoundaries;
 
-
+	static const int MAX_BULLETS = 50;
+	Projectile* projectiles[MAX_BULLETS];
 	Player() {}
 
 	void Shoot();
