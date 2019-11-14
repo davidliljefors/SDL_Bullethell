@@ -23,7 +23,6 @@ public:
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
 	bool Expired() { return elapsedTime > lifetime; }
-	bool Dead() { return dead; }
 	void Fire(FG::Vector2D firePosition);
 
 	bool IgnoreCollision() override;
@@ -53,7 +52,5 @@ private:
 	
 	const float OFFSCREEN_LIMIT = 50;
 	FG::Vector2D maxBoundaries;
-
-	bool dead;
 };
 

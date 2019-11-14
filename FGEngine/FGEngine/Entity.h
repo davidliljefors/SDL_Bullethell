@@ -20,6 +20,7 @@ namespace FG
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
 		void Destroy() { markedForDestroy = true; }
+		bool Dead() { return dead; }
 
 		void AddCircleCollider(float radius)
 		{
@@ -40,6 +41,9 @@ namespace FG
 		Circle* collider = nullptr;
 		Vector2D position;
 	protected:
+
+		bool dead;
+
 		std::bitset<8> collisionLayer;
 	private:
 		bool markedForDestroy = false;

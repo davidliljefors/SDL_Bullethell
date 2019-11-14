@@ -51,7 +51,6 @@ void Player::Update(float deltaTime)
 			Shoot();
 		}
 	}
-
 }
 
 void Player::Render(FG::Camera* const camera)
@@ -70,8 +69,14 @@ SDL_Rect Player::GetColliderRect()
 
 void Player::OnCollision(FG::Entity* other)
 {
-	if (other)
-		isColliding = true;
+	isColliding = true;
+	lives--;
+	if (lives < 0) {
+
+	}
+	else {
+
+	}
 }
 
 bool Player::IgnoreCollision()

@@ -15,6 +15,7 @@ public:
 	void Update(float deltaTime) override;
 	Obstacle(FG::Camera* camera) : camera(camera) {
 		collisionLayer.set(1);
+		collisionLayer.set(0);
 	}
 	void Render(FG::Camera* const camera) override;
 
