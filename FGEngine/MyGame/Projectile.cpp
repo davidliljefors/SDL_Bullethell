@@ -5,13 +5,30 @@
 #include <SDL_render.h>
 #include <Circle.h>
 
-Projectile::Projectile(float speed, float lifetime, bool playerFired, FG::Vector2D direction, FG::Camera* camera) :
-	speed(speed), lifetime(lifetime), playerFired(playerFired), direction(direction), camera(camera) {}
+Projectile::Projectile(float speed, float lifetime, bool playerFired, float scale, FG::Vector2D direction, FG::Camera* camera) :
+	speed(speed), maxLifetime(lifetime), playerFired(playerFired), direction(direction), scale(scale), camera(camera) { type = Regular; }
+
+Projectile::Projectile(float minSpeed, float maxSpeed, float lifetime, bool playerFired, float scale, FG::Vector2D direction, FG::Camera* camera) :
+minSpeed(minSpeed), maxSpeed(maxSpeed), lifetime(lifetime), playerFired(playerFired), direction(direction), scale(scale), camera(camera) { type = SpeedWave; }
 
 void Projectile::Update(float deltaTime)
 {
 	isColliding = false;
-	ProjectileUpdate();
+
+	if (maxLifetime != -1)
+	{
+		lifetime += deltaTime;
+
+		if (lifetime >= maxLifetime)
+		{
+			//TODO Destroy Projectile
+		}
+	}
+
+	if (type == SpeedWave)
+	{
+		speed = minSpeed + (cos(lifetime) * (maxSpeed - minSpeed));
+	}
 }
 
 void Projectile::Render(FG::Camera* const camera)
@@ -50,11 +67,5 @@ void Projectile::DrawBoundingBox()
 void Projectile::Move(float deltaTime)
 {
 	position += direction * speed * deltaTime;
-}
-
-void Projectile::ProjectileUpdate()
-{
-	//TODO if lifetime = -1 ignore it
-	//TODO if count lifetime down with time and destroy projectile it once it hits 0
 }
 
