@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Collision.h"
@@ -28,6 +29,7 @@ namespace FG
 				entity->Update(deltaTime);
 			}
 		}
+		CleanDestroyedObjects();
 	}
 
 	void EntityManager::Render(Camera* const camera)
@@ -68,5 +70,17 @@ namespace FG
 	void EntityManager::AddEntity(Entity* entity)
 	{
 		addList.push_back(entity);
+	}
+
+	void EntityManager::CleanDestroyedObjects()
+	{
+		auto newEnd = std::remove_if(entities.begin(), entities.end(),
+			[](const Entity* const e) { return e->markedForDestroy; });
+
+		for (auto& it = newEnd; it != entities.end(); it++)
+		{
+			delete *it;
+		}
+		entities.erase(newEnd, entities.end());
 	}
 }

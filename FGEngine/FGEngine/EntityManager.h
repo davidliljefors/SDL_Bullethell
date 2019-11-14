@@ -15,7 +15,7 @@ namespace FG
 		void DoCollisions();
 
 		void AddEntity(Entity* entity);
-		void AddEntities(Entity** array, int length);
+		void CleanDestroyedObjects();
 
 	private:
 		std::vector<Entity*> entities;
