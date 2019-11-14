@@ -15,6 +15,9 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
+
+	lives = maxLives;
+
 	fireTime = 0;
 
 	for (int i = 0; i < MAX_BULLETS; i++)
@@ -24,6 +27,12 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	}
 
 	//entityManager->AddEntities(projectiles, MAX_BULLETS);
+}
+
+Player::~Player()
+{
+	for (int i = 0; i < MAX_BULLETS; i++)
+		projectiles[i] = NULL;
 }
 
 void Player::Update(float deltaTime)

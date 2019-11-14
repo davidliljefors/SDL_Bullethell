@@ -19,12 +19,14 @@ class Player : public FG::Entity
 {
 public:
 	float speed = 500.0f;
-	int lives = 3;
+	int maxLives = 3;
+	int lives;
 
 	float fireCooldown = .125f;
 	float fireTime;
 	
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
+	~Player();
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;

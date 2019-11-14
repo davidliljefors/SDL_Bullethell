@@ -13,14 +13,14 @@ void Sensor::OnCollision(Entity* other)
 	switch (m_type)
 	{
 	case Sensor::graze:
-		if (static_cast<Projectile*>(other))
+		if (typeid(*other) == typeid(Projectile))
 		{
 			//Award puntos
 			//m_user->
 		}
 		break;
 	case Sensor::itemGrab:
-		/*if (static_cast<Item*>(other))
+		/*if (typeid(*other) == typeid(Item))
 		{
 
 		}*/

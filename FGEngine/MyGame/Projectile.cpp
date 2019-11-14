@@ -31,6 +31,10 @@ Projectile::Projectile(const Projectile& other)
 	Reload();
 }
 
+Projectile::~Projectile()
+{
+}
+
 void Projectile::Update(float deltaTime)
 {
 	isColliding = false;
