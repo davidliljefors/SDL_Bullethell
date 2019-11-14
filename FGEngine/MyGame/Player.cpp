@@ -1,18 +1,29 @@
-#include "Player.h"
+#include <initializer_list>
+#include <cmath>
 
+#include "Player.h"
 #include <InputManager.h>
+#include <EntityManager.h>
 #include <Camera.h>
 #include <Sprite.h>
 #include <SDL_render.h>
 #include <Circle.h>
 
-#include <cmath>
 
-Player::Player(FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries) :
-	inputManager(inputManager), camera(camera)
+Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
+	entityManager(entityManager), inputManager(inputManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
+	fireTime = 0;
+
+	for (int i = 0; i < MAX_BULLETS; i++)
+	{
+		projectiles[i] = new Projectile(*projectilePrefab);
+		entityManager->AddEntity(projectiles[i]);
+	}
+
+	//entityManager->AddEntities(projectiles, MAX_BULLETS);
 }
 
 void Player::Update(float deltaTime)
@@ -20,6 +31,17 @@ void Player::Update(float deltaTime)
 	isColliding = false;
 	MovePlayer(deltaTime);
 	//MoveCamera(deltaTime);
+
+	if (fireTime > 0)
+		fireTime -= deltaTime;
+	else {
+		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+		{
+			fireTime = fireCooldown;
+			Shoot();
+		}
+	}
+
 }
 
 void Player::Render(FG::Camera* const camera)
@@ -38,7 +60,13 @@ SDL_Rect Player::GetColliderRect()
 
 void Player::OnCollision(FG::Entity* other)
 {
-	isColliding = true;
+	if (other)
+		isColliding = true;
+}
+
+bool Player::IgnoreCollision()
+{
+	return false;
 }
 
 void Player::MovePlayer(float deltaTime)
@@ -100,6 +128,21 @@ void Player::MoveCamera(float deltaTime)
 	}
 
 	camera->position += movement * speed * deltaTime;
+}
+
+void Player::Shoot()
+{
+	for (int i = 0; i < MAX_BULLETS; i++)
+	{
+		if (projectiles[i]->Dead())
+		{
+			projectiles[i]->Fire(position);
+			break;
+		}
+	}
+	/*Projectile* proj = new Projectile(*projectilePrefab);
+	proj->position = position;
+	entityManager->AddEntity(proj);*/
 }
 
 void Player::DrawBoundingBox()

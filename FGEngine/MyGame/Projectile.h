@@ -10,50 +10,48 @@ namespace FG
 	class Sprite;
 }
 
-enum ProjectileType
-{
-	Regular,
-	SpeedWave
-};
-
 class Projectile : public FG::Entity
 {
 public:
-
-
-	Projectile(float speed, float lifetime, bool playerFired, float scale, FG::Vector2D direction, FG::Camera* camera);
-	Projectile(float minSpeed, float maxSpeed, float lifetime, bool playerFired, float scale, FG::Vector2D direction, FG::Camera* camera);
-
-	virtual void Update(float deltaTime) override;
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries);
+	Projectile(const Projectile&);
+	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
+	bool Expired() { return elapsedTime > lifetime; }
+	bool Dead() { return dead; }
+	void Fire(FG::Vector2D firePosition);
+
+	bool IgnoreCollision() override;
 
 private:
 	FG::Camera* camera = nullptr;
 
-	ProjectileType type;
-
 	bool isColliding = false;
 	bool playerFired;
 
-	float speed;
+	float elapsedTime = 0.f;
 	float lifetime;
-	float maxLifetime;
-	float scale;
+	FG::Vector2D velocity;
 
-	float minSpeed;
-	float maxSpeed;
 
-	FG::Vector2D direction;
-
+	void DrawColliderCircle();
 	void DrawBoundingBox();
 	void Move(float deltaTime);
 
-	virtual void OnLifetimeEnd() = 0;
+	void Reload();
+
+	virtual void ProjectileUpdate();
+	virtual void OnLifetimeEnd() {}
 
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	SDL_Color CollidingColor = { 255, 0, 0, 255 };
+	
+	const float OFFSCREEN_LIMIT = 50;
+	FG::Vector2D maxBoundaries;
+
+	bool dead;
 };
 

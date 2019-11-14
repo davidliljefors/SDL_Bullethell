@@ -9,12 +9,15 @@ namespace FG
 	class Entity
 
 	{
+		friend class EntityManager;
 	public:
 		virtual ~Entity() {}
 
 		virtual void Update(float deltaTime) {}
 		virtual SDL_Rect GetColliderRect() = 0;
 		virtual void Render(Camera* const camera);
+		virtual bool IgnoreCollision();
+		void Destroy() { markedForDestroy = true; }
 
 		void AddCircleCollider(float radius)
 		{
@@ -34,5 +37,7 @@ namespace FG
 		Sprite* sprite = nullptr;
 		Circle* collider = nullptr;
 		Vector2D position;
+	private:
+		bool markedForDestroy = false;
 	};
 }

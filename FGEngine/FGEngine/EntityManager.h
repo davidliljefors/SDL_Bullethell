@@ -10,15 +10,15 @@ namespace FG
 	{
 	public:
 		void Shutdown();
-
 		void Update(float deltaTime);
 		void Render(Camera* const camera);
 		void DoCollisions();
 
 		void AddEntity(Entity* entity);
+		void CleanDestroyedObjects();
 
 	private:
 		std::vector<Entity*> entities;
+		std::vector<Entity*> addList;
 	};
 }
-
