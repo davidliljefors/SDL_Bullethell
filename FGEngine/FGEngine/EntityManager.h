@@ -19,6 +19,5 @@ namespace FG
 
 	private:
 		std::vector<Entity*> entities;
-		std::vector<Entity*> addList;
 	};
 }

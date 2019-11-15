@@ -1,21 +1,24 @@
 #include <iostream>
 
+#pragma region memestuff
 // Overloading new and delete to keep track of memory leakage
 static int alloc = 0;
 void* operator new(std::size_t size)
 {
 	alloc += 1;
-	std::cout <<"Alloc : " << size << "bytes, count:" << alloc << std::endl;;
+	std::cout << "Alloc : " << size << "bytes, count:" << alloc << std::endl;
 	return malloc(size);
 }
 void operator delete(void* p)
 {
 	alloc -= 1;;
-	std::cout  << "Free, count:"<< alloc << std::endl;;
+	std::cout  << "Free, count:"<< alloc << std::endl;
 	free(p);
 }
+#pragma endregion memestuff
 
-#include "GameApplication.h"
+#include <SDL.h>
+#include <Logger.h>
 #include <Window.h>
 #include <InputManager.h>
 #include <Camera.h>
@@ -23,9 +26,8 @@ void operator delete(void* p)
 #include <ResourceManager.h>
 #include <Sprite.h>
 
-#include <Logger.h>
-#include <SDL.h>
 
+#include "GameApplication.h"
 #include "Player.h"
 #include "Obstacle.h"
 

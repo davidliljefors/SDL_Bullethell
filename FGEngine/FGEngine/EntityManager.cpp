@@ -16,18 +16,9 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
-		for (auto& entity : addList)
-		{
-			entities.push_back(entity);
-		}
-		addList.clear();
-
 		for (auto entity : entities)
 		{
-			if (entity)
-			{
-				entity->Update(deltaTime);
-			}
+			entity->Update(deltaTime);
 		}
 		CleanDestroyedObjects();
 	}
@@ -36,10 +27,7 @@ namespace FG
 	{
 		for (auto entity : entities)
 		{
-			if (entity)
-			{
-				entity->Render(camera);
-			}
+			entity->Render(camera);
 		}
 	}
 
@@ -51,28 +39,27 @@ namespace FG
 			{
 				if (entities[x] && entities[y])
 				{
+					if (entities[x]->Dead() || entities[y]->Dead())
+					{
+						continue;
+					}
 					if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
 						continue;
-					if (Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
+
+					if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
+						Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
 					{
-						if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any())
-						{
-							entities[x]->OnCollision(entities[y]);
-							entities[y]->OnCollision(entities[x]);
-						}
+						entities[x]->OnCollision(entities[y]);
+						entities[y]->OnCollision(entities[x]);
 					}
 				}
-				//if (Collision::AABB(entities[x]->GetColliderRect(), entities[y]->GetColliderRect()))
-				//{
-
-				//}
 			}
 		}
 	}
 
 	void EntityManager::AddEntity(Entity* entity)
 	{
-		addList.push_back(entity);
+		entities.push_back(entity);
 	}
 
 	void EntityManager::CleanDestroyedObjects()
@@ -81,9 +68,8 @@ namespace FG
 			[](const Entity* const e) { return e->markedForDestroy; });
 
 		for (auto& it = newEnd; it != entities.end(); it++)
-		{
-			delete* it;
-		}
+		{ delete* it; }
+
 		entities.erase(newEnd, entities.end());
 	}
 }

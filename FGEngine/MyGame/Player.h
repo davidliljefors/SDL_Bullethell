@@ -49,7 +49,7 @@ private:
 
 	static const int MAX_BULLETS = 50;
 	Projectile* projectiles[MAX_BULLETS];
-	Player() {}
+	Player() {}	
 
 	void Shoot();
 	void DrawBoundingBox();

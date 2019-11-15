@@ -56,7 +56,6 @@ void Player::Update(float deltaTime)
 void Player::Render(FG::Camera* const camera)
 {
 	Entity::Render(camera);
-	sprite->Render(camera, position);
 	DrawColliderCircle();
 }
 
@@ -195,7 +194,7 @@ void Player::DrawColliderCircle()
 	for (int i = 0; i < samples; i++)
 	{
 		SDL_RenderDrawLine(camera->GetInternalRenderer(),
-			positions[i].x, positions[i].y, positions[i + 1].x, positions[i + 1].y);
+			(int)positions[i].x, (int)positions[i].y, (int)positions[i + 1].x, (int)positions[i + 1].y);
 	}
 
 	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
