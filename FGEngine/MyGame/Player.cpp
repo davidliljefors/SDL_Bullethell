@@ -64,7 +64,9 @@ void Player::Render(FG::Camera* const camera)
 {
 	if (Respawning())
 		return;
-	Entity::Render(camera);
+
+	assert(sprite);
+	sprite->Render(camera, position, 100);
 	DrawColliderCircle();
 }
 

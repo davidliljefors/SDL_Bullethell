@@ -61,6 +61,15 @@ namespace FG
 		static_cast<int>(size.x), static_cast<int>(size.y) };
 		SDL_RenderCopy(camera->GetInternalRenderer(), texture, nullptr, &finalRect);
 	}
+	void Sprite::Render(Camera* camera, Vector2D& position, char alpha)
+	{
+		Vector2D finalPosition = position - camera->position;
+		SDL_Rect finalRect = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
+		static_cast<int>(size.x), static_cast<int>(size.y) };
+		SDL_SetTextureAlphaMod(texture, alpha);
+		SDL_RenderCopy(camera->GetInternalRenderer(), texture, nullptr, &finalRect);
+		SDL_SetTextureAlphaMod(texture, 255);
+	}
 }
 
 
