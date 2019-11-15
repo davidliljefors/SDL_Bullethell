@@ -5,9 +5,11 @@
 #include "Sprite.h"
 #include "Circle.h"
 
+
 namespace FG
 {
 	class Camera;
+
 	class Entity
 
 	{
@@ -20,16 +22,11 @@ namespace FG
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
 		void Destroy() { markedForDestroy = true; }
-		bool Dead() { return dead; }
+		bool Dead() const { return dead; }
 
-		void AddCircleCollider(float radius)
-		{
-			collider = new Circle(&position, radius);
-		}
-		void AddCircleCollider(float offsetX, float offsetY, float radius)
-		{
-			collider = new Circle(&position, offsetX, offsetY, radius);
-		}
+		void AddCircleCollider(float radius);
+		void AddCircleCollider(float offsetX, float offsetY, float radius);
+
 		Circle GetColliderCircle() const
 		{
 			assert(collider);
