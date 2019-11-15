@@ -39,22 +39,31 @@ Player::~Player()
 void Player::Update(float deltaTime)
 {
 	isColliding = false;
-	MovePlayer(deltaTime);
-	//MoveCamera(deltaTime);
 
 	if (fireTime > 0)
 		fireTime -= deltaTime;
-	else {
-		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
-		{
-			fireTime = fireCooldown;
-			Shoot();
-		}
+		
+	if (Invincible())
+		invincibleTime -= deltaTime;
+	if (Respawning()) {
+		respawnPauseTime -= deltaTime;
+		return;
+	}
+
+	MovePlayer(deltaTime);
+	//MoveCamera(deltaTime);
+	
+	if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+	{
+		fireTime = fireCooldown;
+		Shoot();
 	}
 }
 
 void Player::Render(FG::Camera* const camera)
 {
+	if (Respawning())
+		return;
 	Entity::Render(camera);
 	sprite->Render(camera, position);
 	DrawColliderCircle();
@@ -77,11 +86,19 @@ void Player::OnCollision(FG::Entity* other)
 	else {
 
 	}
+
+	Respawn();
+	position = startPosition;
 }
 
 bool Player::IgnoreCollision()
 {
 	return false;
+}
+
+void Player::StartPosition(FG::Vector2D pos)
+{
+	position = startPosition = pos;
 }
 
 void Player::MovePlayer(float deltaTime)
@@ -143,6 +160,12 @@ void Player::MoveCamera(float deltaTime)
 	}
 
 	camera->position += movement * speed * deltaTime;
+}
+
+void Player::Respawn()
+{
+	respawnPauseTime = respawnPauseDuration;
+	invincibleTime = invincibleDuration + respawnPauseDuration;
 }
 
 void Player::Shoot()

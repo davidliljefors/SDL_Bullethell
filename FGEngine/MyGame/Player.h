@@ -20,13 +20,12 @@ class Player : public FG::Entity
 public:
 	float speed = 500.0f;
 	int maxLives = 3;
-	int lives;
 
-	float fireCooldown = .125f;
-	float fireTime;
-	
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
 	~Player();
+
+	bool Respawning() { return respawnPauseTime > 0; }
+	bool Invincible() { return invincibleTime > 0; }
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
@@ -35,6 +34,8 @@ public:
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
 	bool IgnoreCollision() override;
+
+	void StartPosition(FG::Vector2D pos);
 
 private:
 	FG::InputManager* inputManager = nullptr;
@@ -47,10 +48,24 @@ private:
 	FG::Vector2D minBoundaries;
 	FG::Vector2D maxBoundaries;
 
+	FG::Vector2D startPosition;
+
+	int lives;
+
+	float fireCooldown = .125f;
+	float fireTime;
+
+	float respawnPauseDuration = 1.0f;
+	float respawnPauseTime;
+
+	float invincibleDuration = 3.0f;
+	float invincibleTime;
+
 	static const int MAX_BULLETS = 50;
 	Projectile* projectiles[MAX_BULLETS];
 	Player() {}
 
+	void Respawn();
 	void Shoot();
 	void DrawBoundingBox();
 	void DrawColliderCircle();
