@@ -25,7 +25,7 @@ public:
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }
-	bool Invincible() { return invincibleTime > 0; }
+	bool Invincible() { return invincibleTime < invincibleDuration; }
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
@@ -60,6 +60,10 @@ private:
 
 	float invincibleDuration = 3.0f;
 	float invincibleTime;
+
+	float invincibleAlphaBlinkDuration = .1f;
+	float invincibleAlphaBlinkTime;
+	bool invincibleAlphaBlink;
 
 	static const int MAX_BULLETS = 50;
 	Projectile* projectiles[MAX_BULLETS];

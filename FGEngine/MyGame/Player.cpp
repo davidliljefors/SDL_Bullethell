@@ -19,6 +19,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	lives = maxLives;
 
 	fireTime = 0;
+	invincibleTime = invincibleDuration;
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -43,8 +44,15 @@ void Player::Update(float deltaTime)
 	if (fireTime > 0)
 		fireTime -= deltaTime;
 		
-	if (Invincible())
-		invincibleTime -= deltaTime;
+	if (Invincible()) {
+		invincibleTime += deltaTime;
+
+		invincibleAlphaBlinkTime -= deltaTime;
+		if (invincibleAlphaBlinkTime <= 0) {
+			invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration - ((invincibleAlphaBlinkDuration/1.25f)*(invincibleTime/invincibleDuration));
+			invincibleAlphaBlink = !invincibleAlphaBlink;
+		}
+	}
 	if (Respawning()) {
 		respawnPauseTime -= deltaTime;
 		return;
@@ -66,7 +74,7 @@ void Player::Render(FG::Camera* const camera)
 		return;
 
 	assert(sprite);
-	sprite->Render(camera, position, 100);
+	sprite->Render(camera, position, (Invincible()? (invincibleAlphaBlink? 125 : 100) : 255));
 	DrawColliderCircle();
 }
 
@@ -94,7 +102,7 @@ void Player::OnCollision(FG::Entity* other)
 
 bool Player::IgnoreCollision()
 {
-	return false;
+	return Invincible();
 }
 
 void Player::StartPosition(FG::Vector2D pos)
@@ -166,7 +174,10 @@ void Player::MoveCamera(float deltaTime)
 void Player::Respawn()
 {
 	respawnPauseTime = respawnPauseDuration;
-	invincibleTime = invincibleDuration + respawnPauseDuration;
+	invincibleTime = 0 - respawnPauseDuration;
+
+	invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration;
+	invincibleAlphaBlink = false;
 }
 
 void Player::Shoot()
