@@ -113,6 +113,12 @@ void Player::StartPosition(FG::Vector2D pos)
 void Player::MovePlayer(float deltaTime)
 {
 	FG::Vector2D movement;
+	float multiplier = 1;
+
+	if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+	{
+		multiplier *= focusMultiplier;
+	}
 	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
 		movement.x = -1.0f;
@@ -133,7 +139,7 @@ void Player::MovePlayer(float deltaTime)
 		movement.y = 1.0f;
 	}
 
-	position += movement * speed * deltaTime;
+	position += movement * multiplier * speed * deltaTime;
 
 	if (position.x < minBoundaries.x + sprite->size.x / 2)
 		position.x = minBoundaries.x + sprite->size.x / 2;

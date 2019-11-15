@@ -6,6 +6,7 @@
 #include "Projectile.h"
 
 
+
 namespace FG
 {
 	class Window;
@@ -17,6 +18,7 @@ namespace FG
 
 class Player : public FG::Entity
 {
+	static constexpr float focusMultiplier = 0.5f;
 public:
 	float speed = 500.0f;
 	int maxLives = 3;
@@ -42,8 +44,8 @@ private:
 	FG::EntityManager* entityManager = nullptr;
 	FG::Camera* camera = nullptr;
 	bool isColliding = false;
-	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
-	SDL_Color CollidingColor = { 255, 0, 0, 255 };
+	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
+	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
 
 	FG::Vector2D minBoundaries;
 	FG::Vector2D maxBoundaries;
