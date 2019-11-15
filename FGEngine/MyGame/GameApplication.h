@@ -22,6 +22,8 @@ public:
 	const int SCREENWIDTH = 1024;
 	const int SCREENHEIGHT = 768;
 
+	enum GAME_STATES { start, game };
+
 private:
 	const float targetFramerate = 60;
 	const float frameDelay = 1000 / targetFramerate;
@@ -34,6 +36,8 @@ private:
 	FG::ResourceManager* resourceManager = nullptr;
 
 	FG::Time time;
+
+	GAME_STATES m_state = start;
 };
 
 FG::Application* FG::CreateApplication()

@@ -16,14 +16,12 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Sensor.cpp" />
-
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
-
     <ClInclude Include="Sensor.h" />
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +83,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +102,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

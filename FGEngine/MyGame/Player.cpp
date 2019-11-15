@@ -61,7 +61,7 @@ void Player::Update(float deltaTime)
 	MovePlayer(deltaTime);
 	//MoveCamera(deltaTime);
 	
-	if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+	if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
 	{
 		fireTime = fireCooldown;
 		Shoot();
@@ -115,7 +115,7 @@ void Player::MovePlayer(float deltaTime)
 	FG::Vector2D movement;
 	float multiplier = 1;
 
-	if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+	if (inputManager->IsKeyDown(SDL_SCANCODE_C))
 	{
 		multiplier *= focusMultiplier;
 	}
