@@ -16,10 +16,20 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
+		if (addList.size() > 0)
+		{
+			for (auto entity : addList)
+			{
+				entities.push_back(entity);
+			}
+			addList.clear();
+		}
+
 		for (auto entity : entities)
 		{
 			entity->Update(deltaTime);
 		}
+
 		CleanDestroyedObjects();
 	}
 
@@ -59,7 +69,7 @@ namespace FG
 
 	void EntityManager::AddEntity(Entity* entity)
 	{
-		entities.push_back(entity);
+		addList.push_back(entity);
 	}
 
 	void EntityManager::CleanDestroyedObjects()
@@ -68,7 +78,9 @@ namespace FG
 			[](const Entity* const e) { return e->markedForDestroy; });
 
 		for (auto& it = newEnd; it != entities.end(); it++)
-		{ delete* it; }
+		{
+			delete* it;
+		}
 
 		entities.erase(newEnd, entities.end());
 	}
