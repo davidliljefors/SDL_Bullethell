@@ -192,7 +192,7 @@ void Player::Shoot()
 	{
 		if (projectiles[i]->Dead())
 		{
-			projectiles[i]->Fire(position);
+			projectiles[i]->Fire(position + FG::Vector2D(0,-15));
 			break;
 		}
 	}

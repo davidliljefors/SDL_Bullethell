@@ -11,6 +11,7 @@ void Obstacle::Update(float deltaTime)
 void Obstacle::Render(FG::Camera* const camera)
 {
 	Entity::Render(camera);
+	DrawColliderCircle();
 	//DrawBoundingBox();
 }
 
