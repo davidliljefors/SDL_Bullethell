@@ -18,7 +18,7 @@ namespace FG
 		
 		virtual ~Entity() {}
 		virtual void Update(float deltaTime) {}
-		virtual SDL_Rect GetColliderRect() = 0;
+		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
 		void Destroy() { markedForDestroy = true; }
@@ -27,10 +27,9 @@ namespace FG
 		void AddCircleCollider(float radius);
 		void AddCircleCollider(float offsetX, float offsetY, float radius);
 
-		Circle GetColliderCircle() const
+		Circle* GetColliderCircle() const
 		{
-			assert(collider);
-			return *collider;
+			return collider;
 		}
 		virtual void OnCollision(Entity* other) {}
 

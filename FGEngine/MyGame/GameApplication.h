@@ -25,7 +25,7 @@ public:
 	enum GAME_STATES { start, game };
 
 private:
-	const float targetFramerate = 60;
+	const float targetFramerate = 999;
 	const float frameDelay = 1000 / targetFramerate;
 	float frametime = 0;
 

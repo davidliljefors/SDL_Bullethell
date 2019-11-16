@@ -5,17 +5,17 @@
 #include <cassert>
 #include <SDL_render.h>
 
+
 bool FG::Camera::Initialize(Window* window)
 {
 	assert(window);
 	ownerWindow = window;
-	renderer = SDL_CreateRenderer(window->GetInternalWindow(), -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window->GetInternalWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!renderer)
 	{
 		FG::Logger::Log(SDL_GetError(), FG::Logger::RemovePathFromFile(__FILE__), __LINE__);
 		return false;
 	}
-
 	return true;
 }
 

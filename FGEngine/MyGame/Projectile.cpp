@@ -53,6 +53,8 @@ void Projectile::Update(float deltaTime)
 		return;
 
 	position += velocity * deltaTime;
+
+	sprite->Update(deltaTime);
 	
 	if (position.x < -OFFSCREEN_LIMIT ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||

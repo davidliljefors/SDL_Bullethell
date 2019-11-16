@@ -55,9 +55,11 @@ namespace FG
 					}
 					if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
 						continue;
+					if (!entities[x]->GetColliderCircle() || !entities[y]->GetColliderCircle())
+						continue;
 
 					if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
-						Collision::CircleIntersects(entities[x]->GetColliderCircle(), entities[y]->GetColliderCircle()))
+						Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *entities[y]->GetColliderCircle()))
 					{
 						entities[x]->OnCollision(entities[y]);
 						entities[y]->OnCollision(entities[x]);
