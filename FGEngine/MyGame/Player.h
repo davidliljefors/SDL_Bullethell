@@ -41,6 +41,7 @@ public:
 	bool IgnoreCollision() override;
 
 	void StartPosition(FG::Vector2D pos);
+	void EnterScreen();
 
 private:
 	FG::InputManager* inputManager = nullptr;
@@ -58,6 +59,8 @@ private:
 
 	int lives;
 
+	bool entersScreen = false;
+
 	float fireCooldown = .125f;
 	float fireTime;
 
@@ -73,12 +76,13 @@ private:
 
 	static constexpr int MAX_BULLETS = 50;
 	Projectile* projectiles[MAX_BULLETS];
-	Player() {}
-
+	
+	void SetUp();
 	void Respawn();
 	void Shoot();
 	void DrawBoundingBox();
 	void DrawColliderCircle();
 	void MovePlayer(float deltaTime);
 	void MoveCamera(float deltaTime);
+
 };

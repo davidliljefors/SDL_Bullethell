@@ -35,6 +35,8 @@ namespace FG
 		void AddCircleCollider(float radius);
 		void AddCircleCollider(float offsetX, float offsetY, float radius);
 
+		FG::Vector2D Lerp(FG::Vector2D& start, FG::Vector2D& end, float time);
+
 		Circle* GetColliderCircle() const
 		{
 			return collider;

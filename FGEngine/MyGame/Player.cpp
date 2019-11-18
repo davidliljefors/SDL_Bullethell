@@ -17,10 +17,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
 
-	lives = maxLives;
-
-	fireTime = 0;
-	invincibleTime = invincibleDuration;
+	SetUp();
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -30,6 +27,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 
 	collisionLayer.set(0);
 	//entityManager->AddEntities(projectiles, MAX_BULLETS);
+	EnterScreen();
 }
 
 Player::~Player()
@@ -62,13 +60,26 @@ void Player::Update(float deltaTime)
 		return;
 	}
 
-	MovePlayer(deltaTime);
-	//MoveCamera(deltaTime);
-	
-	if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
-	{
-		fireTime = fireCooldown;
-		Shoot();
+	if (entersScreen) {
+		if (position.y > startPosition.y) {
+			position = Lerp(position, startPosition, 10 * deltaTime);
+			//position += FG::Vector2D::Down * speed * deltaTime;
+			if (position.y <= startPosition.y + 10) {
+				entersScreen = false;
+				//position = startPosition;
+			}
+		}
+	}
+	else {
+
+		MovePlayer(deltaTime);
+		//MoveCamera(deltaTime);
+
+		if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
+		{
+			fireTime = fireCooldown;
+			Shoot();
+		}
 	}
 }
 
@@ -97,14 +108,15 @@ void Player::OnCollision(FG::Entity* other)
 	isColliding = true;
 	lives--;
 
-	Respawn();
-	position = startPosition;
+	EnterScreen();
 
 	if (lives < 0) {
 		State::state = start;
+		SetUp();
 	}
 	else {
 
+		Respawn();
 	}
 }
 
@@ -116,6 +128,12 @@ bool Player::IgnoreCollision()
 void Player::StartPosition(FG::Vector2D pos)
 {
 	position = startPosition = pos;
+}
+
+void Player::EnterScreen()
+{
+	entersScreen = true;
+	position = startPosition - FG::Vector2D::Down * 250;
 }
 
 void Player::MovePlayer(float deltaTime)
@@ -183,6 +201,14 @@ void Player::MoveCamera(float deltaTime)
 	}
 
 	camera->position += movement * speed * deltaTime;
+}
+
+void Player::SetUp()
+{
+	lives = maxLives;
+
+	fireTime = 0;
+	invincibleTime = invincibleDuration;
 }
 
 void Player::Respawn()
