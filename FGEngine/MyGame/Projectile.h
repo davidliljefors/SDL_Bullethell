@@ -8,12 +8,22 @@ namespace FG
 	class Window;
 	class Camera;
 	class Sprite;
+	class EntityManager;
 }
+
+enum ProjectileType
+{
+	Regular,
+	Exploding
+};
 
 class Projectile : public FG::Entity
 {
 public:
-	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries);
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+		FG::Camera* camera, FG::Vector2D boundaries);
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+		FG::Camera* camera, FG::Vector2D boundaries, FG::EntityManager* entityManager, Projectile* explosionProjectile, int projectileCount);
 	Projectile(const Projectile&);
 	~Projectile();
 
@@ -30,21 +40,28 @@ public:
 private:
 	FG::Camera* camera = nullptr;
 
+	ProjectileType type;
+
+	FG::EntityManager* entityManager = nullptr;
+	Projectile* explosionProjectile = nullptr;
+	int projectileCount;
+
 	bool isColliding = false;
 	bool playerFired;
 
 	float elapsedTime = 0.f;
 	float lifetime;
+
 	FG::Vector2D velocity;
+	float speedMult = 1;
+	float accelerationSpeed;
 
 
 	void DrawColliderCircle();
 	void DrawBoundingBox();
-	void Move(float deltaTime);
+	void ExplodeProjectile();
 
 	void Reload();
-
-	virtual void ProjectileUpdate();
 	virtual void OnLifetimeEnd() {}
 
 	constexpr static SDL_Color notCollidingColor = { 0, 255, 0, 255 };
