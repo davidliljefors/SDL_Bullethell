@@ -2,6 +2,7 @@
 
 #include <Application.h>
 #include <Time.h>
+#include "GameState.h"
 
 namespace FG
 {
@@ -22,7 +23,7 @@ public:
 	const int SCREENWIDTH = 1024;
 	const int SCREENHEIGHT = 768;
 
-	enum GAME_STATES { start, game };
+	//static GAME_STATES state;
 
 private:
 	const float targetFramerate = 999;
@@ -37,7 +38,7 @@ private:
 
 	FG::Time time;
 
-	GAME_STATES m_state = start;
+
 };
 
 FG::Application* FG::CreateApplication()

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="GameApplication.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
