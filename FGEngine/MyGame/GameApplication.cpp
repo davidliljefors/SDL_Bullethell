@@ -33,6 +33,8 @@
 #include "Background.h"
 
 
+GAME_STATES State::state = GAME_STATES::game;
+
 
 bool GameApplication::Initialize()
 {
@@ -58,7 +60,6 @@ bool GameApplication::Initialize()
 		return false;
 	}
 
-
 	resourceManager = new FG::ResourceManager();
 	FG::Sprite* sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "Bullethellplayer.png");
@@ -78,7 +79,8 @@ bool GameApplication::Initialize()
 
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet_sheet.png", 4, 2, 8);
-	resourceManager->AddResource("bullet_sheet.png", sprite);
+	resourceManager->AddResource("bullet_sheet.png", sprite
+	);
 
 	entityManager = new FG::EntityManager();
 
@@ -110,13 +112,11 @@ bool GameApplication::Initialize()
 
 
 	Player* player = new Player(entityManager, inputManager, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT },
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 1000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 600 });
 	player->AddCircleCollider(player->sprite->size.x / 7.5f);
 	entityManager->AddEntity(player);
-	/*player->projectilePrefab =
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), 0.5f, true, FG::Vector2D::Down*2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT });*/
 
 	//Boss
 	Obstacle* obstacle = new Obstacle(camera);
@@ -125,8 +125,6 @@ bool GameApplication::Initialize()
 	obstacle->position.y = 100.f;
 	obstacle->AddCircleCollider(64 / 2);
 	entityManager->AddEntity(obstacle);
-
-
 
 	return true;
 }
@@ -138,6 +136,10 @@ void GameApplication::Run()
 	{
 		time.StartFrame();
 		inputManager->Update(quit);
+
+		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+			State::state = game;
+
 		entityManager->Update(time.DeltaTime());
 		entityManager->DoCollisions();
 		camera->StartRenderFrame();

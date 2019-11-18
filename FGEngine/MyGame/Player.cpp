@@ -9,6 +9,7 @@
 #include <SDL_render.h>
 #include <Circle.h>
 
+#include "GameState.h"
 
 Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
 	entityManager(entityManager), inputManager(inputManager), camera(camera), projectilePrefab(projectile)
@@ -39,6 +40,9 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
+	if (State::state == GAME_STATES::start)
+		return;
+
 	isColliding = false;
 
 	if (fireTime > 0)

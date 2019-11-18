@@ -86,11 +86,11 @@ SDL_Rect Projectile::GetColliderRect()
 
 void Projectile::OnCollision(FG::Entity* other)
 {
-	/*if (typeid(other) == typeid(Obstacle)) {
-		Obstacle* ba = static_cast<Obstacle*>(other);
-	}*/
-
+	if (typeid(*other) == typeid(Obstacle)) {
+		//Obstacle* ba = static_cast<Obstacle*>(other);
 		Reload();
+	}
+
 }
 
 bool Projectile::IgnoreCollision()
