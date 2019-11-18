@@ -79,6 +79,9 @@ void Player::Render(FG::Camera* const camera)
 
 	assert(sprite);
 	sprite->Render(camera, position, (Invincible()? (invincibleAlphaBlink? 125 : 100) : 255));
+
+	assert(colliderSprite);
+	colliderSprite->Render(camera, position);
 	DrawColliderCircle();
 }
 
