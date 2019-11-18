@@ -112,7 +112,7 @@ bool GameApplication::Initialize()
 
 
 	Player* player = new Player(entityManager, inputManager, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT },
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), -1, true, FG::Vector2D::Down * 2000.f, 0, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 600 });
 	player->AddCircleCollider(player->sprite->size.x / 7.5f);
