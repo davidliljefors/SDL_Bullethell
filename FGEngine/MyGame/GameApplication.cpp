@@ -78,6 +78,10 @@ bool GameApplication::Initialize()
 	resourceManager->AddResource("bullethellbgSTARS.png", sprite);
 
 	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "playercollider.png");
+	resourceManager->AddResource("playercollider.png", sprite);
+
+	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet_sheet.png", 4, 2, 8);
 	resourceManager->AddResource("bullet_sheet.png", sprite
 	);
@@ -115,7 +119,8 @@ bool GameApplication::Initialize()
 		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 600 });
-	player->AddCircleCollider(player->sprite->size.x / 7.5f);
+	player->AddCircleCollider(player->sprite->size.x / 8.f);
+	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(player);
 
 	//Boss

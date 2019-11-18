@@ -19,6 +19,8 @@ namespace FG
 class Player : public FG::Entity
 {
 	static constexpr float focusMultiplier = 0.5f;
+
+
 public:
 	float speed = 500.0f;
 	int maxLives = 3;
@@ -35,6 +37,7 @@ public:
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
+	void AddColliderSprite(FG::Sprite* sprite) { this->colliderSprite = sprite; }
 	bool IgnoreCollision() override;
 
 	void StartPosition(FG::Vector2D pos);
@@ -43,6 +46,7 @@ private:
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	FG::Camera* camera = nullptr;
+	FG::Sprite* colliderSprite = nullptr;
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
@@ -67,9 +71,9 @@ private:
 	float invincibleAlphaBlinkTime;
 	bool invincibleAlphaBlink;
 
-	static const int MAX_BULLETS = 50;
+	static constexpr int MAX_BULLETS = 50;
 	Projectile* projectiles[MAX_BULLETS];
-	Player() {}	
+	Player() {}
 
 	void Respawn();
 	void Shoot();
