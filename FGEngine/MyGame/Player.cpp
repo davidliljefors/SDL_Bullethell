@@ -15,7 +15,11 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
+
+	lives = maxLives;
+
 	fireTime = 0;
+	invincibleTime = invincibleDuration;
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -23,31 +27,54 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 		entityManager->AddEntity(projectiles[i]);
 	}
 
+	collisionLayer.set(0);
 	//entityManager->AddEntities(projectiles, MAX_BULLETS);
+}
+
+Player::~Player()
+{
+	for (int i = 0; i < MAX_BULLETS; i++)
+		projectiles[i] = NULL;
 }
 
 void Player::Update(float deltaTime)
 {
 	isColliding = false;
-	MovePlayer(deltaTime);
-	//MoveCamera(deltaTime);
 
 	if (fireTime > 0)
 		fireTime -= deltaTime;
-	else {
-		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
-		{
-			fireTime = fireCooldown;
-			Shoot();
+		
+	if (Invincible()) {
+		invincibleTime += deltaTime;
+
+		invincibleAlphaBlinkTime -= deltaTime;
+		if (invincibleAlphaBlinkTime <= 0) {
+			invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration - ((invincibleAlphaBlinkDuration/1.25f)*(invincibleTime/invincibleDuration));
+			invincibleAlphaBlink = !invincibleAlphaBlink;
 		}
 	}
+	if (Respawning()) {
+		respawnPauseTime -= deltaTime;
+		return;
+	}
 
+	MovePlayer(deltaTime);
+	//MoveCamera(deltaTime);
+	
+	if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
+	{
+		fireTime = fireCooldown;
+		Shoot();
+	}
 }
 
 void Player::Render(FG::Camera* const camera)
 {
-	Entity::Render(camera);
-	sprite->Render(camera, position);
+	if (Respawning())
+		return;
+
+	assert(sprite);
+	sprite->Render(camera, position, (Invincible()? (invincibleAlphaBlink? 125 : 100) : 255));
 	DrawColliderCircle();
 }
 
@@ -60,18 +87,38 @@ SDL_Rect Player::GetColliderRect()
 
 void Player::OnCollision(FG::Entity* other)
 {
-	if (other)
-		isColliding = true;
+	isColliding = true;
+	lives--;
+	if (lives < 0) {
+
+	}
+	else {
+
+	}
+
+	Respawn();
+	position = startPosition;
 }
 
 bool Player::IgnoreCollision()
 {
-	return false;
+	return Invincible();
+}
+
+void Player::StartPosition(FG::Vector2D pos)
+{
+	position = startPosition = pos;
 }
 
 void Player::MovePlayer(float deltaTime)
 {
 	FG::Vector2D movement;
+	float multiplier = 1;
+
+	if (inputManager->IsKeyDown(SDL_SCANCODE_C))
+	{
+		multiplier *= focusMultiplier;
+	}
 	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
 		movement.x = -1.0f;
@@ -92,7 +139,7 @@ void Player::MovePlayer(float deltaTime)
 		movement.y = 1.0f;
 	}
 
-	position += movement * speed * deltaTime;
+	position += movement * multiplier * speed * deltaTime;
 
 	if (position.x < minBoundaries.x + sprite->size.x / 2)
 		position.x = minBoundaries.x + sprite->size.x / 2;
@@ -130,13 +177,22 @@ void Player::MoveCamera(float deltaTime)
 	camera->position += movement * speed * deltaTime;
 }
 
+void Player::Respawn()
+{
+	respawnPauseTime = respawnPauseDuration;
+	invincibleTime = 0 - respawnPauseDuration;
+
+	invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration;
+	invincibleAlphaBlink = false;
+}
+
 void Player::Shoot()
 {
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
 		if (projectiles[i]->Dead())
 		{
-			projectiles[i]->Fire(position);
+			projectiles[i]->Fire(position + FG::Vector2D(0,-15));
 			break;
 		}
 	}
@@ -180,7 +236,7 @@ void Player::DrawColliderCircle()
 	for (int i = 0; i < samples; i++)
 	{
 		SDL_RenderDrawLine(camera->GetInternalRenderer(),
-			positions[i].x, positions[i].y, positions[i + 1].x, positions[i + 1].y);
+			(int)positions[i].x, (int)positions[i].y, (int)positions[i + 1].x, (int)positions[i + 1].y);
 	}
 
 	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);

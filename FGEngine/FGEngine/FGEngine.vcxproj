@@ -64,7 +64,7 @@
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STBIMAGE_IMPLEMENTATION;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\stb\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\stb\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -72,7 +72,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)thirdParty\SDL2\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)thirdParty\SDL2\libs\;$(SolutionDir)thirdParty\SDL2_TTF\lib\;$(SolutionDir)thirdParty\SDL2_Mixer\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -87,7 +87,7 @@
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;SDL_STBIMAGE_IMPLEMENTATION;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\stb\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\stb\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,7 +97,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)thirdParty\SDL2\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)thirdParty\SDL2\libs\;$(SolutionDir)thirdParty\SDL2_TTF\lib\;$(SolutionDir)thirdParty\SDL2_Mixer\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -115,6 +115,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />

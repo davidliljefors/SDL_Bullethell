@@ -1,42 +1,54 @@
 #pragma once
 #include <cassert>
+#include <bitset>
 #include <SDL_rect.h>
 #include "Sprite.h"
 #include "Circle.h"
+#include "Animation.h"
+
+
 namespace FG
 {
 	class Camera;
+
 	class Entity
 
 	{
 		friend class EntityManager;
 	public:
-		virtual ~Entity() {}
-
-		virtual void Update(float deltaTime) {}
-		virtual SDL_Rect GetColliderRect() = 0;
+		
+		virtual ~Entity() 
+		{
+			if (animation)
+			{
+				delete animation;
+			}
+		}
+		virtual void Update(float deltaTime);
+		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
+		bool AddSprite(Sprite* sprite);
 		void Destroy() { markedForDestroy = true; }
+		bool Dead() const { return dead; }
 
-		void AddCircleCollider(float radius)
+		void AddCircleCollider(float radius);
+		void AddCircleCollider(float offsetX, float offsetY, float radius);
+
+		Circle* GetColliderCircle() const
 		{
-			collider = new Circle(&position, radius);
-		}
-		void AddCircleCollider(float offsetX, float offsetY, float radius)
-		{
-			collider = new Circle(&position, offsetX, offsetY, radius);
-		}
-		Circle GetColliderCircle() const
-		{
-			assert(collider);
-			return *collider;
+			return collider;
 		}
 		virtual void OnCollision(Entity* other) {}
 
-		Sprite* sprite = nullptr;
+		Animation* animation = nullptr;
 		Circle* collider = nullptr;
 		Vector2D position;
+		Sprite* sprite = nullptr;
+	protected:
+		bool dead;
+
+		std::bitset<8> collisionLayer;
 	private:
 		bool markedForDestroy = false;
 	};

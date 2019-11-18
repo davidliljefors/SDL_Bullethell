@@ -9,52 +9,54 @@
 #include "Player.h"
 #include "Obstacle.h"
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-	FG::Camera* camera, FG::Vector2D boundaries) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries)
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), camera(camera), maxBoundaries(boundaries)
 {
-	type = Regular;
-
-	FG::Entity::sprite = sprite;
+	AddSprite(sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
-	
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+		collisionLayer.set(0);
 	Reload();
 }
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed, 
-	FG::Camera* camera, FG::Vector2D boundaries, FG::EntityManager* entityManager, Projectile* explosionProjectile, int projectileCount) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries),
-	entityManager(entityManager), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
+Projectile::Projectile(const Projectile& other)
 {
-	type = Exploding;
-
-	FG::Entity::sprite = sprite;
+	camera = other.camera;
+	velocity = other.velocity;
+	playerFired = other.playerFired;
+	lifetime = other.lifetime;
+	sprite = other.sprite;
+	maxBoundaries = other.maxBoundaries;
+	AddSprite(other.sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+		collisionLayer.set(0);
 
 	Reload();
 }
 
-
-
-Projectile::Projectile(const Projectile& other) :
-	camera(other.camera), velocity(other.velocity), playerFired(other.playerFired), lifetime(other.lifetime), maxBoundaries(other.maxBoundaries)
+Projectile::~Projectile()
 {
-	AddCircleCollider(sprite->size.x / 2.f);
-	
-	Reload();
 }
 
 void Projectile::Update(float deltaTime)
 {
-	//TODO Add acceleration
-	//TODO Add Ro tat e.
-
 	isColliding = false;
+	//ProjectileUpdate();
 
 	if (dead)
 		return;
 
+	Entity::Update(deltaTime);
+
 	position += velocity * deltaTime;
+
 	
 	if (position.x < -OFFSCREEN_LIMIT ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
@@ -62,19 +64,9 @@ void Projectile::Update(float deltaTime)
 		position.y > maxBoundaries.y + OFFSCREEN_LIMIT)
 		Reload();
 
-	if (lifetime != -1)
-	{
-		elapsedTime += deltaTime;
-
-		if (Expired())
-		{
-			Reload();
-			if (type == Exploding)
-			{
-				SpawnProjectileExplosion();
-			}
-		}
-	}
+	elapsedTime += deltaTime;
+	if (Expired())
+		Reload();
 }
 
 void Projectile::Render(FG::Camera* const camera)
@@ -82,7 +74,6 @@ void Projectile::Render(FG::Camera* const camera)
 	if (dead)
 		return;
 	Entity::Render(camera);
-	sprite->Render(camera, position);
 	DrawColliderCircle();
 }
 
@@ -99,9 +90,7 @@ void Projectile::OnCollision(FG::Entity* other)
 		Obstacle* ba = static_cast<Obstacle*>(other);
 	}*/
 
-	if (typeid(*other) == typeid(Obstacle)) {
 		Reload();
-	}
 }
 
 bool Projectile::IgnoreCollision()
@@ -123,16 +112,9 @@ void Projectile::DrawBoundingBox()
 	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
 }
 
-void Projectile::SpawnProjectileExplosion()
-{
-	//TODO EXPLODE LOL
-	//Use Vector2D.AngleToVector2D() and make a circle based on how many projectileCount
-	//MATH IS FUN
-}
-
 void Projectile::Move(float deltaTime)
 {
-	position += velocity * speedMult * deltaTime;
+	position += velocity * deltaTime;
 }
 
 void Projectile::Fire(FG::Vector2D firePosition)
@@ -146,6 +128,13 @@ void Projectile::Reload()
 {
 	dead = true;
 }
+
+void Projectile::ProjectileUpdate()
+{
+	//TODO if lifetime = -1 ignore it
+	//TODO if count lifetime down with time and destroy projectile it once it hits 0
+}
+
 
 void Projectile::DrawColliderCircle()
 {
@@ -166,7 +155,7 @@ void Projectile::DrawColliderCircle()
 	for (int i = 0; i < samples; i++)
 	{
 		SDL_RenderDrawLine(camera->GetInternalRenderer(),
-			positions[i].x, positions[i].y, positions[i + 1].x, positions[i + 1].y);
+			(int)positions[i].x, (int)positions[i].y, (int)positions[i + 1].x, (int)positions[i + 1].y);
 	}
 
 	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);

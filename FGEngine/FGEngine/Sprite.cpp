@@ -7,6 +7,9 @@
 #include "SDL_surface.h"
 #include "SDL_stbimage.h"
 
+#include <iostream>
+
+
 
 namespace FG
 {
@@ -19,7 +22,7 @@ namespace FG
 		}
 	}
 
-	bool Sprite::LoadImage(SDL_Renderer* renderer, const std::string& path)
+	bool Sprite::LoadImage(SDL_Renderer* renderer, const std::string& path, unsigned int columns, unsigned int rows, unsigned int frames)
 	{
 		Dispose();
 		SDL_Surface* surface = STBIMG_Load(path.c_str());
@@ -35,9 +38,14 @@ namespace FG
 			}
 			else
 			{
+				this->columns = columns;
+				this->rows = rows;
+				this->frames = frames;
 				int width = 0;
 				int height = 0;
 				SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+				width /= columns;
+				height /= rows;
 				size = { static_cast<float>(width), static_cast<float>(height) };
 				SDL_FreeSurface(surface);
 				return true;
@@ -49,19 +57,41 @@ namespace FG
 				Logger::RemovePathFromFile(__FILE__), __LINE__);
 			return false;
 		}
-
-
 		return false;
 	}
 
-	void Sprite::Render(Camera* camera, Vector2D& position)
+	//void Sprite::Render(Camera* camera, Vector2D& position)
+	//{
+	//	Vector2D finalPosition = position - camera->position;
+	//	destination = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
+	//	static_cast<int>(size.x), static_cast<int>(size.y) };
+	//	source = { 0,0,static_cast<int>(size.x), static_cast<int>(size.y) };
+	//	if (frames > 1)
+	//	{
+	//		//source.x = (currentFrame % columns) * size.x;
+	//		//source.y = (currentFrame / columns) * size.y;
+	//	}
+
+	//	SDL_RenderCopy(camera->GetInternalRenderer(), texture, &source, &destination);
+	//}
+
+	void Sprite::Render(Camera* camera, Vector2D& position, const SDL_Rect* src)
 	{
 		Vector2D finalPosition = position - camera->position;
-		SDL_Rect finalRect = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
+		destination = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
 		static_cast<int>(size.x), static_cast<int>(size.y) };
-		SDL_RenderCopy(camera->GetInternalRenderer(), texture, nullptr, &finalRect);
+		SDL_RenderCopy(camera->GetInternalRenderer(), texture, src, &destination);
+	}
+	
+	void Sprite::Render(Camera* camera, Vector2D& position, char alpha, const SDL_Rect* src)
+	{
+		SDL_SetTextureAlphaMod(texture, alpha);
+		Render(camera, position, src);
+		SDL_SetTextureAlphaMod(texture, 255);
 	}
 }
+
+
 
 
 
