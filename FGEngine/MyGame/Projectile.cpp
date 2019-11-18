@@ -12,7 +12,7 @@
 Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, FG::Camera* camera, FG::Vector2D boundaries) :
 	lifetime(lifetime), playerFired(playerFired), velocity(velocity), camera(camera), maxBoundaries(boundaries)
 {
-	FG::Entity::sprite = sprite;
+	AddSprite(sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
 
 	if (playerFired)
@@ -30,6 +30,7 @@ Projectile::Projectile(const Projectile& other)
 	lifetime = other.lifetime;
 	sprite = other.sprite;
 	maxBoundaries = other.maxBoundaries;
+	AddSprite(other.sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
 
 	if (playerFired)
@@ -52,9 +53,10 @@ void Projectile::Update(float deltaTime)
 	if (dead)
 		return;
 
+	Entity::Update(deltaTime);
+
 	position += velocity * deltaTime;
 
-	sprite->Update(deltaTime);
 	
 	if (position.x < -OFFSCREEN_LIMIT ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
@@ -72,7 +74,6 @@ void Projectile::Render(FG::Camera* const camera)
 	if (dead)
 		return;
 	Entity::Render(camera);
-	sprite->Render(camera, position);
 	DrawColliderCircle();
 }
 

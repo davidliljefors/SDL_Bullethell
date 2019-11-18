@@ -22,62 +22,6 @@ namespace FG
 		}
 	}
 
-	//bool Sprite::LoadImage(SDL_Renderer* renderer, const std::string& path)
-	//{
-	//	Dispose();
-	//	SDL_Surface* surface = STBIMG_Load(path.c_str());
-	//	if (surface)
-	//	{
-	//		texture = SDL_CreateTextureFromSurface(renderer, surface);
-	//		if (!texture)
-	//		{
-	//			Logger::Log(SDL_GetError(),
-	//				Logger::RemovePathFromFile(__FILE__), __LINE__);
-	//			SDL_FreeSurface(surface);
-	//			return false;
-	//		}
-	//		else
-	//		{
-	//			int width = 0;
-	//			int height = 0;
-	//			SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-	//			size = { static_cast<float>(width), static_cast<float>(height) };
-	//			SDL_FreeSurface(surface);
-	//			return true;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		Logger::Log("Error: failed to load file " + path,
-	//			Logger::RemovePathFromFile(__FILE__), __LINE__);
-	//		return false;
-	//	}
-
-
-	//	return false;
-	//}
-
-	void Sprite::Update(float deltaTime)
-	{
-		// If sprite has more than one frame, its animated
-		if (frames > 1)
-		{
-			source.x = (currentFrame % columns) * size.x;
-			source.y = (currentFrame / columns) * size.y;
-
-			if (timeAccumulator > timePerFrame)
-			{
-				timeAccumulator = 0;
-				currentFrame++;
-				if (currentFrame >= columns * rows)
-				{
-					currentFrame = 0;
-				}
-			}
-			timeAccumulator += deltaTime;
-		}
-	}
-
 	bool Sprite::LoadImage(SDL_Renderer* renderer, const std::string& path, unsigned int columns, unsigned int rows, unsigned int frames)
 	{
 		Dispose();
@@ -116,30 +60,34 @@ namespace FG
 		return false;
 	}
 
-	void Sprite::Render(Camera* camera, Vector2D& position)
+	//void Sprite::Render(Camera* camera, Vector2D& position)
+	//{
+	//	Vector2D finalPosition = position - camera->position;
+	//	destination = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
+	//	static_cast<int>(size.x), static_cast<int>(size.y) };
+	//	source = { 0,0,static_cast<int>(size.x), static_cast<int>(size.y) };
+	//	if (frames > 1)
+	//	{
+	//		//source.x = (currentFrame % columns) * size.x;
+	//		//source.y = (currentFrame / columns) * size.y;
+	//	}
+
+	//	SDL_RenderCopy(camera->GetInternalRenderer(), texture, &source, &destination);
+	//}
+
+	void Sprite::Render(Camera* camera, Vector2D& position, const SDL_Rect* src)
 	{
 		Vector2D finalPosition = position - camera->position;
 		destination = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
 		static_cast<int>(size.x), static_cast<int>(size.y) };
-		source = { 0,0,static_cast<int>(size.x), static_cast<int>(size.y) };
-		if (frames > 1)
-		{
-			source.x = (currentFrame % columns) * size.x;
-			source.y = (currentFrame / columns) * size.y;
-		}
-
-		SDL_RenderCopy(camera->GetInternalRenderer(), texture, &source, &destination);
+		SDL_RenderCopy(camera->GetInternalRenderer(), texture, src, &destination);
 	}
-
 	
-
-	void Sprite::Render(Camera* camera, Vector2D& position, char alpha)
+	void Sprite::Render(Camera* camera, Vector2D& position, char alpha, const SDL_Rect* src)
 	{
 		SDL_SetTextureAlphaMod(texture, alpha);
-		Render(camera, position);
+		Render(camera, position, src);
 		SDL_SetTextureAlphaMod(texture, 255);
-
-
 	}
 }
 

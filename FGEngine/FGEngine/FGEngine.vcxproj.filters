@@ -107,5 +107,8 @@
     <ClInclude Include="Circle.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

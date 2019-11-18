@@ -47,10 +47,10 @@ private:
 	virtual void ProjectileUpdate();
 	virtual void OnLifetimeEnd() {}
 
-	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
-	SDL_Color CollidingColor = { 255, 0, 0, 255 };
+	constexpr static SDL_Color notCollidingColor = { 0, 255, 0, 255 };
+	constexpr static SDL_Color CollidingColor = { 255, 0, 0, 255 };
 	
-	const float OFFSCREEN_LIMIT = 50;
+	constexpr static float OFFSCREEN_LIMIT = 50;
 	FG::Vector2D maxBoundaries;
 };
 

@@ -4,6 +4,7 @@
 #include <SDL_rect.h>
 #include "Sprite.h"
 #include "Circle.h"
+#include "Animation.h"
 
 
 namespace FG
@@ -16,11 +17,18 @@ namespace FG
 		friend class EntityManager;
 	public:
 		
-		virtual ~Entity() {}
-		virtual void Update(float deltaTime) {}
+		virtual ~Entity() 
+		{
+			if (animation)
+			{
+				delete animation;
+			}
+		}
+		virtual void Update(float deltaTime);
 		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
+		bool AddSprite(Sprite* sprite);
 		void Destroy() { markedForDestroy = true; }
 		bool Dead() const { return dead; }
 
@@ -33,11 +41,11 @@ namespace FG
 		}
 		virtual void OnCollision(Entity* other) {}
 
-		Sprite* sprite = nullptr;
+		Animation* animation = nullptr;
 		Circle* collider = nullptr;
 		Vector2D position;
+		Sprite* sprite = nullptr;
 	protected:
-
 		bool dead;
 
 		std::bitset<8> collisionLayer;
