@@ -96,15 +96,16 @@ void Player::OnCollision(FG::Entity* other)
 {
 	isColliding = true;
 	lives--;
-	if (lives < 0) {
 
+	Respawn();
+	position = startPosition;
+
+	if (lives < 0) {
+		State::state = start;
 	}
 	else {
 
 	}
-
-	Respawn();
-	position = startPosition;
 }
 
 bool Player::IgnoreCollision()
