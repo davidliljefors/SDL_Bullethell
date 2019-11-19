@@ -1,8 +1,9 @@
 #pragma once
+#include <string>
 
 #include "Vector2D.h"
-
 #include <SDL_pixels.h>
+#include <SDL_render.h>
 
 struct SDL_Renderer;
 
@@ -14,7 +15,7 @@ namespace FG
 	public:
 		Vector2D position;
 
-		virtual bool Initialize(Window* window);
+		virtual bool Initialize(Window* window, unsigned int flags = 2);
 		virtual void Shutdown();
 
 		virtual void StartRenderFrame();

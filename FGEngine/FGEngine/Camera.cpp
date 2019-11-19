@@ -3,14 +3,13 @@
 #include "Window.h"
 
 #include <cassert>
-#include <SDL_render.h>
 
 
-bool FG::Camera::Initialize(Window* window)
+bool FG::Camera::Initialize(Window* window, unsigned int flags)
 {
 	assert(window);
 	ownerWindow = window;
-	renderer = SDL_CreateRenderer(window->GetInternalWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window->GetInternalWindow(), -1, flags);
 	if (!renderer)
 	{
 		FG::Logger::Log(SDL_GetError(), FG::Logger::RemovePathFromFile(__FILE__), __LINE__);

@@ -55,7 +55,7 @@ bool GameApplication::Initialize()
 	inputManager->Initialize();
 
 	camera = new FG::Camera();
-	if (!camera->Initialize(window))
+	if (!camera->Initialize(window, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))
 	{
 		return false;
 	}

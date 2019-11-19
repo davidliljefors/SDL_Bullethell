@@ -26,7 +26,7 @@ public:
 	//static GAME_STATES state;
 
 private:
-	const float targetFramerate = 999;
+	const float targetFramerate = 300;
 	const float frameDelay = 1000 / targetFramerate;
 	float frametime = 0;
 
