@@ -18,10 +18,12 @@ namespace FG
 		template<typename T, typename... TArgs>
 		T* AddEntity(TArgs&&... args)
 		{
+			static_assert (std::is_base_of<Entity, T>::value, "AddEntity isn't type of entity");
 			T* entity(new T(std::forward<TArgs>(args)...));
 			assert(entity);
 			addList.push_back(entity);
 			return entity;
+
 		}
 		void CleanDestroyedObjects();
 
