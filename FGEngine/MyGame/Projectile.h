@@ -2,6 +2,7 @@
 
 #include <Entity.h>
 #include <Vector2D.h>
+#include "ProjectilePool.h"
 
 namespace FG
 {
@@ -23,7 +24,7 @@ public:
 	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
 		FG::Camera* camera, FG::Vector2D boundaries);
 	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-		FG::Camera* camera, FG::Vector2D boundaries, FG::EntityManager* entityManager, Projectile* explosionProjectile, int projectileCount);
+		FG::Camera* camera, FG::Vector2D boundaries, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount);
 	Projectile(const Projectile&);
 	~Projectile();
 
@@ -34,6 +35,7 @@ public:
 	void OnCollision(FG::Entity* other) override;
 	bool Expired() { return elapsedTime > lifetime; }
 	void Fire(FG::Vector2D firePosition);
+	void SetValues(const Projectile& projectile);
 
 	bool IgnoreCollision() override;
 
@@ -42,7 +44,7 @@ private:
 
 	ProjectileType type;
 
-	FG::EntityManager* entityManager = nullptr;
+	ProjectilePool* pool = nullptr;
 	Projectile* explosionProjectile = nullptr;
 	int projectileCount;
 

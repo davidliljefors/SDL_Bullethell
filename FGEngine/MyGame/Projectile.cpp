@@ -26,9 +26,9 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 }
 
 Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-	FG::Camera* camera, FG::Vector2D boundaries, FG::EntityManager* entityManager, Projectile* explosionProjectile, int projectileCount) :
+	FG::Camera* camera, FG::Vector2D boundaries, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount) :
 	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries),
-	entityManager(entityManager), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
+	pool(pool), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
 	type = Exploding;
 
@@ -152,6 +152,33 @@ void Projectile::Fire(FG::Vector2D firePosition)
 	position = firePosition;
 	elapsedTime = 0.0f;
 	dead = false;
+}
+
+void Projectile::SetValues(const Projectile& projectile)
+{
+	if (projectile.type == Regular)
+	{
+		sprite = projectile.sprite;
+		lifetime = projectile.lifetime;
+		velocity = projectile.velocity;
+		accelerationSpeed = projectile.accelerationSpeed;
+		camera = projectile.camera;
+		maxBoundaries = projectile.maxBoundaries;
+	}
+
+	if (projectile.type == Exploding)
+	{
+		sprite = projectile.sprite;
+		lifetime = projectile.lifetime;
+		velocity = projectile.velocity;
+		accelerationSpeed = projectile.accelerationSpeed;
+		camera = projectile.camera;
+		maxBoundaries = projectile.maxBoundaries;
+		pool = projectile.pool;
+		explosionProjectile = projectile.explosionProjectile;
+		projectileCount = projectile.projectileCount;
+
+	}
 }
 
 void Projectile::Reload()
