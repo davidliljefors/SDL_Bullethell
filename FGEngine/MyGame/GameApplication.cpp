@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 //#pragma region memestuff
 //// Overloading new and delete to keep track of memory leakage
@@ -92,7 +93,7 @@ bool GameApplication::Initialize()
 	Background* bg1 = new Background(camera, 5);
 	bg1->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbg.png"));
 	bg1->position.x = static_cast<float>(SCREENWIDTH / 2);
-	bg1->position.y = static_cast<float>(bg1->sprite->size.y*0.5);
+	bg1->position.y = static_cast<float>(bg1->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg1);
 
 	Background* bg2 = new Background(camera, 5);
@@ -111,7 +112,7 @@ bool GameApplication::Initialize()
 	Background* bg4 = new Background(camera, 7);
 	bg4->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbgSTARS.png"));
 	bg4->position.x = static_cast<float>(SCREENWIDTH / 2);
-	bg4->position.y = static_cast<float>(bg4->sprite->size.y *0.5);
+	bg4->position.y = static_cast<float>(bg4->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg4);
 
 
@@ -199,4 +200,26 @@ void GameApplication::Shutdown()
 	}
 
 	SDL_Quit();
+}
+
+int GameApplication::GetScoreFromFile(const std::string& path)
+{
+	std::string score;
+	std::ifstream file(path);
+	if (!file.is_open())
+	{ return 0; }
+
+	file >> score;
+	file.close();
+	return stoi(score);
+}
+
+void GameApplication::WriteScoreToFile(int score, const std::string& path)
+{
+	std::ofstream file(path);
+	if (!file.is_open())
+	{ return; }
+
+	file << score << std::endl;
+	file.close();
 }
