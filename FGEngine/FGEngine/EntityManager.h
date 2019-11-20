@@ -15,6 +15,14 @@ namespace FG
 		void DoCollisions();
 
 		void AddEntity(Entity* entity);
+		template<typename T, typename... TArgs>
+		T* AddEntity(TArgs&&... args)
+		{
+			T* entity(new T(std::forward<TArgs>(args)...));
+			assert(entity);
+			addList.push_back(entity);
+			return entity;
+		}
 		void CleanDestroyedObjects();
 
 	private:
