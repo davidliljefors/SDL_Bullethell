@@ -65,6 +65,10 @@ bool GameApplication::Initialize()
 	}
 
 	resourceManager = new FG::ResourceManager();
+
+	audioManager = new AudioManager();
+	audioManager->PlayMusic("QuartzQuadrantBad.wav");
+
 	FG::Sprite* sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "Bullethellplayer.png");
 	resourceManager->AddResource("Bullethellplayer.png", sprite);
@@ -121,7 +125,8 @@ bool GameApplication::Initialize()
 	bg4->position.y = static_cast<float>(bg4->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg4);
 
-	stateManager = new StateManager(entityManager, inputManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
+	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
+
 
 	return true;
 }
@@ -193,6 +198,11 @@ void GameApplication::Shutdown()
 		window = nullptr;
 	}
 
+	if (audioManager)
+	{
+		delete audioManager;
+		audioManager = nullptr;
+	}
 	TTF_Quit();
 	SDL_Quit();
 }

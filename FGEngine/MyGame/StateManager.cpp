@@ -9,8 +9,8 @@
 
 GAME_STATES State::state = GAME_STATES::start;
 
-StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, ResourceManager* rManager, Camera* camera, Vector2D boundaries) :
-	entityManager(eManager), inputManager(iManager), resourceManager(rManager), screenBoundaries(boundaries)
+StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera, Vector2D boundaries) :
+	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), screenBoundaries(boundaries)
 {
 	logo = new Text();
 	logo->SetText(camera->GetInternalRenderer(), "Help me irl", "radiospace.ttf", 128, { 250,250,250 });
@@ -21,7 +21,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	playerLives = new Text();
 	playerLives->SetText(camera->GetInternalRenderer(), "Lives: 999", "radiospace.ttf", 36, { 250,250,250 });
 
-	player = new Player(entityManager, inputManager, camera, screenBoundaries,
+	player = new Player(entityManager, inputManager, audioManager, camera, screenBoundaries,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, 0, camera, screenBoundaries));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 650 });

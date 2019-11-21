@@ -5,7 +5,7 @@
 #include <Vector2D.h>
 #include "Projectile.h"
 #include "ProjectilePool.h"
-
+#include "AudioManager.h"
 
 namespace FG
 {
@@ -25,7 +25,7 @@ public:
 	float speed = 500.0f;
 	int maxLives = 3;
 
-	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
+	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }
@@ -46,6 +46,8 @@ public:
 private:
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
+	AudioManager* audioManager = nullptr;
+
 	FG::Camera* camera = nullptr;
 	FG::Sprite* colliderSprite = nullptr;
 	bool isColliding = false;

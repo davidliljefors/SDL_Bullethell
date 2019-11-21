@@ -3,6 +3,7 @@
 #include <Application.h>
 #include <Time.h>
 #include "StateManager.h"
+#include "AudioManager.h"
 namespace FG
 {
 	class Window;
@@ -33,6 +34,7 @@ private:
 	FG::Camera* camera = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	FG::ResourceManager* resourceManager = nullptr;
+	AudioManager* audioManager = nullptr;
 	StateManager* stateManager = nullptr;
 
 	FG::Time time;

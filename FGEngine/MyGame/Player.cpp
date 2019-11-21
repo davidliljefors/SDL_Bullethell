@@ -11,8 +11,8 @@
 
 #include "GameState.h"
 
-Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
-	entityManager(entityManager), inputManager(inputManager), camera(camera), projectilePrefab(projectile)
+Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
+	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = boundaries;
@@ -227,6 +227,7 @@ void Player::Shoot()
 	Projectile* proj = projectilePool->GetProjectile();
 	if (proj) {
 		proj->Fire(position + FG::Vector2D(0, -15));
+		audioManager->PlaySFX("fire.wav");
 	}
 	/*for (int i = 0; i < MAX_BULLETS; i++)
 	{

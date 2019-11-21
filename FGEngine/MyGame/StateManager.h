@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "AudioManager.h"
 
 namespace FG
 {
@@ -18,7 +19,7 @@ class StateManager
 {
 public:
 
-	StateManager(FG::EntityManager* eManager, InputManager* iManager, ResourceManager* rManager, Camera* camera, Vector2D boundaries);
+	StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera, Vector2D boundaries);
 	~StateManager();
 
 	void Update();
@@ -29,6 +30,7 @@ private:
 	EntityManager* entityManager;
 	Vector2D screenBoundaries;
 	InputManager* inputManager;
+	AudioManager* audioManager;
 	ResourceManager* resourceManager;
 
 	Player* player;
