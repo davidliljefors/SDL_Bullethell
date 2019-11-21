@@ -16,6 +16,16 @@ public:
 	void PauseMusic();
 	void ResumeMusc();
 
+	void ChangeSFXVolume(std::string filename, float volume);
+
+	void ChangeMusicVolume(float volume);
+
+	void ChangeChannelVolume(float volume, int channel);
+
+	float SFXVolume();
+
+	float MusicVolume();
+
 private:
 
 };
