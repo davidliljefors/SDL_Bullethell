@@ -11,6 +11,11 @@ void FG::Entity::Update(float deltaTime)
 
 void FG::Entity::Render(Camera* const camera)
 {
+	if (!sprite)
+	{
+		return;
+		__debugbreak();
+	}
 	assert(sprite);
 	sprite->Render(camera, position, animation->GetFrame());
 }
@@ -26,6 +31,11 @@ bool FG::Entity::AddSprite(Sprite* sprite)
 	{
 		if (sprite->GetFrameCount() > 1)
 		{
+			if (animation)
+			{
+				delete animation;
+				animation = nullptr;
+			}
 			this->animation = new Animation(sprite);
 		}
 		this->sprite = sprite;

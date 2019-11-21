@@ -25,7 +25,6 @@ namespace FG
 		}
 		resources[id] = resource;
 		return true;
-
 	}
 	bool ResourceManager::HasResource(const std::string& id) const
 	{

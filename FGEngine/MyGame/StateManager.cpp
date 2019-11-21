@@ -34,11 +34,20 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 
 	//Boss
 	boss = new Obstacle(camera);
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
 	boss->StartPosition({ 500, 100 });
 	boss->EnterScreen();
 	boss->AddCircleCollider(64 / 2);
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie3.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie4.png"));
+	boss->Initialize();
 	entityManager->AddEntity(boss);
+
+	//boss = new Obstacle(camera);
+	//boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
+	//boss->AddCircleCollider(64 / 2);
+	//entityManager->AddEntity(boss);
 }
 
 StateManager::~StateManager()

@@ -26,6 +26,7 @@
 #include <Camera.h>
 #include <EntityManager.h>
 #include <ResourceManager.h>
+#include <AudioManager.h>
 #include <Sprite.h>
 #include <Text.h>
 #include <fstream>
@@ -66,7 +67,7 @@ bool GameApplication::Initialize()
 
 	resourceManager = new FG::ResourceManager();
 
-	audioManager = new AudioManager();
+	audioManager = new AudioManager(resourceManager);
 	audioManager->PlayMusic("QuartzQuadrantBad.wav");
 
 	FG::Sprite* sprite = new FG::Sprite();
@@ -76,6 +77,18 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "hippie.png");
 	resourceManager->AddResource("hippie.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "hippie2.png");
+	resourceManager->AddResource("hippie2.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "hippie3.png");
+	resourceManager->AddResource("hippie3.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "hippie4.png");
+	resourceManager->AddResource("hippie4.png", sprite);
 
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullethellbg.png");
@@ -127,6 +140,26 @@ bool GameApplication::Initialize()
 
 	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
 
+	/*Player* player = new Player(entityManager, inputManager, audioManager, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT },
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, 0, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
+	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
+	player->StartPosition({ 500, 650 });
+	player->EnterScreen();
+	player->AddCircleCollider(player->sprite->size.x / 8.f);
+	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
+	entityManager->AddEntity(player);*/
+
+	//Boss
+	//Obstacle* obstacle = new Obstacle(camera);
+	//obstacle->position.x = 500.f;
+	//obstacle->position.y = 100.f;
+	//obstacle->AddCircleCollider(64 / 2);
+	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
+	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
+	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie3.png"));
+	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie4.png"));
+	//obstacle->Initialize();
+	//entityManager->AddEntity(obstacle);
 
 	return true;
 }

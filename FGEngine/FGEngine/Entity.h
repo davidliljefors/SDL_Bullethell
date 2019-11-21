@@ -28,7 +28,7 @@ namespace FG
 		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
 		virtual bool IgnoreCollision();
-		bool AddSprite(Sprite* sprite);
+		virtual bool AddSprite(Sprite* sprite);
 		void Destroy() { markedForDestroy = true; }
 		bool Dead() const { return dead; }
 
