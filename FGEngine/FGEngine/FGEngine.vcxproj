@@ -109,7 +109,9 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Music.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="SFX.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -128,7 +130,9 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IResource.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Music.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SFX.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Time.h" />
