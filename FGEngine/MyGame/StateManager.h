@@ -37,7 +37,7 @@ private:
 	Obstacle* boss;
 
 	Text* logo;
-	Text* spacecPrompt;
+	Text* spacePrompt;
 	
 	Text* playerLives;
 

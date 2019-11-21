@@ -3,11 +3,17 @@
 #include <SDL_mixer.h>
 #include <string>
 
+namespace FG
+{
+	class ResourceManager;
+}
+ 
+
 class AudioManager
 {
 public:
 
-	AudioManager();
+	AudioManager(FG::ResourceManager* resourceManager);
 	~AudioManager();
 
 	void PlaySFX(std::string filename, int channel = 0, float volume = 1, int loops = 0);
@@ -28,4 +34,5 @@ public:
 
 private:
 
+	FG::ResourceManager* resourceManager;
 };

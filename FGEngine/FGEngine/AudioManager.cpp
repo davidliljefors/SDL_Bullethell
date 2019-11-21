@@ -1,10 +1,9 @@
 #include "AudioManager.h"
 
-AudioManager::AudioManager()
+AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManager(resourceManager)
 {
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
 		printf("Mixer Initialization Error: %s\n", Mix_GetError());
-	}
 	else
 		ChangeMusicVolume(.25f);
 }
@@ -16,6 +15,7 @@ AudioManager::~AudioManager()
 
 void AudioManager::PlaySFX(std::string filename, int channel, float volume, int loops)
 {
+	
 	Mix_PlayChannel(channel, Mix_LoadWAV(filename.c_str()), loops);
 }
 

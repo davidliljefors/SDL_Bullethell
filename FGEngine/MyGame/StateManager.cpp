@@ -14,9 +14,11 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 {
 	logo = new Text();
 	logo->SetText(camera->GetInternalRenderer(), "Help me irl", "radiospace.ttf", 128, { 250,250,250 });
-	
-	spacecPrompt = new Text();
-	spacecPrompt->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
+	resourceManager->AddResource("Help me irl", logo);
+
+	spacePrompt = new Text();
+	spacePrompt->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
+	resourceManager->AddResource("Press SPACE to dead", spacePrompt);
 
 	playerLives = new Text();
 	playerLives->SetText(camera->GetInternalRenderer(), "Lives: 999", "radiospace.ttf", 36, { 250,250,250 });
@@ -66,7 +68,7 @@ void StateManager::Render(Camera* const camera)
 	{
 	case start:
 		logo->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y / 2 });
-		spacecPrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
+		spacePrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
 		break;
 	case game:
 		playerLives->Render(camera, { screenBoundaries.x * .125f, screenBoundaries.y * 0.05f});
