@@ -3,10 +3,34 @@
 #include <Camera.h>
 #include <SDL_render.h>
 
+#include "GameState.h"
+
+Obstacle::Obstacle(FG::Camera* camera) : camera(camera), entersScreen(true)
+{
+	collisionLayer.set(1);
+	collisionLayer.set(0);
+	EnterScreen();
+}
+
 void Obstacle::Update(float deltaTime)
 {
 	isColliding = false;
+
+	if (State::state == GAME_STATES::start)
+		return;
+
+	if (entersScreen) {
+		if (position.y < startPosition.y) {
+			position = Lerp(position, startPosition, 5 * deltaTime);
+			if (position.y >= startPosition.y + 10)
+				entersScreen = false;
+		}
+	}
+	else {
+
+	}
 }
+
 
 void Obstacle::Render(FG::Camera* const camera)
 {
@@ -25,6 +49,16 @@ SDL_Rect Obstacle::GetColliderRect()
 void Obstacle::OnCollision(FG::Entity* other)
 {
 	isColliding = true;
+}
+
+void Obstacle::StartPosition(FG::Vector2D pos)
+{
+	position = startPosition = pos;
+}
+void Obstacle::EnterScreen()
+{
+	entersScreen = true;
+	position = startPosition - FG::Vector2D::Up * 250;
 }
 
 void Obstacle::DrawBoundingBox()

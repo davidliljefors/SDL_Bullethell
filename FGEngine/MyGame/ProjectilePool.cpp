@@ -22,6 +22,7 @@ Projectile* ProjectilePool::GetProjectile()
 			return projectiles[i];
 		}
 	}
+	return nullptr;
 }
 
 Projectile* ProjectilePool::GetProjectile(Projectile projectile)
@@ -40,9 +41,9 @@ void ProjectilePool::Destroy()
 {
 	for (int i = 0; i < maxBullets; i++)
 	{
-		delete projectiles[i];
+		//delete projectiles[i];
 		projectiles[i] = nullptr;
 	}
 
-	delete projectiles;
+	projectiles = nullptr;
 }

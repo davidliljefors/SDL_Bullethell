@@ -48,9 +48,9 @@ namespace FG
 		Vector2D position;
 		Sprite* sprite = nullptr;
 	protected:
+		std::bitset<8> collisionLayer;
 		bool dead;
 
-		std::bitset<8> collisionLayer;
 	private:
 		bool markedForDestroy = false;
 	};

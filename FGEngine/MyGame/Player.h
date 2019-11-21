@@ -4,7 +4,7 @@
 #include <Entity.h>
 #include <Vector2D.h>
 #include "Projectile.h"
-
+#include "ProjectilePool.h"
 
 
 namespace FG
@@ -61,6 +61,8 @@ private:
 
 	bool entersScreen = false;
 
+	ProjectilePool* projectilePool = nullptr;
+
 	float fireCooldown = .125f;
 	float fireTime;
 
@@ -75,7 +77,7 @@ private:
 	bool invincibleAlphaBlink;
 
 	static constexpr int MAX_BULLETS = 50;
-	Projectile* projectiles[MAX_BULLETS];
+	//Projectile* projectiles[MAX_BULLETS];
 	
 	void SetUp();
 	void Respawn();

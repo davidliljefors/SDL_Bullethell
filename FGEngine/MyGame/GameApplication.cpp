@@ -19,6 +19,7 @@
 //#pragma endregion memestuff
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <Logger.h>
 #include <Window.h>
 #include <InputManager.h>
@@ -26,16 +27,13 @@
 #include <EntityManager.h>
 #include <ResourceManager.h>
 #include <Sprite.h>
-
+#include <Text.h>
+#include <fstream>
 
 #include "GameApplication.h"
 #include "Player.h"
 #include "Obstacle.h"
 #include "Background.h"
-
-
-GAME_STATES State::state = GAME_STATES::game;
-
 
 bool GameApplication::Initialize()
 {
@@ -58,6 +56,11 @@ bool GameApplication::Initialize()
 	camera = new FG::Camera();
 	if (!camera->Initialize(window, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC))
 	{
+		return false;
+	}
+
+	if (TTF_Init() == -1) {
+		printf("TTF Initialization Error: %s\n", TTF_GetError());
 		return false;
 	}
 
@@ -87,6 +90,9 @@ bool GameApplication::Initialize()
 	resourceManager->AddResource("bullet_sheet.png", sprite
 	);
 
+	//testText = new FG::Text();
+	//testText->SetText(camera->GetInternalRenderer(), "Fuck You Baltimore", "radiospace.ttf", 72);
+
 	entityManager = new FG::EntityManager();
 
 	// Background layer 0 
@@ -115,23 +121,7 @@ bool GameApplication::Initialize()
 	bg4->position.y = static_cast<float>(bg4->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg4);
 
-
-	Player* player = new Player(entityManager, inputManager, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT },
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, 0, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
-	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
-	player->StartPosition({ 500, 650 });
-	player->EnterScreen();
-	player->AddCircleCollider(player->sprite->size.x / 8.f);
-	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
-	entityManager->AddEntity(player);
-
-	//Boss
-	Obstacle* obstacle = new Obstacle(camera);
-	obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
-	obstacle->position.x = 500.f;
-	obstacle->position.y = 100.f;
-	obstacle->AddCircleCollider(64 / 2);
-	entityManager->AddEntity(obstacle);
+	stateManager = new StateManager(entityManager, inputManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
 
 	return true;
 }
@@ -144,15 +134,16 @@ void GameApplication::Run()
 		time.StartFrame();
 		inputManager->Update(quit);
 
-		if (State::state == !game && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
-			State::state = game;
-
 		entityManager->Update(time.DeltaTime());
 		entityManager->DoCollisions();
+		stateManager->Update();
+
 		camera->StartRenderFrame();
 		entityManager->Render(camera);
+		stateManager->Render(camera);
 		camera->EndRenderFrame();
 		time.EndFrame();
+
 		// Wait to achieve target framerate 
 		if (time.DeltaTime() < frameDelay)
 		{
@@ -164,6 +155,9 @@ void GameApplication::Run()
 
 void GameApplication::Shutdown()
 {
+	delete testText;
+	testText = NULL;
+
 	if (entityManager)
 	{
 		entityManager->Shutdown();
@@ -199,6 +193,7 @@ void GameApplication::Shutdown()
 		window = nullptr;
 	}
 
+	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -206,8 +201,9 @@ int GameApplication::GetScoreFromFile(const std::string& path)
 {
 	std::string score;
 	std::ifstream file(path);
-	if (!file.is_open())
-	{ return 0; }
+	if (!file.is_open()) {
+		return 0;
+	}
 
 	file >> score;
 	file.close();
@@ -217,8 +213,9 @@ int GameApplication::GetScoreFromFile(const std::string& path)
 void GameApplication::WriteScoreToFile(int score, const std::string& path)
 {
 	std::ofstream file(path);
-	if (!file.is_open())
-	{ return; }
+	if (!file.is_open()) {
+		return;
+	}
 
 	file << score << std::endl;
 	file.close();

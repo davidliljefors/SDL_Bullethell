@@ -2,8 +2,7 @@
 
 #include <Application.h>
 #include <Time.h>
-#include "GameState.h"
-
+#include "StateManager.h"
 namespace FG
 {
 	class Window;
@@ -11,6 +10,7 @@ namespace FG
 	class Camera;
 	class EntityManager;
 	class ResourceManager;
+	class Text;
 }
 
 class GameApplication : public FG::Application
@@ -23,8 +23,6 @@ public:
 	const int SCREENWIDTH = 1024;
 	const int SCREENHEIGHT = 768;
 
-	//static GAME_STATES state;
-
 private:
 	const float targetFramerate = 300;
 	const float frameDelay = 1000 / targetFramerate;
@@ -35,11 +33,14 @@ private:
 	FG::Camera* camera = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	FG::ResourceManager* resourceManager = nullptr;
+	StateManager* stateManager = nullptr;
 
 	FG::Time time;
 
 	int GetScoreFromFile(const std::string& path);
 	void WriteScoreToFile(int score, const std::string& path);
+
+	FG::Text* testText = nullptr;
 };
 
 FG::Application* FG::CreateApplication()

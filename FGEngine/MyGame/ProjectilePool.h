@@ -25,4 +25,3 @@ private:
 	int maxBullets;
 	Projectile** projectiles;
 };
-

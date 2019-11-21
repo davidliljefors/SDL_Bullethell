@@ -45,7 +45,6 @@ void FG::Entity::AddCircleCollider(float offsetX, float offsetY, float radius)
 	collider = new FG::Circle(&position, offsetX, offsetY, radius);
 }
 
-
 FG::Vector2D FG::Entity::Lerp(FG::Vector2D& start, FG::Vector2D& end, float time) {
 	if (time <= 0.0f)
 		return start;

@@ -18,13 +18,16 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	maxBoundaries = boundaries;
 
 	SetUp();
+	
+	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
 
+	/*
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
 		projectiles[i] = new Projectile(*projectilePrefab);
 		entityManager->AddEntity(projectiles[i]);
 	}
-
+	*/
 	collisionLayer.set(0);
 	//entityManager->AddEntities(projectiles, MAX_BULLETS);
 	EnterScreen();
@@ -32,8 +35,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 
 Player::~Player()
 {
-	for (int i = 0; i < MAX_BULLETS; i++)
-		projectiles[i] = NULL;
+	projectilePool->Destroy();
 }
 
 void Player::Update(float deltaTime)
@@ -222,14 +224,18 @@ void Player::Respawn()
 
 void Player::Shoot()
 {
-	for (int i = 0; i < MAX_BULLETS; i++)
+	Projectile* proj = projectilePool->GetProjectile();
+	if (proj) {
+		proj->Fire(position + FG::Vector2D(0, -15));
+	}
+	/*for (int i = 0; i < MAX_BULLETS; i++)
 	{
 		if (projectiles[i]->Dead())
 		{
 			projectiles[i]->Fire(position + FG::Vector2D(0,-15));
 			break;
 		}
-	}
+	}*/
 	/*Projectile* proj = new Projectile(*projectilePrefab);
 	proj->position = position;
 	entityManager->AddEntity(proj);*/
