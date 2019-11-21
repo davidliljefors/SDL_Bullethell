@@ -10,11 +10,10 @@
 
 #include <iostream>
 
-Obstacle::Obstacle(FG::Camera* camera) : camera(camera), entersScreen(true)
+Obstacle::Obstacle(FG::Camera* camera) : camera(camera), entersScreen(false)
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
-	EnterScreen();
 }
 void Obstacle::Initialize()
 {
@@ -29,14 +28,23 @@ void Obstacle::Update(float deltaTime)
 	}
 	isColliding = false;
 
-	if (State::state == GAME_STATES::start)
+	if (State::state == GAME_STATES::start) {
+		if (!firstBattle && (phase != Phase::dead)) {
+			float lerpSpeed = 2;
+			if (position.y != startPosition.y || position.x != startPosition.x) {
+				position = Lerp(position, startPosition, lerpSpeed * deltaTime);
+			}
+		}
 		return;
+	}
 
 	if (entersScreen) {
-		if (position.y < startPosition.y) {
+		if (position.y != startPosition.y || position.x != startPosition.x) {
 			position = Lerp(position, startPosition, 5 * deltaTime);
-			if (position.y >= startPosition.y + 10)
+			if ((position.y <= startPosition.y + 5 && position.y >= startPosition.y - 5) &&
+				(position.x <= startPosition.x + 5 && position.x >= startPosition.x - 5)) {
 				entersScreen = false;
+			}
 		}
 	}
 	else {
@@ -64,16 +72,16 @@ void Obstacle::EnterNextPhase()
 		//should never happen
 		break;
 	case Phase::second:
-		health = 25;
+		health = 1;//25;
 		std::cout << "Enter second phase" << std::endl;
 		break;
 	case Phase::third:
-		health = 35;
+		health = 1;//35;
 		std::cout << "Enter Third Phase" << std::endl;
 		break;
 	case Phase::dead:
 		// die
-		health = 99999;
+		OnDeath();
 		std::cout << "boss died" << std::endl;
 		break;
 	default:
@@ -99,15 +107,40 @@ void Obstacle::OnCollision(FG::Entity* other)
 	isColliding = true;
 }
 
+void Obstacle::OnDeath()
+{
+	health = 999;
+	entersScreen = false;
+	PlaceOffscreenForEntrance();
+}
+
 void Obstacle::StartPosition(FG::Vector2D pos)
 {
 	position = startPosition = pos;
+	PlaceOffscreenForEntrance();
 }
 void Obstacle::EnterScreen()
 {
 	entersScreen = true;
+	SetUp();
+	firstBattle = false;
+}
+
+void Obstacle::PlaceOffscreenForEntrance()
+{
 	position = startPosition - FG::Vector2D::Up * 250;
-	
+}
+
+Phase Obstacle::CurrentPhase()
+{
+	return phase;
+}
+
+void Obstacle::SetUp()
+{
+	phase = Phase::first;
+	Entity::AddSprite(sprites[static_cast<int>(phase)]);
+	health = 1;//15;
 }
 
 bool Obstacle::AddSprite(FG::Sprite* spr)

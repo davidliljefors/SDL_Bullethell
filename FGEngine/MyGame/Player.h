@@ -23,7 +23,7 @@ class Player : public FG::Entity
 
 public:
 	float speed = 500.0f;
-	int maxLives = 3;
+	int maxLives = 0;
 
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
 	~Player();
@@ -41,8 +41,8 @@ public:
 	bool IgnoreCollision() override;
 
 	void StartPosition(FG::Vector2D pos);
-	void EnterScreen();
-
+	void OnVictory();
+	void OnStartBattle();
 private:
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
@@ -62,6 +62,7 @@ private:
 	int lives;
 
 	bool entersScreen = false;
+	bool firstBattle = true;
 
 	ProjectilePool* projectilePool = nullptr;
 
@@ -79,10 +80,12 @@ private:
 	bool invincibleAlphaBlink;
 
 	static constexpr int MAX_BULLETS = 50;
-	//Projectile* projectiles[MAX_BULLETS];
 	
 	void SetUp();
 	void Respawn();
+	void EnterScreen();
+	void PlaceOffscreenForEntrance();
+
 	void Shoot();
 	void DrawBoundingBox();
 	void DrawColliderCircle();

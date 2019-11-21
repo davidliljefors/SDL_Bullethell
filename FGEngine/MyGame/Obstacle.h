@@ -36,8 +36,11 @@ public:
 
 	void StartPosition(FG::Vector2D pos);
 	void EnterScreen();
+	void PlaceOffscreenForEntrance();
+	Phase CurrentPhase();
+	void SetUp();
 private:
-	int health = 15;
+	int health = 1;//15;
 	Phase phase = Phase::first;
 	bool isColliding = false;
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
@@ -46,12 +49,15 @@ private:
 	std::vector<FG::Sprite*> sprites;
 
 	bool entersScreen;
+	bool firstBattle = true;
+
 	FG::Vector2D startPosition;
 
 	ProjectilePool* projectilePool = nullptr;
 
 	void DrawBoundingBox();
 	void DrawColliderCircle();
+	void OnDeath();
 };
 
 

@@ -139,28 +139,7 @@ bool GameApplication::Initialize()
 	entityManager->AddEntity(bg4);
 
 	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
-
-	/*Player* player = new Player(entityManager, inputManager, audioManager, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT },
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, 0, camera, { (float)SCREENWIDTH, (float)SCREENHEIGHT }));
-	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
-	player->StartPosition({ 500, 650 });
-	player->EnterScreen();
-	player->AddCircleCollider(player->sprite->size.x / 8.f);
-	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
-	entityManager->AddEntity(player);*/
-
-	//Boss
-	//Obstacle* obstacle = new Obstacle(camera);
-	//obstacle->position.x = 500.f;
-	//obstacle->position.y = 100.f;
-	//obstacle->AddCircleCollider(64 / 2);
-	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
-	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
-	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie3.png"));
-	//obstacle->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie4.png"));
-	//obstacle->Initialize();
-	//entityManager->AddEntity(obstacle);
-
+	
 	return true;
 }
 

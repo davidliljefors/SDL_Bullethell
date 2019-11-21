@@ -20,17 +20,8 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	SetUp();
 	
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
-
-	/*
-	for (int i = 0; i < MAX_BULLETS; i++)
-	{
-		projectiles[i] = new Projectile(*projectilePrefab);
-		entityManager->AddEntity(projectiles[i]);
-	}
-	*/
+	
 	collisionLayer.set(0);
-	//entityManager->AddEntities(projectiles, MAX_BULLETS);
-	EnterScreen();
 }
 
 Player::~Player()
@@ -40,10 +31,16 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-	if (State::state == GAME_STATES::start)
-		return;
-
 	isColliding = false;
+	if (State::state == GAME_STATES::start) {
+		if (!firstBattle && lives >= 0) {
+			float lerpSpeed = 2;
+			if (position.y != startPosition.y || position.x != startPosition.x) {
+				position = Lerp(position, startPosition, lerpSpeed * deltaTime);
+			}
+		}
+		return;
+	}
 
 	if (fireTime > 0)
 		fireTime -= deltaTime;
@@ -63,12 +60,11 @@ void Player::Update(float deltaTime)
 	}
 
 	if (entersScreen) {
-		if (position.y > startPosition.y) {
+		if (position.y != startPosition.y || position.x != startPosition.x) {
 			position = Lerp(position, startPosition, 10 * deltaTime);
-			//position += FG::Vector2D::Down * speed * deltaTime;
-			if (position.y <= startPosition.y + 10) {
+			if ((position.y <= startPosition.y + 10 && position.y >= startPosition.y - 10) &&
+				(position.x <= startPosition.x + 10 && position.x >= startPosition.x - 10)) {
 				entersScreen = false;
-				//position = startPosition;
 			}
 		}
 	}
@@ -110,14 +106,12 @@ void Player::OnCollision(FG::Entity* other)
 	isColliding = true;
 	lives--;
 
-	EnterScreen();
-
 	if (lives < 0) {
 		State::state = start;
-		SetUp();
+		PlaceOffscreenForEntrance();
 	}
 	else {
-
+		EnterScreen();
 		Respawn();
 	}
 }
@@ -130,12 +124,30 @@ bool Player::IgnoreCollision()
 void Player::StartPosition(FG::Vector2D pos)
 {
 	position = startPosition = pos;
+	PlaceOffscreenForEntrance();
 }
 
 void Player::EnterScreen()
 {
 	entersScreen = true;
+}
+
+void Player::PlaceOffscreenForEntrance()
+{
 	position = startPosition - FG::Vector2D::Down * 250;
+}
+
+void Player::OnVictory()
+{
+	entersScreen = true;
+	//SetUp();
+}
+
+void Player::OnStartBattle()
+{
+	SetUp();
+	EnterScreen();
+	firstBattle = false;
 }
 
 void Player::MovePlayer(float deltaTime)

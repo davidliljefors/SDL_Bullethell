@@ -41,4 +41,5 @@ private:
 	
 	Text* playerLives;
 
+	bool firstBattle;
 };

@@ -27,7 +27,6 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down * 2000.f, 0, camera, screenBoundaries));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 650 });
-	player->EnterScreen();
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
 	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(player);
@@ -35,7 +34,6 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	//Boss
 	boss = new Obstacle(camera);
 	boss->StartPosition({ 500, 100 });
-	boss->EnterScreen();
 	boss->AddCircleCollider(64 / 2);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
@@ -44,10 +42,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	boss->Initialize();
 	entityManager->AddEntity(boss);
 
-	//boss = new Obstacle(camera);
-	//boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
-	//boss->AddCircleCollider(64 / 2);
-	//entityManager->AddEntity(boss);
+	firstBattle = true;
 }
 
 StateManager::~StateManager()
@@ -60,11 +55,18 @@ void StateManager::Update()
 	switch (State::state)
 	{
 	case start:
-		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE)) {
 			State::state = game;
+			player->OnStartBattle();
+			boss->EnterScreen();
+		}
 		break;
 	case game:
-
+		if (boss->CurrentPhase() == Phase::dead) {
+			//boss->Reset();
+			player->OnVictory();
+			State::state = start;
+		}
 		break;
 	default:
 		break;
