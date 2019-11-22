@@ -15,7 +15,7 @@ Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, F
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
-	projectilePool = new ProjectilePool(500,
+	projectilePool = new ProjectilePool(1000,
 		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 2000.f, 0, camera),
 		entityManager);
 }

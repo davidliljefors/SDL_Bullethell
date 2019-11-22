@@ -1,23 +1,6 @@
 #include <iostream>
 #include <fstream>
 
-//#pragma region memestuff
-//// Overloading new and delete to keep track of memory leakage
-//static int alloc = 0;
-//void* operator new(std::size_t size)
-//{
-//	alloc += 1;
-//	std::cout << "Alloc : " << size << "bytes, count:" << alloc << std::endl;
-//	return malloc(size);
-//}
-//void operator delete(void* p)
-//{
-//	alloc -= 1;;
-//	std::cout << "Free, count:" << alloc << std::endl;
-//	free(p);
-//}
-//#pragma endregion memestuff
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <Logger.h>
@@ -29,7 +12,6 @@
 #include <AudioManager.h>
 #include <Sprite.h>
 #include <Text.h>
-#include <fstream>
 
 #include "GameApplication.h"
 #include "Player.h"
@@ -38,6 +20,11 @@
 #include "Config.h"
 
 FG::Vector2D Config::screenBoundaries = { SCREENWIDTH , SCREENHEIGHT };
+#include "Timer.h"
+
+
+
+
 
 bool GameApplication::Initialize()
 {
@@ -153,9 +140,14 @@ void GameApplication::Run()
 	{
 		time.StartFrame();
 		inputManager->Update(quit);
-
-		entityManager->Update(time.DeltaTime());
-		entityManager->DoCollisions();
+		{
+			Timer t("Update");
+			entityManager->Update(time.DeltaTime());
+		}
+		{
+			Timer t("Collisions");
+			entityManager->DoCollisions();
+		}
 		stateManager->Update();
 
 		camera->StartRenderFrame();

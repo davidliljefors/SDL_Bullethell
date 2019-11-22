@@ -14,6 +14,7 @@ namespace FG
 	class Text;
 }
 
+
 class GameApplication : public FG::Application
 {
 public:
@@ -46,3 +47,6 @@ FG::Application* FG::CreateApplication()
 {
 	return new GameApplication();
 }
+
+
+

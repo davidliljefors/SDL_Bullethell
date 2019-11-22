@@ -27,7 +27,7 @@ namespace FG
 		virtual void Update(float deltaTime);
 		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
-		virtual bool IgnoreCollision();
+		inline virtual bool IgnoreCollision() { return false; }
 		virtual bool AddSprite(Sprite* sprite);
 		void Destroy() { markedForDestroy = true; }
 		bool Dead() const { return dead; }
@@ -37,7 +37,7 @@ namespace FG
 
 		FG::Vector2D Lerp(FG::Vector2D& start, FG::Vector2D& end, float time);
 
-		Circle* GetColliderCircle() const
+		inline Circle* GetColliderCircle() const
 		{
 			return collider;
 		}

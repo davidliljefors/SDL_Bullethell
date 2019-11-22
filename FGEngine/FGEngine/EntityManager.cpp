@@ -25,7 +25,7 @@ namespace FG
 			addList.clear();
 		}
 
-		for (auto entity : entities)
+		for (auto& entity : entities)
 		{
 			entity->Update(deltaTime);
 		}
@@ -45,25 +45,24 @@ namespace FG
 	{
 		for (int x = 0; x < entities.size() - 1; x++)
 		{
+			if (!entities[x] || entities[x]->Dead())
+			{ continue; }
+
 			for (int y = x + 1; y < entities.size(); y++)
 			{
-				if (entities[x] && entities[y])
-				{
-					if (entities[x]->Dead() || entities[y]->Dead())
-					{
-						continue;
-					}
-					if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
-						continue;
-					if (!entities[x]->GetColliderCircle() || !entities[y]->GetColliderCircle())
-						continue;
+				if (!entities[y] || entities[y]->Dead())
+				{ continue; }
 
-					if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
-						Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *entities[y]->GetColliderCircle()))
-					{
-						entities[x]->OnCollision(entities[y]);
-						entities[y]->OnCollision(entities[x]);
-					}
+				if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
+					continue;
+				if (!entities[x]->GetColliderCircle() || !entities[y]->GetColliderCircle())
+					continue;
+
+				if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
+					Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *entities[y]->GetColliderCircle()))
+				{
+					entities[x]->OnCollision(entities[y]);
+					entities[y]->OnCollision(entities[x]);
 				}
 			}
 		}

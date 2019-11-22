@@ -23,6 +23,7 @@
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Obstacle.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="ProjectilePool.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FGEngine\FGEngine.vcxproj">

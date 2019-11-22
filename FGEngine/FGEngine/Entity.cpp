@@ -11,19 +11,10 @@ void FG::Entity::Update(float deltaTime)
 
 void FG::Entity::Render(Camera* const camera)
 {
-	if (!sprite)
-	{
-		return;
-		__debugbreak();
-	}
 	assert(sprite);
 	sprite->Render(camera, position, animation->GetFrame());
 }
 
-bool FG::Entity::IgnoreCollision()
-{
-	return false;
-}
 
 bool FG::Entity::AddSprite(Sprite* sprite)
 {
