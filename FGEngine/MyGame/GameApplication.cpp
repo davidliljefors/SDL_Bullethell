@@ -21,11 +21,6 @@
 
 FG::Vector2D Config::screenBoundaries = { SCREENWIDTH , SCREENHEIGHT };
 
-
-
-
-
-
 bool GameApplication::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -99,6 +94,14 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet.png");
 	resourceManager->AddResource("bullet.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "heart.png");
+	resourceManager->AddResource("heart.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "heartcontainer.png");
+	resourceManager->AddResource("heartcontainer.png", sprite);
 
 	entityManager = new FG::EntityManager();
 

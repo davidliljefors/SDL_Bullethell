@@ -38,8 +38,12 @@ private:
 
 	Text* logo;
 	Text* spacePrompt;
+	Text* hiScoreDisplay;
 	
-	Text* playerLives;
+	Sprite** playerLives;
+	Sprite** liveContainers;
+	Text* currentScoreDisplay;
+	Text* currentHiScoreDisplay;
 
 	bool firstBattle;
 };
