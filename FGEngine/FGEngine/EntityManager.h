@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cassert>
 
 namespace FG
 {
@@ -23,12 +24,23 @@ namespace FG
 			assert(entity);
 			addList.push_back(entity);
 			return entity;
-
 		}
+		//template<typename T>
+		//T* GetAndActivateEntity()
+		//{
+		//	assert(inactiveEntities.size() > 0);
+		//	AddEntity(*inactiveEntities.begin());
+		//	inactiveEntities.erase(inactiveEntities.begin());
+		//	return dynamic_cast<T*>(*inactiveEntities.begin());;
+		//}
+		//void CleanInactive();
+
+		
 		void CleanDestroyedObjects();
 
 	private:
 		std::vector<Entity*> entities;
+		std::vector<Entity*> inactiveEntities;
 		std::vector<Entity*> addList;
 	};
 }

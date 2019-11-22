@@ -49,7 +49,7 @@ namespace FG
 		Sprite* sprite = nullptr;
 	protected:
 		std::bitset<8> collisionLayer;
-		bool dead;
+		bool dead = false;
 
 	private:
 		bool markedForDestroy = false;

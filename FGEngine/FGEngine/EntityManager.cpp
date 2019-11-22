@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Collision.h"
+#include "Timer.h"
 
 namespace FG
 {
@@ -16,6 +17,7 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
+		Timer t("Update loop");
 		if (addList.size() > 0)
 		{
 			for (auto entity : addList)
@@ -29,8 +31,6 @@ namespace FG
 		{
 			entity->Update(deltaTime);
 		}
-
-		CleanDestroyedObjects();
 	}
 
 	void EntityManager::Render(Camera* const camera)
@@ -43,6 +43,7 @@ namespace FG
 
 	void EntityManager::DoCollisions()
 	{
+		Timer t("Collision loop");
 		for (int x = 0; x < entities.size() - 1; x++)
 		{
 			if (!entities[x] || entities[x]->Dead())
@@ -57,7 +58,6 @@ namespace FG
 					continue;
 				if (!entities[x]->GetColliderCircle() || !entities[y]->GetColliderCircle())
 					continue;
-
 				if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
 					Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *entities[y]->GetColliderCircle()))
 				{
@@ -72,6 +72,12 @@ namespace FG
 	{
 		addList.push_back(entity);
 	}
+
+
+	//void EntityManager::CleanInactive()
+	//{
+	//	
+	//}
 
 	void EntityManager::CleanDestroyedObjects()
 	{

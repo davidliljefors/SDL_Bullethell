@@ -20,7 +20,7 @@
 #include "Config.h"
 
 FG::Vector2D Config::screenBoundaries = { SCREENWIDTH , SCREENHEIGHT };
-#include "Timer.h"
+
 
 
 
@@ -140,14 +140,9 @@ void GameApplication::Run()
 	{
 		time.StartFrame();
 		inputManager->Update(quit);
-		{
-			Timer t("Update");
-			entityManager->Update(time.DeltaTime());
-		}
-		{
-			Timer t("Collisions");
-			entityManager->DoCollisions();
-		}
+
+		entityManager->Update(time.DeltaTime());
+		entityManager->DoCollisions();
 		stateManager->Update();
 
 		camera->StartRenderFrame();

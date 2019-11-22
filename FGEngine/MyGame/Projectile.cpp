@@ -119,7 +119,6 @@ void Projectile::OnCollision(FG::Entity* other)
 		//Obstacle* ba = static_cast<Obstacle*>(other);
 		Reload();
 	}
-
 }
 
 bool Projectile::IgnoreCollision()

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cmath>
 #include <string>
 #include <chrono>
@@ -5,6 +7,7 @@
 
 class Timer {
 public:
+
 	Timer(std::string name)
 		: m_name(std::move(name)),
 		m_beg(std::chrono::high_resolution_clock::now()) { }

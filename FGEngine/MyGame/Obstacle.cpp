@@ -10,12 +10,13 @@
 
 #include <iostream>
 #include "Config.h"
+#include <Timer.h>
 
 Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
-	projectilePool = new ProjectilePool(1000,
+	projectilePool = new ProjectilePool(10000,
 		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 2000.f, 0, camera),
 		entityManager);
 }
@@ -108,7 +109,6 @@ void Obstacle::OnCollision(FG::Entity* other)
 		Projectile* p = static_cast<Projectile*>(other);
 		health -= 1;
 		//health -= p->damage;
-		std::cout << health << std::endl;
 	}
 	isColliding = true;
 }
