@@ -39,9 +39,11 @@ private:
 	Text* logo;
 	Text* spacePrompt;
 	Text* hiScoreDisplay;
-	
+
 	Sprite** playerLives;
 	Sprite** liveContainers;
+	Sprite** playerBombs;
+	Sprite** bombContainers;
 	Text* currentScoreDisplay;
 	Text* currentHiScoreDisplay;
 

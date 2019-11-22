@@ -75,10 +75,13 @@ void Player::Update(float deltaTime)
 
 		MovePlayer(deltaTime);
 		//MoveCamera(deltaTime);
-		if (inputManager->IsKeyDown(SDL_SCANCODE_X))
+		if (bombs > 0 && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
 		{
-			std::cout << "boom" << std::endl;
-			bomb->Activate(position, 0.5f);
+			//std::cout << "boom" << std::endl;
+			if (bomb->Activate(position, 0.5f)); {
+				if (bombs > 0)
+					bombs--;
+			}
 		}
 		if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
 		{
@@ -162,6 +165,11 @@ int Player::CurrentLives()
 	return lives;
 }
 
+int Player::CurrentBombs()
+{
+	return bombs;
+}
+
 void Player::MovePlayer(float deltaTime)
 {
 	FG::Vector2D movement;
@@ -232,6 +240,7 @@ void Player::MoveCamera(float deltaTime)
 void Player::SetUp()
 {
 	lives = maxLives;
+	bombs = maxBombs;
 
 	fireTime = 0;
 	invincibleTime = invincibleDuration;

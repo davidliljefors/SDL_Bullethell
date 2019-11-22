@@ -102,6 +102,14 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "heartcontainer.png");
 	resourceManager->AddResource("heartcontainer.png", sprite);
+	sprite = new FG::Sprite();
+
+	sprite->LoadImage(camera->GetInternalRenderer(), "bomb.png");
+	resourceManager->AddResource("bomb.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "bombcontainer.png");
+	resourceManager->AddResource("bombcontainer.png", sprite);
 
 	entityManager = new FG::EntityManager();
 

@@ -44,7 +44,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 
 	hiScoreDisplay = new Text();
 	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to dead", hiScoreDisplay);
+	resourceManager->AddResource("0000dead", hiScoreDisplay);
 
 	playerLives = new Sprite * [player->maxLives];
 	liveContainers = new Sprite * [player->maxLives];
@@ -53,17 +53,21 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 		playerLives[i] = resourceManager->GetResource<FG::Sprite>("heart.png");
 		liveContainers[i] = resourceManager->GetResource<FG::Sprite>("heartcontainer.png");
 	}
-	for (size_t i = 0; i < player->maxLives; i++)
+	playerBombs = new Sprite * [player->maxBombs];
+	bombContainers = new Sprite * [player->maxBombs];
+	for (size_t i = 0; i < player->maxBombs; i++)
 	{
+		playerBombs[i] = resourceManager->GetResource<FG::Sprite>("bomb.png");
+		bombContainers[i] = resourceManager->GetResource<FG::Sprite>("bombcontainer.png");
 	}
 
 	currentScoreDisplay = new Text();
-	currentScoreDisplay->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to dead", currentScoreDisplay);
+	currentScoreDisplay->SetText(camera->GetInternalRenderer(), "0000000000", "radiospace.ttf", 48, { 225,225,225 });
+	resourceManager->AddResource("Press SPACE to e", currentScoreDisplay);
 
 	currentHiScoreDisplay = new Text();
-	currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to dead", currentHiScoreDisplay);
+	currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - 0000000000", "radiospace.ttf", 36, { 225,225,225 });
+	resourceManager->AddResource("Press SPACE to dsead", currentHiScoreDisplay);
 
 	firstBattle = true;
 }
@@ -105,11 +109,19 @@ void StateManager::Render(Camera* const camera)
 		spacePrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
 		break;
 	case game:
+		currentScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .09f });
+		currentHiScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .029f});
 		for (size_t i = 0; i < player->maxLives; i++)
 		{
 			if (i < player->CurrentLives())
-				playerLives[i]->Render(camera, { screenBoundaries.x - (playerLives[i]->size.x / 2) * 2, 0 + (playerLives[i]->size.y / 2) * (2 * (i + 1)) });
-			liveContainers[i]->Render(camera, { screenBoundaries.x - (playerLives[i]->size.x /2) * 2, 0 + (playerLives[i]->size.y /2 )*(2*(i+1)) });
+				playerLives[i]->Render(camera, { screenBoundaries.x - (playerLives[i]->size.x / 2) * 2,  (screenBoundaries.y * .11f) + (playerLives[i]->size.y / 2) * (2 * (i + 1)) });
+			liveContainers[i]->Render(camera, { screenBoundaries.x - (liveContainers[i]->size.x /2) * 2,  (screenBoundaries.y * .11f) + (liveContainers[i]->size.y /2 )*(2*(i+1)) });
+		}
+		for (size_t i = 0; i < player->maxBombs; i++)
+		{
+			if (i < player->CurrentBombs())
+				playerBombs[i]->Render(camera, { screenBoundaries.x - (playerBombs[i]->size.x / 2) * 4.5f,  (screenBoundaries.y * .11f) + (playerBombs[i]->size.y / 2) * (2 * (i + 1)) });
+			bombContainers[i]->Render(camera, { screenBoundaries.x - (bombContainers[i]->size.x / 2) * 4.5f,  (screenBoundaries.y * .11f) + (bombContainers[i]->size.y / 2) * (2 * (i + 1)) });
 		}
 		break;
 	default:

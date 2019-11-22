@@ -25,12 +25,15 @@ public:
 		}
 	}
 
-	void Activate(FG::Vector2D pos, float time)
+	bool Activate(FG::Vector2D pos, float time)
 	{
-		position = pos;
+		if (timeleft > 0 )
+			return false;
+  		position = pos;
 		collisionLayer.set(4);
 		collider->SetRadius(10.f);
 		timeleft = time;
+		return true;
 	}
 
 	void Render(FG::Camera* const camera) override

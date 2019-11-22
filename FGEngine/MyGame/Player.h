@@ -25,6 +25,7 @@ class Player : public FG::Entity
 public:
 	float speed = 500.0f;
 	int maxLives = 5;
+	int maxBombs = 3;
 
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
 	~Player();
@@ -46,6 +47,7 @@ public:
 	void OnStartBattle();
 
 	int CurrentLives();
+	int CurrentBombs();
 private:
 	Bomb* bomb = nullptr;
 	FG::InputManager* inputManager = nullptr;
@@ -64,6 +66,7 @@ private:
 	FG::Vector2D startPosition;
 
 	int lives;
+	int bombs;
 
 	bool entersScreen = false;
 	bool firstBattle = true;
