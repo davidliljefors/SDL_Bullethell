@@ -25,7 +25,7 @@ public:
 	float speed = 500.0f;
 	int maxLives = 0;
 
-	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile);
+	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }

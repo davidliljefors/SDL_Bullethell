@@ -35,6 +35,9 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "Background.h"
+#include "Config.h"
+
+FG::Vector2D Config::screenBoundaries = { SCREENWIDTH , SCREENHEIGHT };
 
 bool GameApplication::Initialize()
 {
@@ -45,7 +48,7 @@ bool GameApplication::Initialize()
 	}
 
 	window = new FG::Window();
-	if (!window->Initialize("My game", SCREENWIDTH, SCREENHEIGHT))
+	if (!window->Initialize("My game", Config::SCREENWIDTH, Config::SCREENHEIGHT))
 	{
 		FG::Logger::Log(SDL_GetError(), FG::Logger::RemovePathFromFile(__FILE__), __LINE__);
 		return false;
@@ -104,41 +107,41 @@ bool GameApplication::Initialize()
 
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet_sheet.png", 4, 2, 8);
-	resourceManager->AddResource("bullet_sheet.png", sprite
-	);
+	resourceManager->AddResource("bullet_sheet.png", sprite);
 
-	//testText = new FG::Text();
-	//testText->SetText(camera->GetInternalRenderer(), "Fuck You Baltimore", "radiospace.ttf", 72);
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "bullet.png");
+	resourceManager->AddResource("bullet.png", sprite);
 
 	entityManager = new FG::EntityManager();
 
 	// Background layer 0 
 	Background* bg1 = new Background(camera, 5);
 	bg1->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbg.png"));
-	bg1->position.x = static_cast<float>(SCREENWIDTH / 2);
+	bg1->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg1->position.y = static_cast<float>(bg1->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg1);
 
 	Background* bg2 = new Background(camera, 5);
 	bg2->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbg.png"));
-	bg2->position.x = static_cast<float>(SCREENWIDTH / 2);
+	bg2->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg2->position.y = static_cast<float>(bg2->sprite->size.y * -0.5);
 	entityManager->AddEntity(bg2);
 
 	//Background layer 1, particles
 	Background* bg3 = new Background(camera, 7);
 	bg3->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbgSTARS.png"));
-	bg3->position.x = static_cast<float>(SCREENWIDTH / 2);
+	bg3->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg3->position.y = static_cast<float>(bg3->sprite->size.y * -0.5);
 	entityManager->AddEntity(bg3);
 
 	Background* bg4 = new Background(camera, 7);
 	bg4->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbgSTARS.png"));
-	bg4->position.x = static_cast<float>(SCREENWIDTH / 2);
+	bg4->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg4->position.y = static_cast<float>(bg4->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg4);
 
-	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera, { static_cast<float>(SCREENWIDTH), static_cast<float>(SCREENHEIGHT) });
+	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera);
 	
 	return true;
 }

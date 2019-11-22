@@ -22,9 +22,9 @@ class Projectile : public FG::Entity
 {
 public:
 	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-		FG::Camera* camera, FG::Vector2D boundaries);
+		FG::Camera* camera);
 	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-		FG::Camera* camera, FG::Vector2D boundaries, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount);
+		FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount);
 	Projectile(const Projectile&);
 	~Projectile();
 

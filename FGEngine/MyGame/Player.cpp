@@ -10,12 +10,13 @@
 #include <Circle.h>
 
 #include "GameState.h"
+#include "Config.h"
 
-Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, FG::Vector2D boundaries, Projectile* projectile) :
+Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile) :
 	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
-	maxBoundaries = boundaries;
+	maxBoundaries = Config::screenBoundaries;
 
 	SetUp();
 	

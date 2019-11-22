@@ -21,9 +21,6 @@ public:
 	virtual void Run() override;
 	virtual void Shutdown() override;
 
-	const int SCREENWIDTH = 1024;
-	const int SCREENHEIGHT = 768;
-
 private:
 	const float targetFramerate = 300;
 	const float frameDelay = 1000 / targetFramerate;

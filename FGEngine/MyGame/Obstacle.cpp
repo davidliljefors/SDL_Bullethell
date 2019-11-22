@@ -9,11 +9,15 @@
 #include "Projectile.h"
 
 #include <iostream>
+#include "Config.h"
 
-Obstacle::Obstacle(FG::Camera* camera) : camera(camera), entersScreen(false)
+Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
+	projectilePool = new ProjectilePool(500,
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 2000.f, 0, camera),
+		entityManager);
 }
 void Obstacle::Initialize()
 {

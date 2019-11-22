@@ -19,7 +19,7 @@ class StateManager
 {
 public:
 
-	StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera, Vector2D boundaries);
+	StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera);
 	~StateManager();
 
 	void Update();

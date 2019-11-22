@@ -8,10 +8,11 @@
 #include <iostream>
 #include "Player.h"
 #include "Obstacle.h"
+#include "Config.h"
 
 Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-	FG::Camera* camera, FG::Vector2D boundaries) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries)
+	FG::Camera* camera) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries)
 {
 	type = Regular;
 
@@ -21,13 +22,16 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 	if (playerFired)
 		collisionLayer.set(1);
 	else
+	{
 		collisionLayer.set(0);
+		collisionLayer.set(4);
+	}
 	Reload();
 }
 
 Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
-	FG::Camera* camera, FG::Vector2D boundaries, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(boundaries),
+	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount) :
+	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries),
 	pool(pool), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
 	type = Exploding;
