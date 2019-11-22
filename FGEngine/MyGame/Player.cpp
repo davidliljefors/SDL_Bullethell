@@ -113,9 +113,9 @@ void Player::OnCollision(FG::Entity* other)
 	isColliding = true;
 	lives--;
 
+	PlaceOffscreenForEntrance();
 	if (lives < 0) {
 		State::state = start;
-		PlaceOffscreenForEntrance();
 	}
 	else {
 		EnterScreen();
@@ -155,6 +155,11 @@ void Player::OnStartBattle()
 	SetUp();
 	EnterScreen();
 	firstBattle = false;
+}
+
+int Player::CurrentLives()
+{
+	return lives;
 }
 
 void Player::MovePlayer(float deltaTime)
