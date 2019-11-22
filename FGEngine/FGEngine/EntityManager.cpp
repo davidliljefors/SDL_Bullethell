@@ -17,7 +17,6 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
-		Timer t("Update loop");
 		if (addList.size() > 0)
 		{
 			for (auto entity : addList)
@@ -43,7 +42,6 @@ namespace FG
 
 	void EntityManager::DoCollisions()
 	{
-		Timer t("Collision loop");
 		for (int x = 0; x < entities.size() - 1; x++)
 		{
 			if (!entities[x] || entities[x]->Dead())

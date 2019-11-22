@@ -24,7 +24,7 @@ namespace FG
 		}
 
 		float GetRadius() const { return radius; }
-		float SetRadius(float size)  { radius = size; }
+		void SetRadius(float size)  { radius = size; }
 		Vector2D GetPosition() const { return *position + offset; }
 
 	private:

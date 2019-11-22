@@ -20,22 +20,24 @@ public:
 		}
 		if (timeleft > 0)
 		{
-			collider->SetRadius(collider->GetRadius() * 1.01 * deltaTime);
+			collider->SetRadius(collider->GetRadius() + 25*(1+deltaTime));
 			timeleft -= deltaTime;
 		}
 	}
 
-	void Activate(float time)
+	void Activate(FG::Vector2D pos, float time)
 	{
+		position = pos;
 		collisionLayer.set(4);
+		collider->SetRadius(10.f);
 		timeleft = time;
 	}
 
 	void Render(FG::Camera* const camera) override
 	{
 #ifdef _DEBUG
-		const int samples = 10;
-		SDL_Color color = {255,0,0,0};
+		const int samples = 50;
+		SDL_Color color = {255,255,0,0};
 
 		SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
 		FG::Vector2D positions[samples + 1];

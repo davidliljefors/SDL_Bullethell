@@ -11,17 +11,19 @@
 
 #include "GameState.h"
 #include "Config.h"
+#include <iostream>
 
 Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile) :
 	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = Config::screenBoundaries;
-
+	bomb = new Bomb(camera, position);
+	entityManager->AddEntity(bomb);
 	SetUp();
-	
+
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
-	
+
 	collisionLayer.set(0);
 }
 
@@ -45,13 +47,13 @@ void Player::Update(float deltaTime)
 
 	if (fireTime > 0)
 		fireTime -= deltaTime;
-		
+
 	if (Invincible()) {
 		invincibleTime += deltaTime;
 
 		invincibleAlphaBlinkTime -= deltaTime;
 		if (invincibleAlphaBlinkTime <= 0) {
-			invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration - ((invincibleAlphaBlinkDuration/1.25f)*(invincibleTime/invincibleDuration));
+			invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration - ((invincibleAlphaBlinkDuration / 1.25f) * (invincibleTime / invincibleDuration));
 			invincibleAlphaBlink = !invincibleAlphaBlink;
 		}
 	}
@@ -73,7 +75,11 @@ void Player::Update(float deltaTime)
 
 		MovePlayer(deltaTime);
 		//MoveCamera(deltaTime);
-
+		if (inputManager->IsKeyDown(SDL_SCANCODE_X))
+		{
+			std::cout << "boom" << std::endl;
+			bomb->Activate(position, 0.5f);
+		}
 		if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
 		{
 			fireTime = fireCooldown;
@@ -88,7 +94,7 @@ void Player::Render(FG::Camera* const camera)
 		return;
 
 	assert(sprite);
-	sprite->Render(camera, position, (Invincible()? (invincibleAlphaBlink? 125 : 100) : 255));
+	sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
 
 	assert(colliderSprite);
 	colliderSprite->Render(camera, position);

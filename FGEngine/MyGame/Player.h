@@ -6,6 +6,7 @@
 #include "Projectile.h"
 #include "ProjectilePool.h"
 #include "AudioManager.h"
+#include "Bomb.h"
 
 namespace FG
 {
@@ -44,6 +45,7 @@ public:
 	void OnVictory();
 	void OnStartBattle();
 private:
+	Bomb* bomb = nullptr;
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	AudioManager* audioManager = nullptr;
