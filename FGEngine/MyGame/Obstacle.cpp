@@ -17,6 +17,7 @@ Obstacle::Obstacle(FG::Camera* camera) : camera(camera), entersScreen(false)
 }
 void Obstacle::Initialize()
 {
+
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
 }
 
@@ -72,15 +73,16 @@ void Obstacle::EnterNextPhase()
 		//should never happen
 		break;
 	case Phase::second:
-		health = 1;//25;
+		health = s_HealthValues[1];
 		std::cout << "Enter second phase" << std::endl;
 		break;
 	case Phase::third:
-		health = 1;//35;
+		health = s_HealthValues[2];
 		std::cout << "Enter Third Phase" << std::endl;
 		break;
 	case Phase::dead:
 		// die
+		health = s_HealthValues[3];
 		OnDeath();
 		std::cout << "boss died" << std::endl;
 		break;
@@ -139,8 +141,8 @@ Phase Obstacle::CurrentPhase()
 void Obstacle::SetUp()
 {
 	phase = Phase::first;
+	health = s_HealthValues[0];
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
-	health = 1;//15;
 }
 
 bool Obstacle::AddSprite(FG::Sprite* spr)

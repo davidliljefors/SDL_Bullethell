@@ -6,6 +6,9 @@
 #include "ProjectilePool.h"
 #include <vector>
 
+static constexpr int s_HealthValues[4] = {15,35,50,9999};
+
+
 namespace FG
 {
 	class Sprite;
@@ -40,7 +43,7 @@ public:
 	Phase CurrentPhase();
 	void SetUp();
 private:
-	int health = 1;//15;
+	int health = s_HealthValues[0];
 	Phase phase = Phase::first;
 	bool isColliding = false;
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
