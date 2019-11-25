@@ -58,6 +58,13 @@ Projectile::Projectile(const Projectile& other)
 	lifetime = other.lifetime;
 	sprite = other.sprite;
 	maxBoundaries = other.maxBoundaries;
+	speed = other.speed;
+	
+	type = other.type;
+	explosionProjectile = other.explosionProjectile;
+	pool = other.pool;
+	projectileCount = other.projectileCount;
+
 	AddSprite(other.sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
 
@@ -160,15 +167,16 @@ void Projectile::DrawBoundingBox()
 
 void Projectile::ExplodeProjectile()
 {
+	assert(pool);
 	for (size_t i = 0; i < projectileCount; i++)
 	{
 		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360/projectileCount) * i);
 
-		Projectile* proj = pool->GetProjectile();
+		Projectile* proj = pool->GetProjectile(*explosionProjectile);
 		if (proj) {
 			proj->Fire(position);
-			proj->direction = direction;
 			proj->SetValues(*explosionProjectile);
+			proj->direction = direction;
 		}
 	}
 }
@@ -182,12 +190,15 @@ void Projectile::Fire(FG::Vector2D firePosition)
 
 void Projectile::SetValues(const Projectile& projectile)
 {
+	type = projectile.type;
+
 	if (projectile.type == Regular)
 	{
 		sprite = projectile.sprite;
 		lifetime = projectile.lifetime;
 		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
+		speed = projectile.speed;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
 	}
@@ -198,6 +209,7 @@ void Projectile::SetValues(const Projectile& projectile)
 		lifetime = projectile.lifetime;
 		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
+		speed = projectile.speed;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
 		pool = projectile.pool;
