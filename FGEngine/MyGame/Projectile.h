@@ -57,7 +57,7 @@ private:
 	FG::Vector2D velocity;
 	float speedMult = 1;
 	float accelerationSpeed;
-
+	float angle;
 
 	void DrawColliderCircle();
 	void DrawBoundingBox();

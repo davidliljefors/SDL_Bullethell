@@ -17,7 +17,8 @@ Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, F
 	collisionLayer.set(1);
 	collisionLayer.set(0);
 	projectilePool = new ProjectilePool(1000,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 2000.f, 0, camera),
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up * 1000.f, 0, camera, projectilePool,
+			new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 1000.f, 2, camera), 6),
 		entityManager);
 }
 void Obstacle::Initialize()
@@ -54,7 +55,34 @@ void Obstacle::Update(float deltaTime)
 		}
 	}
 	else {
+		if (barragePauseTime > 0) {
+			barragePauseTime -= deltaTime;
+			if (barragePauseTime <= 0)
+				barrageTime = barrageDuration;
+		}
+		else {
+			if (firePauseTime > 0) {
+				firePauseTime -= deltaTime;
+				if (firePauseTime <= 0) {
+					Fire();
+				}
+			}
+			else
+				firePauseTime = firePauseDuration;
+			//Fire();
+			barrageTime -= deltaTime;
+			if (barrageTime <= 0)
+				barragePauseTime = barragePauseDuration;
+		}
+	}
+}
 
+void Obstacle::Fire()
+{
+	Projectile* proj = projectilePool->GetProjectile();
+	if (proj) {
+		proj->Fire(position + FG::Vector2D(0, -15));
+		//audioManager->PlaySFX("fire.wav");
 	}
 }
 

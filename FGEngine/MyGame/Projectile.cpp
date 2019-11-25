@@ -23,7 +23,7 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 		collisionLayer.set(1);
 	else
 	{
-		collisionLayer.set(0);
+		collisionLayer.set(5);
 		collisionLayer.set(4);
 	}
 	Reload();
@@ -38,6 +38,14 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+	{
+		collisionLayer.set(5);
+		collisionLayer.set(4);
+	}
 
 	Reload();
 }
@@ -56,7 +64,10 @@ Projectile::Projectile(const Projectile& other)
 	if (playerFired)
 		collisionLayer.set(1);
 	else
-		collisionLayer.set(0);
+	{
+		collisionLayer.set(5);
+		collisionLayer.set(4);
+	}
 
 	Reload();
 }
@@ -74,26 +85,32 @@ void Projectile::Update(float deltaTime)
 
 	Entity::Update(deltaTime);
 
-	position += velocity * speedMult * deltaTime;
+	position += velocity/*.AngleToVector2D(90) * 2000.0f */ * speedMult * deltaTime;
+
+	//angle += 1 * deltaTime;
+	//velocity = velocity.AngleToVector2D(angle);
 
 	speedMult += accelerationSpeed;
 
-	if (position.x < -OFFSCREEN_LIMIT ||
+	if (position.x < -OFFSCREEN_LIMIT   ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
 		position.y < -OFFSCREEN_LIMIT ||
 		position.y > maxBoundaries.y + OFFSCREEN_LIMIT)
-		Reload();
+		Reload();	
 
 	if (lifetime != -1)
 	{
 		elapsedTime += deltaTime;
-		if (Expired())
-			Reload();
+		if (Expired()) {
 
-		if (type == Exploding)
-		{
-			ExplodeProjectile();
+			/*if (type == Exploding)
+			{*/
+				ExplodeProjectile();
+			//}
+
+			Reload();
 		}
+
 	}
 
 }
@@ -119,6 +136,7 @@ void Projectile::OnCollision(FG::Entity* other)
 		//Obstacle* ba = static_cast<Obstacle*>(other);
 		Reload();
 	}
+
 }
 
 bool Projectile::IgnoreCollision()
@@ -146,7 +164,12 @@ void Projectile::ExplodeProjectile()
 	{
 		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360/projectileCount) * i);
 
-		
+		Projectile* proj = pool->GetProjectile();
+		if (proj) {
+			proj->Fire(position);
+			proj->velocity = direction;
+			proj->SetValues(*explosionProjectile);
+		}
 	}
 }
 

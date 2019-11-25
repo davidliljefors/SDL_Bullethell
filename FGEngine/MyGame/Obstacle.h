@@ -34,7 +34,6 @@ public:
 	void Render(FG::Camera* const camera) override;
 	void EnterNextPhase();
 
-
 	SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
 	bool AddSprite(FG::Sprite* spr) override;
@@ -48,6 +47,16 @@ private:
 
 	int health = s_HealthValues[0];
 	Phase phase = Phase::first;
+
+	float firePauseDuration = .2f;
+	float firePauseTime;
+	
+	float barrageDuration = 2.0f;
+	float barrageTime;
+
+	float barragePauseDuration = 1.0f;
+	float barragePauseTime;
+
 	bool isColliding = false;
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	SDL_Color CollidingColor = { 255, 0, 0, 255 };
@@ -69,6 +78,7 @@ private:
 	void DrawBoundingBox();
 	void DrawColliderCircle();
 	void OnDeath();
+	void Fire();
 };
 
 

@@ -25,6 +25,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
 
 	collisionLayer.set(0);
+	collisionLayer.set(5);
 }
 
 Player::~Player()
