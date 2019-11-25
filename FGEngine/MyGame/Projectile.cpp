@@ -10,11 +10,13 @@
 #include "Obstacle.h"
 #include "Config.h"
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
-	FG::Camera* camera) :
-	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries)
+Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
+	FG::Camera* camera, float lifetime = -1, float accelerationSpeed = 0, float rotation = 0) :
+	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), rotation(rotation), camera(camera), maxBoundaries(Config::screenBoundaries)
 {
 	type = Regular;
+
+	angle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Zero ,direction);
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -29,12 +31,14 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 	Reload();
 }
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
-	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount) :
-	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries),
+Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
+	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount, float lifetime = -1, float accelerationSpeed = 0, float rotation = 0) :
+	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), rotation(rotation), camera(camera), maxBoundaries(Config::screenBoundaries),
 	pool(pool), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
 	type = Exploding;
+
+	angle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Zero, direction);
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -58,6 +62,8 @@ Projectile::Projectile(const Projectile& other)
 	lifetime = other.lifetime;
 	sprite = other.sprite;
 	maxBoundaries = other.maxBoundaries;
+	speed = other.speed;
+	rotation = other.rotation;
 	AddSprite(other.sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
 
@@ -84,6 +90,20 @@ void Projectile::Update(float deltaTime)
 		return;
 
 	Entity::Update(deltaTime);
+
+	if (rotation > 0)
+	{
+		angle += rotation;
+		if (angle >= 360)
+		{
+			angle = 0;
+		}
+		if (angle < 0)
+		{
+			angle = 359;
+		}
+		direction = FG::Vector2D::AngleToVector2D(angle);
+	}
 
 	position += direction/*.AngleToVector2D(90) * 2000.0f */ * speed * deltaTime;
 
@@ -188,6 +208,8 @@ void Projectile::SetValues(const Projectile& projectile)
 		lifetime = projectile.lifetime;
 		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
+		speed = projectile.speed;
+		angle = projectile.angle;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
 	}
@@ -198,6 +220,8 @@ void Projectile::SetValues(const Projectile& projectile)
 		lifetime = projectile.lifetime;
 		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
+		speed = projectile.speed;
+		angle = projectile.angle;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
 		pool = projectile.pool;
