@@ -114,26 +114,26 @@ bool GameApplication::Initialize()
 	entityManager = new FG::EntityManager();
 
 	// Background layer 0 
-	Background* bg1 = new Background(camera, 5);
+	Background* bg1 = new Background(camera, 500);
 	bg1->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbg.png"));
 	bg1->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg1->position.y = static_cast<float>(bg1->sprite->size.y * 0.5);
 	entityManager->AddEntity(bg1);
 
-	Background* bg2 = new Background(camera, 5);
+	Background* bg2 = new Background(camera, 500);
 	bg2->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbg.png"));
 	bg2->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg2->position.y = static_cast<float>(bg2->sprite->size.y * -0.5);
 	entityManager->AddEntity(bg2);
 
 	//Background layer 1, particles
-	Background* bg3 = new Background(camera, 7);
+	Background* bg3 = new Background(camera, 700);
 	bg3->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbgSTARS.png"));
 	bg3->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg3->position.y = static_cast<float>(bg3->sprite->size.y * -0.5);
 	entityManager->AddEntity(bg3);
 
-	Background* bg4 = new Background(camera, 7);
+	Background* bg4 = new Background(camera, 700);
 	bg4->AddSprite(resourceManager->GetResource<FG::Sprite>("bullethellbgSTARS.png"));
 	bg4->position.x = static_cast<float>(Config::SCREENWIDTH / 2);
 	bg4->position.y = static_cast<float>(bg4->sprite->size.y * 0.5);

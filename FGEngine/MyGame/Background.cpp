@@ -6,5 +6,5 @@ void Background::Update(float deltaTime)
 	{
 		position.y -= (sprite->size.y * 2);
 	}
-	position.y += speed;
+	position.y += speed * deltaTime;
 }
