@@ -18,7 +18,7 @@ Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, F
 	collisionLayer.set(1);
 	collisionLayer.set(0);
 	projectilePool = new ProjectilePool(1000,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up, 1000.f, 0, camera),entityManager);
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera),entityManager);
 }
 void Obstacle::Initialize()
 {
@@ -68,7 +68,7 @@ void Obstacle::Update(float deltaTime)
 			}
 			else
 				firePauseTime = firePauseDuration;
-			//Fire();
+
 			barrageTime -= deltaTime;
 			if (barrageTime <= 0)
 				barragePauseTime = barragePauseDuration;

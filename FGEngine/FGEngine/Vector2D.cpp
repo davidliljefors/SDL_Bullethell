@@ -1,5 +1,7 @@
 #include "Vector2D.h"
 
+#define PI 3.14159265
+
 namespace FG
 {
 	const Vector2D Vector2D::Zero = { 0.0f, 0.0f };
@@ -51,11 +53,11 @@ namespace FG
 
 	Vector2D Vector2D::AngleToVector2D(float angle)
 	{
-		return Vector2D(cos(angle * (3.14159265 / 180.0f)), sin(angle * (3.14159265 / 180.0f)));
+		return Vector2D(cos(angle * (PI / 180.0f)), sin(angle * (PI / 180.0f))) ;
 	}
 
 	float Vector2D::Vector2DToAngle(const Vector2D& from, const Vector2D& to)
 	{
-		return acos((from.x * from.y + to.x * to.y) / (from.Magnitude() * to.Magnitude()));
+		return acos((from.x * from.y + to.x * to.y) / (from.Magnitude() * to.Magnitude())) * 180.0 / PI;
 	}
 }

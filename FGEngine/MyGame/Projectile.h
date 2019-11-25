@@ -21,10 +21,10 @@ enum ProjectileType
 class Projectile : public FG::Entity
 {
 public:
-	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
-		FG::Camera* camera);
-	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
-		FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount);
+	Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
+		FG::Camera* camera, float lifetime, float accelerationSpeed, float rotation);
+	Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
+		FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount, float lifetime, float accelerationSpeed, float rotation);
 	Projectile(const Projectile&);
 	~Projectile();
 
@@ -57,6 +57,7 @@ private:
 	FG::Vector2D direction;
 	float speed = 1;
 	float accelerationSpeed;
+	float rotation;
 	float angle;
 
 	void DrawColliderCircle();
