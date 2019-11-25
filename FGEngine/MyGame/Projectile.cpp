@@ -10,9 +10,9 @@
 #include "Obstacle.h"
 #include "Config.h"
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
 	FG::Camera* camera) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries)
+	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries)
 {
 	type = Regular;
 
@@ -29,9 +29,9 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 	Reload();
 }
 
-Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
 	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount) :
-	lifetime(lifetime), playerFired(playerFired), velocity(velocity), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries),
+	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), camera(camera), maxBoundaries(Config::screenBoundaries),
 	pool(pool), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
 	type = Exploding;
@@ -53,7 +53,7 @@ Projectile::Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG:
 Projectile::Projectile(const Projectile& other)
 {
 	camera = other.camera;
-	velocity = other.velocity;
+	direction = other.direction;
 	playerFired = other.playerFired;
 	lifetime = other.lifetime;
 	sprite = other.sprite;
@@ -85,12 +85,12 @@ void Projectile::Update(float deltaTime)
 
 	Entity::Update(deltaTime);
 
-	position += velocity/*.AngleToVector2D(90) * 2000.0f */ * speedMult * deltaTime;
+	position += direction/*.AngleToVector2D(90) * 2000.0f */ * speed * deltaTime;
 
 	//angle += 1 * deltaTime;
 	//velocity = velocity.AngleToVector2D(angle);
 
-	speedMult += accelerationSpeed;
+	speed += accelerationSpeed;
 
 	if (position.x < -OFFSCREEN_LIMIT   ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
@@ -103,10 +103,10 @@ void Projectile::Update(float deltaTime)
 		elapsedTime += deltaTime;
 		if (Expired()) {
 
-			/*if (type == Exploding)
-			{*/
+			if (type == Exploding)
+			{
 				ExplodeProjectile();
-			//}
+			}
 
 			Reload();
 		}
@@ -167,7 +167,7 @@ void Projectile::ExplodeProjectile()
 		Projectile* proj = pool->GetProjectile();
 		if (proj) {
 			proj->Fire(position);
-			proj->velocity = direction;
+			proj->direction = direction;
 			proj->SetValues(*explosionProjectile);
 		}
 	}
@@ -186,7 +186,7 @@ void Projectile::SetValues(const Projectile& projectile)
 	{
 		sprite = projectile.sprite;
 		lifetime = projectile.lifetime;
-		velocity = projectile.velocity;
+		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
@@ -196,7 +196,7 @@ void Projectile::SetValues(const Projectile& projectile)
 	{
 		sprite = projectile.sprite;
 		lifetime = projectile.lifetime;
-		velocity = projectile.velocity;
+		direction = projectile.direction;
 		accelerationSpeed = projectile.accelerationSpeed;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
