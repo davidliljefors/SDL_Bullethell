@@ -72,5 +72,7 @@ private:
 	
 	constexpr static float OFFSCREEN_LIMIT = 50;
 	FG::Vector2D maxBoundaries;
+
+	//Comment
 };
 
