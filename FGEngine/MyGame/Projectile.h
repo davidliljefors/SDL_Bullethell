@@ -21,9 +21,9 @@ enum ProjectileType
 class Projectile : public FG::Entity
 {
 public:
-	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
 		FG::Camera* camera);
-	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D velocity, float accelerationSpeed,
+	Projectile(FG::Sprite* sprite, float lifetime, bool playerFired, FG::Vector2D direction, float speed, float accelerationSpeed,
 		FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount);
 	Projectile(const Projectile&);
 	~Projectile();
@@ -54,8 +54,8 @@ private:
 	float elapsedTime = 0.f;
 	float lifetime;
 
-	FG::Vector2D velocity;
-	float speedMult = 1;
+	FG::Vector2D direction;
+	float speed = 1;
 	float accelerationSpeed;
 	float angle;
 
