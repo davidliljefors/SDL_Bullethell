@@ -85,6 +85,9 @@ private:
 	float invincibleAlphaBlinkDuration = .1f;
 	float invincibleAlphaBlinkTime;
 	bool invincibleAlphaBlink;
+	float timeSincelastHit = 0;
+	static constexpr float counterbombTimeframe = 0.3f;
+	bool hit = false;
 
 	static constexpr int MAX_BULLETS = 50;
 	
@@ -92,6 +95,7 @@ private:
 	void Respawn();
 	void EnterScreen();
 	void PlaceOffscreenForEntrance();
+	void GetHit();
 
 	void Shoot();
 	void DrawBoundingBox();

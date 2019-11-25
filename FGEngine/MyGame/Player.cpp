@@ -35,6 +35,16 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
+	// Counter bomb mechanic
+	if (hit)
+	{
+		timeSincelastHit += deltaTime;
+		if (timeSincelastHit > counterbombTimeframe)
+		{
+			GetHit();
+		}
+	}
+	
 	isColliding = false;
 	if (State::state == GAME_STATES::start) {
 		if (!firstBattle && lives >= 0) {
@@ -78,7 +88,11 @@ void Player::Update(float deltaTime)
 		//MoveCamera(deltaTime);
 		if (bombs > 0 && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
 		{
-			//std::cout << "boom" << std::endl;
+			if (hit)
+			{
+				std::cout << "counter bomb\n";
+				hit = false;
+			}
 			if (bomb->Activate(position, 0.5f)); {
 				if (bombs > 0)
 					bombs--;
@@ -112,9 +126,10 @@ SDL_Rect Player::GetColliderRect()
 	static_cast<int>(sprite->size.x), static_cast<int>(sprite->size.y) };
 }
 
-void Player::OnCollision(FG::Entity* other)
+//Used by counter bomb mechanic
+void Player::GetHit() 
 {
-	isColliding = true;
+	hit = false;
 	lives--;
 
 	PlaceOffscreenForEntrance();
@@ -125,6 +140,28 @@ void Player::OnCollision(FG::Entity* other)
 		EnterScreen();
 		Respawn();
 	}
+}
+
+void Player::OnCollision(FG::Entity* other)
+{
+	isColliding = true;
+
+	if (!hit)
+	{
+		hit = true;
+		timeSincelastHit = 0;
+	}
+
+	//lives--;
+
+	//PlaceOffscreenForEntrance();
+	//if (lives < 0) {
+	//	State::state = start;
+	//}
+	//else {
+	//	EnterScreen();
+	//	Respawn();
+	//}
 }
 
 bool Player::IgnoreCollision()
