@@ -93,7 +93,8 @@ void Player::Update(float deltaTime)
 				std::cout << "counter bomb\n";
 				hit = false;
 			}
-			if (bomb->Activate(position, 0.5f)); {
+			if (bomb->Activate(position, 0.5f))
+			{
 				if (bombs > 0)
 					bombs--;
 			}
