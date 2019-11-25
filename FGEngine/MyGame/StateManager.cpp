@@ -15,7 +15,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 {
 	// ENTITIES
 	player = new Player(entityManager, inputManager, audioManager, camera,
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), 5.5f, true, FG::Vector2D::Down, 2000.f, 0, camera));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), true, FG::Vector2D::Down, 2000.f, camera, 5.5f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 650 });
 	player->AddCircleCollider(player->sprite->size.x / 8.f);

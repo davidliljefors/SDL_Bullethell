@@ -17,8 +17,7 @@ Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, F
 	
 	collisionLayer.set(1);
 	collisionLayer.set(0);
-	projectilePool = new ProjectilePool(1000,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera),entityManager);
+	projectilePool = new ProjectilePool(1000,new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 }
 void Obstacle::Initialize()
 {
@@ -78,8 +77,8 @@ void Obstacle::Update(float deltaTime)
 
 void Obstacle::Fire()
 {
-	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up, 1000.f, 0, camera, projectilePool,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down, 500, 2, camera), 6);
+	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera, projectilePool,
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Down, 500, camera, 5, 2), 6, .5f);
 	Projectile* proj = projectilePool->GetProjectile(*newBullet);
 	if (proj) {
 		proj->Fire(position + FG::Vector2D(0, -15));

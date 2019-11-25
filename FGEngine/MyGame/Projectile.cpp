@@ -11,7 +11,7 @@
 #include "Config.h"
 
 Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
-	FG::Camera* camera, float lifetime = -1, float accelerationSpeed = 0, float rotation = 0) :
+	FG::Camera* camera, float lifetime, float accelerationSpeed, float rotation) :
 	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), rotation(rotation), camera(camera), maxBoundaries(Config::screenBoundaries)
 {
 	type = Regular;
@@ -32,7 +32,7 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 }
 
 Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
-	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount, float lifetime = -1, float accelerationSpeed = 0, float rotation = 0) :
+	FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount, float lifetime, float accelerationSpeed, float rotation) :
 	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), rotation(rotation), camera(camera), maxBoundaries(Config::screenBoundaries),
 	pool(pool), explosionProjectile(explosionProjectile), projectileCount(projectileCount)
 {
@@ -64,6 +64,12 @@ Projectile::Projectile(const Projectile& other)
 	maxBoundaries = other.maxBoundaries;
 	speed = other.speed;
 	rotation = other.rotation;
+
+	type = other.type;
+	pool = other.pool;
+	explosionProjectile = other.explosionProjectile;
+	projectileCount = other.projectileCount;
+
 	AddSprite(other.sprite);
 	AddCircleCollider(sprite->size.x / 2.f);
 
@@ -156,6 +162,10 @@ void Projectile::OnCollision(FG::Entity* other)
 		//Obstacle* ba = static_cast<Obstacle*>(other);
 		Reload();
 	}
+	if (typeid(*other) == typeid(Bomb)) {
+		//Obstacle* ba = static_cast<Obstacle*>(other);
+		Reload();
+	}
 
 }
 
@@ -187,8 +197,8 @@ void Projectile::ExplodeProjectile()
 		Projectile* proj = pool->GetProjectile();
 		if (proj) {
 			proj->Fire(position);
-			proj->direction = direction;
 			proj->SetValues(*explosionProjectile);
+			proj->direction = direction;
 		}
 	}
 }
@@ -202,6 +212,7 @@ void Projectile::Fire(FG::Vector2D firePosition)
 
 void Projectile::SetValues(const Projectile& projectile)
 {
+	type = projectile.type;
 	if (projectile.type == Regular)
 	{
 		sprite = projectile.sprite;
