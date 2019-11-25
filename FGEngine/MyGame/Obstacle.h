@@ -30,7 +30,7 @@ class Obstacle : public FG::Entity
 public:
 	void Initialize();
 	void Update(float deltaTime) override;
-	Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, FG::Camera* camera);
+	Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera);
 	void Render(FG::Camera* const camera) override;
 	void EnterNextPhase();
 
@@ -48,6 +48,7 @@ public:
 private:
 
 	int health = s_HealthValues[0];
+	int currentMaxHealth = s_HealthValues[0];
 	Phase phase = Phase::first;
 
 	float firePauseDuration = .2f;

@@ -12,9 +12,28 @@ AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManag
 		
 		FG::Music* music = new FG::Music("QuartzQuadrantBad.wav");
 		resourceManager->AddResource("QuartzQuadrantBad.wav", music);
-		
+
 		FG::SFX* sfx = new FG::SFX("fire.wav");
 		resourceManager->AddResource("fire.wav", sfx);
+
+		sfx = new FG::SFX("hit.wav");
+		resourceManager->AddResource("hit.wav", sfx);
+		sfx = new FG::SFX("hit1.wav");
+		resourceManager->AddResource("hit1.wav", sfx);
+
+		sfx = new FG::SFX("enemyFire.wav");
+		resourceManager->AddResource("enemyFire.wav", sfx);
+		sfx = new FG::SFX("enemyFire1.wav");
+		resourceManager->AddResource("enemyFire1.wav", sfx);
+		sfx = new FG::SFX("enemyFire2.wav");
+		resourceManager->AddResource("enemyFire2.wav", sfx);
+
+		sfx = new FG::SFX("enemyHurt.wav");
+		resourceManager->AddResource("enemyHurt.wav", sfx);
+		sfx = new FG::SFX("hitAlarm.wav");
+		resourceManager->AddResource("hitAlarm.wav", sfx);
+		sfx = new FG::SFX("playerDestroyed.wav");
+		resourceManager->AddResource("playerDestroyed.wav", sfx);
 
 	}
 }

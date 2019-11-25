@@ -26,6 +26,9 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 
 	collisionLayer.set(0);
 	collisionLayer.set(5);
+
+	audioManager->ChangeChannelVolume(.25f, 4);
+	audioManager->ChangeChannelVolume(.5f, 5);
 }
 
 Player::~Player()
@@ -132,7 +135,8 @@ void Player::GetHit()
 {
 	hit = false;
 	lives--;
-
+	
+	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	PlaceOffscreenForEntrance();
 	if (lives < 0) {
 		State::state = start;
@@ -151,6 +155,7 @@ void Player::OnCollision(FG::Entity* other)
 	{
 		hit = true;
 		timeSincelastHit = 0;
+		audioManager->PlaySFX("hitAlarm.wav", 5);
 	}
 
 	//lives--;

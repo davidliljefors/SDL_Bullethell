@@ -12,12 +12,14 @@
 #include "Config.h"
 #include <Timer.h>
 
-Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), resourcecManager(rManager), camera(camera), entersScreen(false)
+Obstacle::Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {
 	
 	collisionLayer.set(1);
 	collisionLayer.set(0);
 	projectilePool = new ProjectilePool(1000,new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
+	audioManager->ChangeChannelVolume(.25f, 3);
+	audioManager->ChangeChannelVolume(.5f, 2);
 }
 void Obstacle::Initialize()
 {
@@ -82,7 +84,7 @@ void Obstacle::Fire()
 	Projectile* proj = projectilePool->GetProjectile(*newBullet);
 	if (proj) {
 		proj->Fire(position + FG::Vector2D(0, -15));
-		//audioManager->PlaySFX("fire.wav");
+		audioManager->PlaySFX("enemyFire.wav", 3);
 	}
 }
 
@@ -106,16 +108,16 @@ void Obstacle::EnterNextPhase()
 		//should never happen
 		break;
 	case Phase::second:
-		health = s_HealthValues[1];
+		health = currentMaxHealth = s_HealthValues[1];
 		std::cout << "Enter second phase" << std::endl;
 		break;
 	case Phase::third:
-		health = s_HealthValues[2];
+		health = currentMaxHealth = s_HealthValues[2];
 		std::cout << "Enter Third Phase" << std::endl;
 		break;
 	case Phase::dead:
 		// die
-		health = s_HealthValues[3];
+		health = currentMaxHealth = s_HealthValues[3];
 		OnDeath();
 		std::cout << "boss died" << std::endl;
 		break;
@@ -136,14 +138,24 @@ void Obstacle::OnCollision(FG::Entity* other)
 	if (typeid(*other) == typeid(Projectile)) {
 		Projectile* p = static_cast<Projectile*>(other);
 		health -= 1;
-		//health -= p->damage;
+
+		if (health <= 0)
+		{
+			audioManager->PlaySFX("enemyHurt.wav", 2);
+		}
+		else if (health <= (currentMaxHealth/6))
+		{
+			audioManager->PlaySFX("hit1.wav", 1);
+		}
+		else
+			audioManager->PlaySFX("hit.wav", 1);
 	}
 	isColliding = true;
 }
 
 void Obstacle::OnDeath()
 {
-	health = 999;
+	health = currentMaxHealth = 999;
 	entersScreen = false;
 	PlaceOffscreenForEntrance();
 }
@@ -173,7 +185,7 @@ Phase Obstacle::CurrentPhase()
 void Obstacle::SetUp()
 {
 	phase = Phase::first;
-	health = s_HealthValues[0];
+	health = currentMaxHealth = s_HealthValues[0];
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
 }
 

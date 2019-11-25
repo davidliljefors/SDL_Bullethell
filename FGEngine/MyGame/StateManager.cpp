@@ -15,7 +15,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 {
 	// ENTITIES
 	player = new Player(entityManager, inputManager, audioManager, camera,
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), true, FG::Vector2D::Down, 2000.f, camera, 5.5f));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet_sheet.png"), true, FG::Vector2D::Down, 2500.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 	player->StartPosition({ 500, 650 });
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
@@ -23,7 +23,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager->AddEntity(player);
 
 	//Boss
-	boss = new Obstacle(entityManager, resourceManager, camera);
+	boss = new Obstacle(entityManager, aManager, resourceManager, camera);
 	boss->StartPosition({ 500, 100 });
 	boss->AddCircleCollider(64 / 2);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
@@ -34,7 +34,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager->AddEntity(boss);
 
 	//UI ELEMENTS
-	bossHPBar = new Healthbar({ 10, screenBoundaries.y - 40 }, { screenBoundaries.x - 20, 20 }, boss);
+	bossHPBar = new Healthbar({ screenBoundaries.x/2 - screenBoundaries.x/4, screenBoundaries.y - 30 }, { screenBoundaries.x /2, 10 }, boss);
 	entityManager->AddEntity(bossHPBar);
 
 	logo = new Text();
