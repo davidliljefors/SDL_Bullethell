@@ -34,6 +34,9 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager->AddEntity(boss);
 
 	//UI ELEMENTS
+	bossHPBar = new Healthbar({ 10, screenBoundaries.y - 40 }, { screenBoundaries.x - 20, 20 }, boss);
+	entityManager->AddEntity(bossHPBar);
+
 	logo = new Text();
 	logo->SetText(camera->GetInternalRenderer(), "Help me irl", "radiospace.ttf", 128, { 250,250,250 });
 	resourceManager->AddResource("Help me irl", logo);

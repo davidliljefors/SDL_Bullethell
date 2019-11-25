@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "AudioManager.h"
+#include "Healthbar.h"
 
 namespace FG
 {
@@ -36,6 +37,7 @@ private:
 	Player* player;
 	Obstacle* boss;
 
+	Healthbar* bossHPBar;
 	Text* logo;
 	Text* spacePrompt;
 	Text* hiScoreDisplay;

@@ -18,6 +18,7 @@
 #include "Obstacle.h"
 #include "Background.h"
 #include "Config.h"
+#include "Healthbar.h"
 
 FG::Vector2D Config::screenBoundaries = { SCREENWIDTH , SCREENHEIGHT };
 

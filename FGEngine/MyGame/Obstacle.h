@@ -43,6 +43,8 @@ public:
 	void PlaceOffscreenForEntrance();
 	Phase CurrentPhase();
 	void SetUp();
+	int GetHealth() { return health; }
+	int GetMaxHealth() { return s_HealthValues[static_cast<int>(phase)]; }
 private:
 
 	int health = s_HealthValues[0];
