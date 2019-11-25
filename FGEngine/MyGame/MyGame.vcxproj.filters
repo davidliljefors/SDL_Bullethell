@@ -74,5 +74,8 @@
     <ClInclude Include="Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Healthbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
