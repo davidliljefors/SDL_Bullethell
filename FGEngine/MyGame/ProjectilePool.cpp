@@ -25,7 +25,7 @@ Projectile* ProjectilePool::GetProjectile()
 	return nullptr;
 }
 
-Projectile* ProjectilePool::GetProjectile(Projectile projectile)
+Projectile* ProjectilePool::GetProjectile(const Projectile& projectile)
 {
 	for (int i = 0; i < maxBullets; i++)
 	{

@@ -17,7 +17,7 @@ public:
 	~ProjectilePool() { Destroy(); }
 
 	Projectile* GetProjectile();
-	Projectile* GetProjectile(Projectile projectile);
+	Projectile* GetProjectile(const Projectile& projectile);
 
 	void Destroy();
 

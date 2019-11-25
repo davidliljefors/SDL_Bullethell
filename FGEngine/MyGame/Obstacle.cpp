@@ -14,12 +14,11 @@
 
 Obstacle::Obstacle(FG::EntityManager* eManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {
+	
 	collisionLayer.set(1);
 	collisionLayer.set(0);
 	projectilePool = new ProjectilePool(1000,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up * 1000.f, 0, camera, projectilePool,
-			new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down * 1000.f, 2, camera), 6),
-		entityManager);
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up, 1000.f, 0, camera),entityManager);
 }
 void Obstacle::Initialize()
 {
@@ -79,7 +78,9 @@ void Obstacle::Update(float deltaTime)
 
 void Obstacle::Fire()
 {
-	Projectile* proj = projectilePool->GetProjectile();
+	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), .5, false, FG::Vector2D::Up, 1000.f, 0, camera, projectilePool,
+		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), 5, false, FG::Vector2D::Down, 500, 2, camera), 6);
+	Projectile* proj = projectilePool->GetProjectile(*newBullet);
 	if (proj) {
 		proj->Fire(position + FG::Vector2D(0, -15));
 		//audioManager->PlaySFX("fire.wav");
