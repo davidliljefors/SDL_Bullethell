@@ -25,6 +25,10 @@ Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* 
 	barragePauseTime = barragePauseDuration;
 	firePauseTime = firePauseDuration;
 
+	invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration;
+	invincibleAlphaBlink = false;
+	invincibleTime = invincibleDuration *.5f;
+
 	StartPosition(pos);
 
 	for (size_t i = 0; i < static_cast<int>(Phase::dead); i++)
@@ -47,6 +51,7 @@ void Obstacle::Update(float deltaTime)
 	if (health <= 0)
 	{
 		EnterNextPhase();
+		invincibleTime = 0;
 	}
 	isColliding = false;
 
@@ -70,6 +75,27 @@ void Obstacle::Update(float deltaTime)
 		}
 	}
 	else {
+
+
+		if (position.y != destination.y || position.x != destination.x) {
+			position = Lerp(position, destination, 1.5f * deltaTime);
+			/*if ((position.y <= destination.y + 5 && position.y >= destination.y - 5) &&
+				(position.x <= destination.x + 5 && position.x >= destination.x - 5)) {
+				position
+			}*/
+		}
+
+		if (Invincible()) {
+			invincibleTime += deltaTime;
+
+			invincibleAlphaBlinkTime -= deltaTime;
+			if (invincibleAlphaBlinkTime <= 0) {
+				invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration - ((invincibleAlphaBlinkDuration / 1.25f) * (invincibleTime / invincibleDuration));
+				invincibleAlphaBlink = !invincibleAlphaBlink;
+			}
+			return;
+		}
+
 		if (barragePauseTime > 0) {
 			barragePauseTime -= deltaTime;
 			if (barragePauseTime <= 0)
@@ -91,14 +117,6 @@ void Obstacle::Update(float deltaTime)
 				if (bossPositions[static_cast<int>(phase)].size() > 1)
 					MoveToAnotherPosition();
 			}
-		}
-
-		if (position.y != destination.y || position.x != destination.x) {
-			position = Lerp(position, destination, 1.5f * deltaTime);
-			/*if ((position.y <= destination.y + 5 && position.y >= destination.y - 5) &&
-				(position.x <= destination.x + 5 && position.x >= destination.x - 5)) {
-				position
-			}*/
 		}
 	}
 }
@@ -127,7 +145,8 @@ void Obstacle::MoveToAnotherPosition()
 
 void Obstacle::Render(FG::Camera* const camera)
 {
-	Entity::Render(camera);
+	//Entity::Render(camera);
+	sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
 	DrawColliderCircle();
 	//DrawBoundingBox();
 }
@@ -189,6 +208,11 @@ void Obstacle::OnCollision(FG::Entity* other)
 			audioManager->PlaySFX("hit.wav", 1);
 	}
 	isColliding = true;
+}
+
+bool Obstacle::IgnoreCollision()
+{
+	return Invincible();
 }
 
 void Obstacle::OnDeath()

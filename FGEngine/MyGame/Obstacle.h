@@ -35,6 +35,7 @@ public:
 
 	SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
+	bool IgnoreCollision() override;
 	bool AddSprite(FG::Sprite* spr) override;
 
 	void EnterScreen();
@@ -43,6 +44,7 @@ public:
 	void SetUp();
 	int GetHealth() { return health; }
 	int GetMaxHealth() { return s_HealthValues[static_cast<int>(phase)]; }
+	bool Invincible() { return invincibleTime < invincibleDuration; }
 private:
 
 	int health = s_HealthValues[0];
@@ -52,11 +54,17 @@ private:
 	static constexpr float firePauseDuration = .2f;
 	static constexpr float barragePauseDuration = 1.0f;
 	static constexpr float barrageDuration = 2.0f;
+	static constexpr float invincibleDuration = 1.0f;
+	static constexpr float invincibleAlphaBlinkDuration = .1f;
 	
 	float firePauseTime;
 	float barrageTime;
 	float barragePauseTime;
-	
+
+	float invincibleTime;
+	float invincibleAlphaBlinkTime;
+	bool invincibleAlphaBlink;
+
 	std::vector<std::vector<FG::Vector2D>> bossPositions;
 
 
