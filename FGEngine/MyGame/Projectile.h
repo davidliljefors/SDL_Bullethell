@@ -37,7 +37,7 @@ public:
 	void SetValues(const Projectile& projectile);
 
 	bool IgnoreCollision() override;
-
+	void Reload();
 private:
 	FG::Camera* camera = nullptr;
 
@@ -63,7 +63,7 @@ private:
 	void DrawBoundingBox();
 	void ExplodeProjectile();
 
-	void Reload();
+	
 	virtual void OnLifetimeEnd() {}
 
 	constexpr static SDL_Color notCollidingColor = { 0, 255, 0, 255 };

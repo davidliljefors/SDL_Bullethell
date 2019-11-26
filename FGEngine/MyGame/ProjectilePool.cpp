@@ -13,6 +13,14 @@ ProjectilePool::ProjectilePool(int maxBullets, Projectile* projectilePrefab, FG:
 	}
 }
 
+void ProjectilePool::ReloadAll()
+{
+	for (int i = 0; i < maxBullets; i++)
+	{
+		projectiles[i]->Reload();
+	}
+}
+
 Projectile* ProjectilePool::GetProjectile()
 {
 	for (int i = 0; i < maxBullets; i++)
