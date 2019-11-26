@@ -25,8 +25,9 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(1);
 	else
 	{
-		collisionLayer.set(5);
-		collisionLayer.set(4);
+		collisionLayer.set(6); // Layer 6 is for sensor
+		collisionLayer.set(5); 
+		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 	Reload();
 }
@@ -47,8 +48,9 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(1);
 	else
 	{
+		collisionLayer.set(6); // Layer 6 is for sensor
 		collisionLayer.set(5);
-		collisionLayer.set(4);
+		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 
 	Reload();
@@ -77,8 +79,9 @@ Projectile::Projectile(const Projectile& other)
 		collisionLayer.set(1);
 	else
 	{
+		collisionLayer.set(6); // Layer 6 is for sensor
 		collisionLayer.set(5);
-		collisionLayer.set(4);
+		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 
 	Reload();
@@ -192,7 +195,7 @@ void Projectile::ExplodeProjectile()
 {
 	for (size_t i = 0; i < projectileCount; i++)
 	{
-		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360/projectileCount) * i);
+		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360/projectileCount) * static_cast<float>(i));
 
 		Projectile* proj = pool->GetProjectile();
 		if (proj) {

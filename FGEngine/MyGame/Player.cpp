@@ -23,10 +23,11 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	SetUp();
 
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
+	sensor = new Sensor(this, Sensor::graze, 50.f);
+	entityManager->AddEntity(sensor);
 
 	collisionLayer.set(0);
 	collisionLayer.set(5);
-
 	audioManager->ChangeChannelVolume(.25f, 4);
 	audioManager->ChangeChannelVolume(.5f, 5);
 }
@@ -150,6 +151,10 @@ void Player::GetHit()
 void Player::OnCollision(FG::Entity* other)
 {
 	isColliding = true;
+	if (typeid(*other) == typeid(Sensor))
+	{
+		return;
+	}
 
 	if (!hit)
 	{
