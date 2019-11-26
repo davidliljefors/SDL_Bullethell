@@ -7,6 +7,7 @@
 #include "ProjectilePool.h"
 #include "AudioManager.h"
 #include "Bomb.h"
+#include "Sensor.h"
 
 namespace FG
 {
@@ -24,8 +25,8 @@ class Player : public FG::Entity
 
 public:
 	float speed = 500.0f;
-	int maxLives = 5;
-	int maxBombs = 3;
+	static constexpr int maxLives = 5;
+	static constexpr int maxBombs = 3;
 
 	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
 	~Player();
@@ -56,6 +57,7 @@ private:
 
 	FG::Camera* camera = nullptr;
 	FG::Sprite* colliderSprite = nullptr;
+	Sensor* sensor = nullptr;
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
@@ -73,21 +75,21 @@ private:
 
 	ProjectilePool* projectilePool = nullptr;
 
-	float fireCooldown = .125f;
-	float fireTime;
-
-	float respawnPauseDuration = 1.0f;
-	float respawnPauseTime;
-
-	float invincibleDuration = 3.0f;
-	float invincibleTime;
-
-	float invincibleAlphaBlinkDuration = .1f;
-	float invincibleAlphaBlinkTime;
-	bool invincibleAlphaBlink;
-	float timeSincelastHit = 0;
+	static constexpr float fireCooldown = .125f;
+	static constexpr float respawnPauseDuration = 1.0f;
+	static constexpr float invincibleDuration = 3.0f;
+	static constexpr float invincibleAlphaBlinkDuration = .1f;
 	static constexpr float counterbombTimeframe = 0.3f;
+
+	float fireTime;
+	float respawnPauseTime;
+	float invincibleTime;
+	float invincibleAlphaBlinkTime;
+	float timeSincelastHit = 0;
+
+	bool invincibleAlphaBlink;
 	bool hit = false;
+
 
 	static constexpr int MAX_BULLETS = 50;
 	

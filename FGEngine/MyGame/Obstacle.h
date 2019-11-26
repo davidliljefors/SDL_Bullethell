@@ -50,20 +50,20 @@ private:
 	int currentMaxHealth = s_HealthValues[0];
 	Phase phase = Phase::first;
 
-	float firePauseDuration = .2f;
-	float firePauseTime;
+	static constexpr float firePauseDuration = .2f;
+	static constexpr float barragePauseDuration = 1.0f;
+	static constexpr float barrageDuration = 2.0f;
 	
-	float barrageDuration = 2.0f;
+	float firePauseTime;
 	float barrageTime;
-
-	float barragePauseDuration = 1.0f;
 	float barragePauseTime;
 	
 	std::vector<std::vector<FG::Vector2D>> bossPositions;
 
+
 	bool isColliding = false;
-	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
-	SDL_Color CollidingColor = { 255, 0, 0, 255 };
+	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
+	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
 	
 	FG::EntityManager* entityManager;
 	FG::ResourceManager* resourcecManager;
