@@ -29,7 +29,7 @@ class Obstacle : public FG::Entity
 public:
 	void Initialize();
 	void Update(float deltaTime) override;
-	Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera);
+	Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera);
 	void Render(FG::Camera* const camera) override;
 	void EnterNextPhase();
 
@@ -37,7 +37,6 @@ public:
 	void OnCollision(FG::Entity* other) override;
 	bool AddSprite(FG::Sprite* spr) override;
 
-	void StartPosition(FG::Vector2D pos);
 	void EnterScreen();
 	void PlaceOffscreenForEntrance();
 	Phase CurrentPhase();
@@ -80,6 +79,7 @@ private:
 
 	ProjectilePool* projectilePool = nullptr;
 
+	void StartPosition(FG::Vector2D pos);
 	void DrawBoundingBox();
 	void DrawColliderCircle();
 	void OnDeath();

@@ -13,7 +13,7 @@
 #include "Config.h"
 #include <iostream>
 
-Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile) :
+Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile) :
 	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
@@ -30,6 +30,7 @@ Player::Player(FG::EntityManager* entityManager, FG::InputManager* inputManager,
 	collisionLayer.set(5);
 	audioManager->ChangeChannelVolume(.25f, 4);
 	audioManager->ChangeChannelVolume(.5f, 5);
+	StartPosition(pos);
 }
 
 Player::~Player()
@@ -258,6 +259,7 @@ void Player::MovePlayer(float deltaTime)
 		position.y = minBoundaries.y + sprite->size.y / 2;
 	else if (position.y > maxBoundaries.y - sprite->size.y / 2)
 		position.y = maxBoundaries.y - sprite->size.y / 2;
+	sensor->position = position;
 }
 
 void Player::MoveCamera(float deltaTime)

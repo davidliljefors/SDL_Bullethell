@@ -14,17 +14,17 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), screenBoundaries(Config::screenBoundaries)
 {
 	// ENTITIES
-	player = new Player(entityManager, inputManager, audioManager, camera,
+	player = new Player({ 500, 650 }, entityManager, inputManager, audioManager, camera,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("friendlybullet.png"), true, FG::Vector2D::Down, 2500.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
-	player->StartPosition({ 500, 650 });
+
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
 	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(player);
 
 	//Boss
-	boss = new Obstacle(entityManager, aManager, resourceManager, camera);
-	boss->StartPosition({ 500, 100 });
+	boss = new Obstacle({ 500, 100 }, entityManager, aManager, resourceManager, camera);
+
 	boss->AddCircleCollider(64 / 2);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));

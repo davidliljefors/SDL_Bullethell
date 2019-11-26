@@ -11,8 +11,9 @@
 #include <iostream>
 #include "Config.h"
 #include <Timer.h>
+#include "Config.h"
 
-Obstacle::Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
+Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {	
 	collisionLayer.set(1);
 	collisionLayer.set(0);
@@ -20,11 +21,19 @@ Obstacle::Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::Reso
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
 
+	barrageTime = barrageDuration;
+	barragePauseTime = barragePauseDuration;
+	firePauseTime = firePauseDuration;
+
+	StartPosition(pos);
+
 	for (size_t i = 0; i < static_cast<int>(Phase::dead); i++)
 	{
-		bossPositions.push_back({ {0,0} });
+		bossPositions.push_back({ {pos.x, pos.y} });
 	}
-	//bossPositions[0].push_back
+	bossPositions[0].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
+	bossPositions[0].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
+	destination = bossPositions[0][0];
 }
 
 void Obstacle::Initialize()
@@ -79,13 +88,13 @@ void Obstacle::Update(float deltaTime)
 			barrageTime -= deltaTime;
 			if (barrageTime <= 0) {
 				barragePauseTime = barragePauseDuration;
-				if (bossPositions[static_cast<int>(phase)].size() > 0)
+				if (bossPositions[static_cast<int>(phase)].size() > 1)
 					MoveToAnotherPosition();
 			}
 		}
 
 		if (position.y != destination.y || position.x != destination.x) {
-			position = Lerp(position, destination, 5 * deltaTime);
+			position = Lerp(position, destination, 1.5f * deltaTime);
 			/*if ((position.y <= destination.y + 5 && position.y >= destination.y - 5) &&
 				(position.x <= destination.x + 5 && position.x >= destination.x - 5)) {
 				position
@@ -108,7 +117,11 @@ void Obstacle::Fire()
 
 void Obstacle::MoveToAnotherPosition()
 {
-	//destination = bossPositions[static_cast<int>(phase)][rand() % bossPositions.size()];
+	FG::Vector2D newDestination;
+	do
+		newDestination = bossPositions[static_cast<int>(phase)][rand() % bossPositions.size()];
+	while (newDestination == destination);
+	destination = newDestination;
 }
 
 
@@ -147,6 +160,8 @@ void Obstacle::EnterNextPhase()
 	default:
 		break;
 	}
+	if (phase != Phase::dead)
+		destination = bossPositions[static_cast<int>(phase)][0];
 }
 
 SDL_Rect Obstacle::GetColliderRect()

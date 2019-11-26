@@ -17,7 +17,7 @@ Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
 
 void Sensor::Update(float deltaTime)
 {
-	position = m_user->position;
+	 position = m_user->position;
 }
 
 void Sensor::Render(FG::Camera* const camera)

@@ -19,6 +19,7 @@ namespace FG
 		Vector2D operator*(float scalar) const;
 		Vector2D operator+=(const Vector2D& other);
 		Vector2D operator-=(const Vector2D& other);
+		bool operator==(const Vector2D& other);
 
 		inline float Magnitude() const
 		{

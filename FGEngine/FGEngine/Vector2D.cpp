@@ -51,6 +51,11 @@ namespace FG
 		return *this;
 	}
 
+	bool Vector2D::operator==(const Vector2D& other)
+	{
+		return x == other.x && y == other.y;
+	}
+
 	Vector2D Vector2D::AngleToVector2D(float angle)
 	{
 		return Vector2D(cos(angle * (PI / 180.0f)), sin(angle * (PI / 180.0f))) ;

@@ -28,7 +28,7 @@ public:
 	static constexpr int maxLives = 5;
 	static constexpr int maxBombs = 3;
 
-	Player(FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
+	Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }
@@ -43,7 +43,6 @@ public:
 	void AddColliderSprite(FG::Sprite* sprite) { this->colliderSprite = sprite; }
 	bool IgnoreCollision() override;
 
-	void StartPosition(FG::Vector2D pos);
 	void OnVictory();
 	void OnStartBattle();
 
@@ -92,7 +91,8 @@ private:
 
 
 	static constexpr int MAX_BULLETS = 50;
-	
+
+	void StartPosition(FG::Vector2D pos);
 	void SetUp();
 	void Respawn();
 	void EnterScreen();
