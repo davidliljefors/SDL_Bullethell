@@ -95,6 +95,9 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet.png");
 	resourceManager->AddResource("bullet.png", sprite);
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "friendlybullet.png");
+	resourceManager->AddResource("friendlybullet.png", sprite);
 
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "heart.png");

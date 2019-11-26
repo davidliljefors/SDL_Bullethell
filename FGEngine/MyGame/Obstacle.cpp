@@ -13,14 +13,20 @@
 #include <Timer.h>
 
 Obstacle::Obstacle(FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
-{
-	
+{	
 	collisionLayer.set(1);
 	collisionLayer.set(0);
 	projectilePool = new ProjectilePool(1000,new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
+
+	for (size_t i = 0; i < static_cast<int>(Phase::dead); i++)
+	{
+		bossPositions.push_back({ {0,0} });
+	}
+	//bossPositions[0].push_back
 }
+
 void Obstacle::Initialize()
 {
 
@@ -71,11 +77,23 @@ void Obstacle::Update(float deltaTime)
 				firePauseTime = firePauseDuration;
 
 			barrageTime -= deltaTime;
-			if (barrageTime <= 0)
+			if (barrageTime <= 0) {
 				barragePauseTime = barragePauseDuration;
+				if (bossPositions[static_cast<int>(phase)].size() > 0)
+					MoveToAnotherPosition();
+			}
+		}
+
+		if (position.y != destination.y || position.x != destination.x) {
+			position = Lerp(position, destination, 5 * deltaTime);
+			/*if ((position.y <= destination.y + 5 && position.y >= destination.y - 5) &&
+				(position.x <= destination.x + 5 && position.x >= destination.x - 5)) {
+				position
+			}*/
 		}
 	}
 }
+
 
 void Obstacle::Fire()
 {
@@ -86,6 +104,11 @@ void Obstacle::Fire()
 		proj->Fire(position + FG::Vector2D(0, -15));
 		audioManager->PlaySFX("enemyFire.wav", 3);
 	}
+}
+
+void Obstacle::MoveToAnotherPosition()
+{
+	//destination = bossPositions[static_cast<int>(phase)][rand() % bossPositions.size()];
 }
 
 

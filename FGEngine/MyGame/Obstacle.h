@@ -10,7 +10,6 @@
 
 static constexpr int s_HealthValues[4] = {15,35,50,9999};
 
-
 namespace FG
 {
 	class Sprite;
@@ -59,6 +58,8 @@ private:
 
 	float barragePauseDuration = 1.0f;
 	float barragePauseTime;
+	
+	std::vector<std::vector<FG::Vector2D>> bossPositions;
 
 	bool isColliding = false;
 	SDL_Color notCollidingColor = { 0, 255, 0, 255 };
@@ -75,6 +76,7 @@ private:
 	bool firstBattle = true;
 
 	FG::Vector2D startPosition;
+	FG::Vector2D destination;
 
 	ProjectilePool* projectilePool = nullptr;
 
@@ -82,6 +84,7 @@ private:
 	void DrawColliderCircle();
 	void OnDeath();
 	void Fire();
+	void MoveToAnotherPosition();
 };
 
 

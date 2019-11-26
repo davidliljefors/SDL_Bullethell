@@ -18,6 +18,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectilePool.cpp" />
+    <ClCompile Include="ScoreController.cpp" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectilePool.h" />
+    <ClInclude Include="ScoreController.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="StateManager.h" />
   </ItemGroup>
