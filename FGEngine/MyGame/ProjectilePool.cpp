@@ -43,6 +43,7 @@ Projectile* ProjectilePool::GetProjectile(const Projectile& projectile)
 			return projectiles[i];
 		}
 	}
+	return nullptr;
 }
 
 void ProjectilePool::Destroy()
