@@ -8,7 +8,7 @@
 #include "AudioManager.h"
 #include <vector>
 
-static constexpr int s_HealthValues[4] = {15,35,50,9999};
+static constexpr int s_HealthValues[4] = {30,50,75,9999};
 
 namespace FG
 {

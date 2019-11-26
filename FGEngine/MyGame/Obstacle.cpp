@@ -20,11 +20,7 @@ Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* 
 	projectilePool = new ProjectilePool(1000,new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
-
-	barrageTime = barrageDuration;
-	barragePauseTime = barragePauseDuration;
-	firePauseTime = firePauseDuration;
-
+	
 	invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration;
 	invincibleAlphaBlink = false;
 	invincibleTime = invincibleDuration *.5f;
@@ -37,6 +33,12 @@ Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* 
 	}
 	bossPositions[0].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPositions[0].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
+
+	bossPositions[1].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
+	bossPositions[1].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
+
+	bossPositions[2].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
+	bossPositions[2].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
 	destination = bossPositions[0][0];
 }
 
@@ -52,6 +54,11 @@ void Obstacle::Update(float deltaTime)
 	{
 		EnterNextPhase();
 		invincibleTime = 0;
+
+		barrageTime = barrageDuration;
+		barragePauseTime = barragePauseDuration;
+		firePauseTime = firePauseDuration;
+		projectilePool->ReloadAll();
 	}
 	isColliding = false;
 
@@ -249,6 +256,9 @@ void Obstacle::SetUp()
 	phase = Phase::first;
 	health = currentMaxHealth = s_HealthValues[0];
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
+	barrageTime = barrageDuration;
+	barragePauseTime = barragePauseDuration;
+	firePauseTime = firePauseDuration;
 }
 
 bool Obstacle::AddSprite(FG::Sprite* spr)
