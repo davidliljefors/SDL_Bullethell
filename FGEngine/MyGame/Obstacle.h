@@ -52,8 +52,9 @@ private:
 	Phase phase = Phase::first;
 
 	static constexpr float firePauseDuration = .2f;
-	static constexpr float barragePauseDuration = 1.0f;
-	static constexpr float barrageDuration = 2.0f;
+	static constexpr float barrageDuration = 1.0f;
+	static constexpr float barragePauseDuration = 2.0f;
+
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
 	

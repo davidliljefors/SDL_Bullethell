@@ -1,6 +1,8 @@
+
 #include <sstream>
 #include <iomanip>
 #include <ctime>
+
 #include "StateManager.h"
 #include <Text.h>
 #include <Sprite.h>
@@ -10,6 +12,8 @@
 
 #include "Camera.h"
 #include "Config.h"
+#include <sstream>
+//#include <iomanip>
 
 GAME_STATES State::state = GAME_STATES::start;
 
@@ -104,8 +108,9 @@ void StateManager::Update()
 
 		if (lastDisplayScore != currentDisplayScore) {
 			lastDisplayScore = currentDisplayScore;
-
+			
 			std::stringstream s;
+
 			s << std::setw(10) << std::setfill('0') << lastDisplayScore;
 			currentScoreDisplay->SetText(camera->GetInternalRenderer(), s.str(), "radiospace.ttf", 48, { 225,225,225 });
 		}
