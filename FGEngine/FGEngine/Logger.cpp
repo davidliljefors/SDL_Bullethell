@@ -29,6 +29,7 @@ namespace FG
 		{ return; }
 
 		file << inFile << " (" << atLine << ")\t" << message << std::endl;
+		std::cout << inFile << " (" << atLine << ")\t" << message << std::endl;
 		file.close();
 	}
 

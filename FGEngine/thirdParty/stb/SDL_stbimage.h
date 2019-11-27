@@ -343,7 +343,10 @@ static int STBIMG__io_read(void* user, char* data, int size)
 {
 	STBIMG_stbio_RWops* io = (STBIMG_stbio_RWops*)user;
 
+#pragma warning(push)
+#pragma warning(disable : 4267)
 	int ret = SDL_RWread(io->src, data, sizeof(char), size);
+#pragma warning(pop)
 	if(ret == 0)
 	{
 		// we're at EOF or some error happend
@@ -523,7 +526,10 @@ SDL_STBIMG_DEF SDL_Surface* STBIMG_Load_RW_noSeek(SDL_RWops* src, int freesrc)
 	{
 		// if that fails, STBIMG_LoadFromMemory() has set an SDL error
 		// and ret is NULL, so nothing special to do for us
+#pragma warning(push)
+#pragma warning(disable : 4244)
 		ret = STBIMG_LoadFromMemory(buf, fileSize);
+#pragma warning(pop)
 	}
 
 end:
