@@ -3,13 +3,19 @@
 #include "Music.h"
 #include "SFX.h"
 
+
+#pragma warning(push)
+#pragma warning(disable : 4244)
+
+
+
 AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManager(resourceManager)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
 		printf("Mixer Initialization Error: %s\n", Mix_GetError());
 	else {
 		ChangeMusicVolume(.25f);
-		
+
 		FG::Music* music = new FG::Music("QuartzQuadrantBad.wav");
 		resourceManager->AddResource("QuartzQuadrantBad.wav", music);
 
@@ -86,10 +92,12 @@ void AudioManager::ChangeChannelVolume(float volume, int channel)
 
 float AudioManager::SFXVolume()
 {
-	return Mix_Volume(-1, -1);
+	return static_cast<float>(Mix_Volume(-1, -1));
 }
 
 float AudioManager::MusicVolume()
 {
-	return Mix_VolumeMusic(-1);
+	return static_cast<float>(Mix_VolumeMusic(-1));
 }
+
+#pragma warning(pop)
