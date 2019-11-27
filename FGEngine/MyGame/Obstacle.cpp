@@ -40,6 +40,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPositions[2].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPositions[2].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
 	destination = bossPositions[0][0];
+	layer = EntityLayer::Character;
 }
 
 void Obstacle::Initialize()

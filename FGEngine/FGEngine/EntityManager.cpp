@@ -24,6 +24,7 @@ namespace FG
 				entities.push_back(entity);
 			}
 			addList.clear();
+			Sort();
 		}
 
 		for (auto& entity : entities)
@@ -64,6 +65,15 @@ namespace FG
 				}
 			}
 		}
+	}
+
+	void EntityManager::Sort()
+	{
+		std::sort(entities.begin(), entities.end(), [](const Entity* e1, const Entity* e2)
+			{
+				return e1->layer < e2->layer;
+			}
+		);
 	}
 
 	void EntityManager::AddEntity(Entity* entity)

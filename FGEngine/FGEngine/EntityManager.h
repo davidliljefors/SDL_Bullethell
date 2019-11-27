@@ -14,6 +14,7 @@ namespace FG
 		void Update(float deltaTime);
 		void Render(Camera* const camera);
 		void DoCollisions();
+		void Sort();
 
 		void AddEntity(Entity* entity);
 		template<typename T, typename... TArgs>

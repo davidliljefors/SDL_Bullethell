@@ -12,7 +12,10 @@ namespace FG
 class Background : public FG::Entity
 {
 public:
-	Background(FG::Camera* camera, int speed) : camera(camera), speed(speed) {}
+	Background(FG::Camera* camera, int speed) : camera(camera), speed(speed) 
+	{
+		layer = EntityLayer::Background;
+	}
 	void Update(float deltaTime) override;
 
 private:

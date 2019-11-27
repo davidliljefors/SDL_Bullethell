@@ -35,6 +35,7 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 	audioManager->ChangeChannelVolume(.5f, 5);
 	audioManager->ChangeChannelVolume(.5f, 6);
 	StartPosition(pos);
+	layer = EntityLayer::Character;
 }
 
 Player::~Player()
