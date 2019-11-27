@@ -52,7 +52,7 @@ public:
 		//collider->Draw(camera, 255, 150, 0);
 
 		if (timeleft > 0)
-			sprite->Render(camera, position, currentAlpha);
+			sprite->Render(camera, position, static_cast<unsigned char>(currentAlpha));
 	}
 
 
