@@ -1,4 +1,4 @@
-#include "Time.h"
+#include "FGTime.h"
 
 #include <SDL_timer.h>
 

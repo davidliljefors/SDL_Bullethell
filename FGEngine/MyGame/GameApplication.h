@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Application.h>
-#include <Time.h>
+#include <FGTime.h>
 #include "StateManager.h"
 #include "AudioManager.h"
 namespace FG

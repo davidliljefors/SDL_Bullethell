@@ -128,6 +128,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="FGTime.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IResource.h" />
     <ClInclude Include="Logger.h" />
@@ -136,7 +137,6 @@
     <ClInclude Include="SFX.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="Time.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Window.h" />

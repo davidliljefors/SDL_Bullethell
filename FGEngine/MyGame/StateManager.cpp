@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iomanip>
+#include <ctime>
 #include "StateManager.h"
 #include <Text.h>
 #include <Sprite.h>
@@ -106,7 +107,7 @@ void StateManager::Update()
 
 			std::stringstream s;
 			s << std::setw(10) << std::setfill('0') << lastDisplayScore;
-			currentScoreDisplay->SetText(camera->GetInternalRenderer(), s.str, "radiospace.ttf", 48, { 225,225,225 });
+			currentScoreDisplay->SetText(camera->GetInternalRenderer(), s.str(), "radiospace.ttf", 48, { 225,225,225 });
 		}
 		/*
 		if (inputManager->IsKeyDown(SDL_SCANCODE_Z)) {
