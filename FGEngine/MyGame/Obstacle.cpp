@@ -224,7 +224,7 @@ void Obstacle::OnCollision(FG::Entity* other)
 		{
 			audioManager->PlaySFX("enemyHurt.wav", 2);
 
-			
+			scoreController->AddScore(1000);
 		}
 		else
 		{
@@ -234,6 +234,7 @@ void Obstacle::OnCollision(FG::Entity* other)
 			}
 			else
 				audioManager->PlaySFX("hit.wav", 1);
+			scoreController->AddScore(500);
 		}
 	}
 	isColliding = true;

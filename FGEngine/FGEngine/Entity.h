@@ -6,7 +6,7 @@
 #include "Circle.h"
 #include "Animation.h"
 
-enum EntityLayer {
+enum class EntityLayer {
 	Background,
 	Character,
 	Bullets
