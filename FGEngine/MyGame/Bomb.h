@@ -6,10 +6,11 @@ class Bomb : public FG::Entity
 {
 
 public:
-	Bomb(FG::Camera* camera, FG::Vector2D position) : camera(camera)
+	Bomb(FG::Camera* camera, FG::Vector2D position, FG::Sprite* sprite) : camera(camera)
 	{
 		Entity::position = position;
 		AddCircleCollider(0);
+		this->sprite = sprite;
 	}
 	void Update(float deltaTime) override
 	{
@@ -21,6 +22,8 @@ public:
 		if (timeleft > 0)
 		{
 			collider->SetRadius(collider->GetRadius() + 25*(1+deltaTime));
+
+			//sprite->size += FG::Vector2D::One * 20;// *deltaTime;
 			timeleft -= deltaTime;
 		}
 	}
@@ -32,6 +35,7 @@ public:
   		position = pos;
 		collisionLayer.set(4);
 		collider->SetRadius(10.f);
+		//sprite->size = FG::Vector2D::One * 20;
 		timeleft = time;
 		return true;
 	}
@@ -39,6 +43,8 @@ public:
 	void Render(FG::Camera* const camera) override
 	{
 		collider->Draw(camera, 255, 150, 0);
+
+		Entity::Render(camera);
 	}
 
 

@@ -28,7 +28,7 @@ public:
 	static constexpr int maxLives = 5;
 	static constexpr int maxBombs = 3;
 
-	Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile);
+	Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::ResourceManager* resourcecManager, FG::Camera* camera, Projectile* projectile);
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }

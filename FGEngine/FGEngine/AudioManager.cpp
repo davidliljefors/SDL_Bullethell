@@ -35,6 +35,9 @@ AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManag
 		sfx = new FG::SFX("playerDestroyed.wav");
 		resourceManager->AddResource("playerDestroyed.wav", sfx);
 
+		sfx = new FG::SFX("bomb.wav");
+		resourceManager->AddResource("bomb.wav", sfx);
+
 	}
 }
 

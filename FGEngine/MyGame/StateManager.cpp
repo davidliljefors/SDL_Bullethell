@@ -14,7 +14,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), screenBoundaries(Config::screenBoundaries)
 {
 	// ENTITIES
-	player = new Player({ 500, 650 }, entityManager, inputManager, audioManager, camera,
+	player = new Player({ 500, 650 }, entityManager, inputManager, audioManager, resourceManager, camera,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("friendlybullet.png"), true, FG::Vector2D::Down, 2500.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include <InputManager.h>
 #include <EntityManager.h>
+#include <ResourceManager.h>
 #include <Camera.h>
 #include <Sprite.h>
 #include <SDL_render.h>
@@ -13,12 +14,12 @@
 #include "Config.h"
 #include <iostream>
 
-Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::Camera* camera, Projectile* projectile) :
+Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::ResourceManager* rManager, FG::Camera* camera, Projectile* projectile) :
 	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = Config::screenBoundaries;
-	bomb = new Bomb(camera, position);
+	bomb = new Bomb(camera, position, rManager->GetResource<FG::Sprite>("shockwave.png"));
 	entityManager->AddEntity(bomb);
 	SetUp();
 
@@ -30,6 +31,7 @@ Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputMana
 	collisionLayer.set(5);
 	audioManager->ChangeChannelVolume(.25f, 4);
 	audioManager->ChangeChannelVolume(.5f, 5);
+	audioManager->ChangeChannelVolume(.5f, 6);
 	StartPosition(pos);
 }
 
@@ -100,8 +102,10 @@ void Player::Update(float deltaTime)
 			}
 			if (bomb->Activate(position, 0.5f))
 			{
-				if (bombs > 0)
+				if (bombs > 0) {
 					bombs--;
+					audioManager->PlaySFX("bomb.wav", 6);
+				}
 			}
 		}
 		if (fireTime <= 0 && inputManager->IsKeyDown(SDL_SCANCODE_Z))
