@@ -14,6 +14,7 @@ void FG::Text::Dispose()
 
 bool FG::Text::SetText(SDL_Renderer* renderer, std::string text, const std::string& path, int textSize, SDL_Color color)
 {
+	Dispose();
 	TTF_Font* font = TTF_OpenFont(path.c_str(), textSize);
 	if (font == nullptr) {
 		printf("Font Loading error: Font-%s Error-%s\n", (path).c_str(), TTF_GetError());
@@ -36,6 +37,7 @@ bool FG::Text::SetText(SDL_Renderer* renderer, std::string text, const std::stri
 
 	SDL_FreeSurface(surface);
 
+	TTF_CloseFont(font);
 	return true;
 }
 

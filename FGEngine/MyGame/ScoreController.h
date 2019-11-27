@@ -1,10 +1,11 @@
 #pragma once
+
 class ScoreController
-{
+{ 
 public:
 	ScoreController() {}
 
-	long Update();
+	int Update();
 
 	void AddScore(int amount);
 	void UpdateMultiplier(int amount);
@@ -16,9 +17,9 @@ private:
 	void ResetScore();
 	void ResetMultiplier();
 
-	long score = 0;
-	long displayScore = 0;
-	long hiScore = 0;
+	int score = 0;
+	int displayScore = 0;
+	int hiScore = 0;
 
 	bool beatHiScore;
 

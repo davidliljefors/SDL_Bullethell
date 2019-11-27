@@ -1,3 +1,5 @@
+#include <sstream>
+#include <iomanip>
 #include "StateManager.h"
 #include <Text.h>
 #include <Sprite.h>
@@ -11,7 +13,7 @@
 GAME_STATES State::state = GAME_STATES::start;
 
 StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera) :
-	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), screenBoundaries(Config::screenBoundaries)
+	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), camera(camera), screenBoundaries(Config::screenBoundaries)
 {
 	// ENTITIES
 	player = new Player({ 500, 650 }, entityManager, inputManager, audioManager, resourceManager, camera,
@@ -27,9 +29,9 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 
 	boss->AddCircleCollider(64);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie3.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie4.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->Initialize();
 	entityManager->AddEntity(boss);
 
@@ -58,11 +60,14 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	}
 	playerBombs = new Sprite * [player->maxBombs];
 	bombContainers = new Sprite * [player->maxBombs];
+	
 	for (size_t i = 0; i < player->maxBombs; i++)
 	{
 		playerBombs[i] = resourceManager->GetResource<FG::Sprite>("bomb.png");
 		bombContainers[i] = resourceManager->GetResource<FG::Sprite>("bombcontainer.png");
 	}
+
+	scoreController = new ScoreController();
 
 	currentScoreDisplay = new Text();
 	currentScoreDisplay->SetText(camera->GetInternalRenderer(), "0000000000", "radiospace.ttf", 48, { 225,225,225 });
@@ -92,6 +97,22 @@ void StateManager::Update()
 		}
 		break;
 	case game:
+
+		int currentDisplayScore;
+		currentDisplayScore = scoreController->Update();
+
+		if (lastDisplayScore != currentDisplayScore) {
+			lastDisplayScore = currentDisplayScore;
+
+			std::stringstream s;
+			s << std::setw(10) << std::setfill('0') << lastDisplayScore;
+			currentScoreDisplay->SetText(camera->GetInternalRenderer(), s.str, "radiospace.ttf", 48, { 225,225,225 });
+		}
+		/*
+		if (inputManager->IsKeyDown(SDL_SCANCODE_Z)) {
+			scoreController->AddScore(100);
+		}
+		*/
 		if (boss->CurrentPhase() == Phase::dead) {
 			//boss->Reset();
 			player->OnVictory();
@@ -112,7 +133,9 @@ void StateManager::Render(Camera* const camera)
 		spacePrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
 		break;
 	case game:
+		
 		currentScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .09f });
+		
 		currentHiScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .029f});
 		for (size_t i = 0; i < player->maxLives; i++)
 		{

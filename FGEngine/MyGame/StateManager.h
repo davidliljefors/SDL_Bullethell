@@ -5,6 +5,7 @@
 #include "Obstacle.h"
 #include "AudioManager.h"
 #include "Healthbar.h"
+#include "ScoreController.h"
 
 namespace FG
 {
@@ -33,6 +34,8 @@ private:
 	InputManager* inputManager;
 	AudioManager* audioManager;
 	ResourceManager* resourceManager;
+	ScoreController* scoreController;
+	Camera* camera;
 
 	Player* player;
 	Obstacle* boss;
@@ -50,4 +53,5 @@ private:
 	Text* currentHiScoreDisplay;
 
 	bool firstBattle;
+	int lastDisplayScore;
 };

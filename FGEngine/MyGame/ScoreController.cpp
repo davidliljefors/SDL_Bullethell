@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-long ScoreController::Update()
+int ScoreController::Update()
 {
 	if (score > displayScore)
 	{
@@ -23,6 +23,7 @@ void ScoreController::UpdateMultiplier(int amount)
 
 void ScoreController::SetHiScore()
 {
+
 }
 
 void ScoreController::ResetScore()

@@ -24,7 +24,7 @@ Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputMana
 	SetUp();
 
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
-	sensor = new Sensor(this, Sensor::graze, 50.f);
+	sensor = new Sensor(this, Sensor::graze, 25.f);
 	entityManager->AddEntity(sensor);
 
 	collisionLayer.set(0);
