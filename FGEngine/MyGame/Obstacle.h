@@ -88,8 +88,6 @@ private:
 	ProjectilePool* projectilePool = nullptr;
 
 	void StartPosition(FG::Vector2D pos);
-	void DrawBoundingBox();
-	void DrawColliderCircle();
 	void OnDeath();
 	void Fire();
 	void MoveToAnotherPosition();

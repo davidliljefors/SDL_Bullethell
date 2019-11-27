@@ -100,8 +100,6 @@ private:
 	void GetHit();
 
 	void Shoot();
-	void DrawBoundingBox();
-	void DrawColliderCircle();
 	void MovePlayer(float deltaTime);
 	void MoveCamera(float deltaTime);
 

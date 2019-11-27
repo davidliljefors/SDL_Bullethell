@@ -3,6 +3,8 @@
 
 namespace FG
 {
+	class Camera;
+
 	struct Circle
 	{
 
@@ -24,8 +26,9 @@ namespace FG
 		}
 
 		float GetRadius() const { return radius; }
-		void SetRadius(float size)  { radius = size; }
+		void SetRadius(float size) { radius = size; }
 		Vector2D GetPosition() const { return *position + offset; }
+		void Draw(Camera* camera, unsigned char r, unsigned char g, unsigned char b);
 
 	private:
 		float radius = 0.0f;

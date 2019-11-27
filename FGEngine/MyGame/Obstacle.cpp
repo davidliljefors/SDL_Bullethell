@@ -2,16 +2,15 @@
 #include <Sprite.h>
 #include <Camera.h>
 #include <SDL_render.h>
-#include "GameState.h"
 #include <cassert>
+#include <Timer.h>
 
+#include "GameState.h"
 #include "Obstacle.h"
 #include "Projectile.h"
+#include "Config.h"
 
 #include <iostream>
-#include "Config.h"
-#include <Timer.h>
-#include "Config.h"
 
 Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
 {	
@@ -154,8 +153,9 @@ void Obstacle::Render(FG::Camera* const camera)
 {
 	//Entity::Render(camera);
 	sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
-	DrawColliderCircle();
-	//DrawBoundingBox();
+#ifdef _DEBUG
+	collider->Draw(camera, 255, 0, 0);
+#endif _DEBUG
 }
 
 void Obstacle::EnterNextPhase()
@@ -267,46 +267,3 @@ bool Obstacle::AddSprite(FG::Sprite* spr)
 	sprites.push_back(spr);
 	return true;
 }
-	void Obstacle::DrawBoundingBox()
-	{
-#ifdef _DEBUG
-		SDL_Color color = notCollidingColor;
-		if (isColliding)
-		{
-			color = CollidingColor;
-		}
-
-		SDL_Rect finalRect = GetColliderRect();
-		SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
-
-		SDL_RenderDrawRect(camera->GetInternalRenderer(), &finalRect);
-		SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
-#endif _DEBUG
-	}
-
-	void Obstacle::DrawColliderCircle()
-	{
-#ifdef _DEBUG
-		assert(collider);
-		const int samples = 100;
-		SDL_Color color = notCollidingColor;
-		if (isColliding)
-		{
-			color = CollidingColor;
-		}
-		SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
-		FG::Vector2D positions[samples + 1];
-		for (int i = 0; i < samples + 1; i++)
-		{
-			positions[i].x = sin(360.f / samples * i * 3.14159f / 180.f) * collider->GetRadius() + position.x;
-			positions[i].y = cos(360.f / samples * i * 3.14159f / 180.f) * collider->GetRadius() + position.y;
-		}
-		for (int i = 0; i < samples; i++)
-		{
-			SDL_RenderDrawLine(camera->GetInternalRenderer(),
-				(int)positions[i].x, (int)positions[i].y, (int)positions[i + 1].x, (int)positions[i + 1].y);
-		}
-
-		SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
-#endif _DEBUG
-	}

@@ -59,8 +59,6 @@ private:
 	float rotation;
 	float angle;
 
-	void DrawColliderCircle();
-	void DrawBoundingBox();
 	void ExplodeProjectile();
 
 	

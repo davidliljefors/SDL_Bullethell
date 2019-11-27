@@ -122,7 +122,9 @@ void Player::Render(FG::Camera* const camera)
 
 	assert(colliderSprite);
 	colliderSprite->Render(camera, position);
-	DrawColliderCircle();
+#ifdef _DEBUG
+	collider->Draw(camera, 0, 255, 0);
+#endif _DEBUG
 }
 
 SDL_Rect Player::GetColliderRect()
@@ -324,46 +326,4 @@ void Player::Shoot()
 	/*Projectile* proj = new Projectile(*projectilePrefab);
 	proj->position = position;
 	entityManager->AddEntity(proj);*/
-}
-
-void Player::DrawBoundingBox()
-{
-#ifdef _DEBUG
-	SDL_Color color = notCollidingColor;
-	if (isColliding)
-	{
-		color = CollidingColor;
-	}
-
-	SDL_Rect finalRect = GetColliderRect();
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
-	SDL_RenderDrawRect(camera->GetInternalRenderer(), &finalRect);
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
-#endif _DEBUG
-}
-
-void Player::DrawColliderCircle()
-{
-#ifdef _DEBUG
-	const int samples = 100;
-	SDL_Color color = notCollidingColor;
-	if (isColliding)
-	{
-		color = CollidingColor;
-	}
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), color.r, color.g, color.b, color.a);
-	FG::Vector2D positions[samples + 1];
-	for (int i = 0; i < samples + 1; i++)
-	{
-		positions[i].x = sin(360.f / samples * i * 3.14159f / 180.f) * collider->GetRadius() + position.x;
-		positions[i].y = cos(360.f / samples * i * 3.14159f / 180.f) * collider->GetRadius() + position.y;
-	}
-	for (int i = 0; i < samples; i++)
-	{
-		SDL_RenderDrawLine(camera->GetInternalRenderer(),
-			(int)positions[i].x, (int)positions[i].y, (int)positions[i + 1].x, (int)positions[i + 1].y);
-	}
-
-	SDL_SetRenderDrawColor(camera->GetInternalRenderer(), 0, 0, 0, 255);
-#endif _DEBUG
 }
