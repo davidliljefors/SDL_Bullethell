@@ -25,7 +25,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	//Boss
 	boss = new Obstacle({ 500, 100 }, entityManager, aManager, resourceManager, camera);
 
-	boss->AddCircleCollider(64 / 2);
+	boss->AddCircleCollider(64);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie2.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("hippie3.png"));
