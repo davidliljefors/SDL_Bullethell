@@ -154,14 +154,26 @@ bool GameApplication::Initialize()
 
 void GameApplication::Run()
 {
+	float timescale = 1.f;
 	bool quit = false;
 	while (!quit)
 	{
 		time.StartFrame();
 		inputManager->Update(quit);
+		entityManager->Update(time.DeltaTime() * timescale);
 
-		entityManager->Update(time.DeltaTime());
+		// quick n dirty slow motion
+		timescale = 1.f;
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.user.code == 0xFFFF)
+			{
+				timescale = 0.5f;
+			}
+		}
+
 		entityManager->DoCollisions();
+	
 		stateManager->Update();
 
 		camera->StartRenderFrame();

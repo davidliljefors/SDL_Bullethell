@@ -9,6 +9,7 @@
 #include <Sprite.h>
 #include <SDL_render.h>
 #include <Circle.h>
+#include <SDL_events.h>
 
 #include "GameState.h"
 #include "Config.h"
@@ -45,6 +46,14 @@ void Player::Update(float deltaTime)
 	// Counter bomb mechanic
 	if (hit)
 	{
+		int slowMoEvent = SDL_RegisterEvents(1);
+		if (slowMoEvent != ((Uint32)-1)) {
+			SDL_Event event;
+			SDL_memset(&event, 0, sizeof(event));
+			event.type = slowMoEvent;
+			event.user.code = 0xFFFF;
+			SDL_PushEvent(&event);
+		}
 		timeSincelastHit += deltaTime;
 		if (timeSincelastHit > counterbombTimeframe)
 		{
@@ -165,6 +174,8 @@ void Player::OnCollision(FG::Entity* other)
 
 	if (!hit)
 	{
+		
+
 		hit = true;
 		timeSincelastHit = 0;
 		audioManager->PlaySFX("hitAlarm.wav", 5);

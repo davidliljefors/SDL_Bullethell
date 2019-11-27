@@ -1,12 +1,24 @@
 #include "ScoreController.h"
 
 #include <math.h>
-
+#include <iostream>
 int ScoreController::Update()
 {
+
 	if (score > displayScore)
 	{
-		displayScore = (score - displayScore) / 2;
+		if (score - displayScore >= 1000)
+		{
+			displayScore += 100;
+		}
+		else if(score - displayScore > 50)
+		{
+			displayScore += 10;
+		}
+		else
+		{
+			displayScore += 1;
+		}
 	}
 	return displayScore;
 }

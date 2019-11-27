@@ -4,7 +4,6 @@
 #include "Projectile.h"
 #include "Player.h"
 
-#include <iostream>
 
 Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
 {
@@ -34,7 +33,6 @@ void Sensor::OnCollision(Entity* other)
 	case Sensor::graze:
 		if (typeid(*other) == typeid(Projectile))
 		{
-			std::cout << "puntos";
 			//Award puntos
 			//m_user->
 		}
