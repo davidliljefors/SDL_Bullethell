@@ -22,6 +22,7 @@ namespace FG
 		bool LoadImage(SDL_Renderer* renderer, const std::string& path,
 			unsigned int columns = 1, unsigned int rows = 1, unsigned int frames = 1);
 		void Render(Camera* camera, Vector2D position, const SDL_Rect* src = nullptr);
+		void Render(Camera* camera, Vector2D position, SDL_Color tint, const SDL_Rect* src = nullptr);
 		void Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src = nullptr);
 
 		unsigned int GetFrameCount()

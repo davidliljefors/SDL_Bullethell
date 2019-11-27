@@ -13,16 +13,16 @@
 #include <iostream>
 
 Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
-{	
+{
 	collisionLayer.set(1);
 	collisionLayer.set(0);
-	projectilePool = new ProjectilePool(1000,new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
+	projectilePool = new ProjectilePool(1000, new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
-	
+
 	invincibleAlphaBlinkTime = invincibleAlphaBlinkDuration;
 	invincibleAlphaBlink = false;
-	invincibleTime = invincibleDuration *.5f;
+	invincibleTime = invincibleDuration * .5f;
 
 	StartPosition(pos);
 
@@ -60,6 +60,11 @@ void Obstacle::Update(float deltaTime)
 		projectilePool->ReloadAll();
 	}
 	isColliding = false;
+
+	if (currentHitFlash > 0)
+	{
+		currentHitFlash -= deltaTime;
+	}
 
 	if (State::state == GAME_STATES::start) {
 		if (!firstBattle && (phase != Phase::dead)) {
@@ -152,7 +157,15 @@ void Obstacle::MoveToAnotherPosition()
 void Obstacle::Render(FG::Camera* const camera)
 {
 	//Entity::Render(camera);
-	sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
+	if (currentHitFlash > 0)
+	{
+		sprite->Render(camera, position, { 255, 255, 255 });
+	}
+	else
+	{
+		sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
+	}
+
 #ifdef _DEBUG
 	collider->Draw(camera, 255, 0, 0);
 #endif _DEBUG
@@ -200,6 +213,9 @@ SDL_Rect Obstacle::GetColliderRect()
 void Obstacle::OnCollision(FG::Entity* other)
 {
 	if (typeid(*other) == typeid(Projectile)) {
+
+		currentHitFlash = hitFlashDuration;
+
 		Projectile* p = static_cast<Projectile*>(other);
 		health -= 1;
 
@@ -207,7 +223,7 @@ void Obstacle::OnCollision(FG::Entity* other)
 		{
 			audioManager->PlaySFX("enemyHurt.wav", 2);
 		}
-		else if (health <= (currentMaxHealth/6))
+		else if (health <= (currentMaxHealth / 6))
 		{
 			audioManager->PlaySFX("hit1.wav", 1);
 		}

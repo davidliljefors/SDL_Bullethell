@@ -82,6 +82,15 @@ namespace FG
 		static_cast<int>(size.x), static_cast<int>(size.y) };
 		SDL_RenderCopy(camera->GetInternalRenderer(), texture, src, &destination);
 	}
+
+	void Sprite::Render(Camera* camera, Vector2D position, SDL_Color tint, const SDL_Rect* src)
+	{
+		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_ADD);
+		SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
+		Render(camera, position, src);
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
+		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	}
 	
 	void Sprite::Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src)
 	{

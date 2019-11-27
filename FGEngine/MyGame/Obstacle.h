@@ -64,6 +64,8 @@ private:
 	float invincibleTime;
 	float invincibleAlphaBlinkTime;
 	bool invincibleAlphaBlink;
+	static constexpr float hitFlashDuration = 0.07f;
+	float currentHitFlash = 0;
 
 	std::vector<std::vector<FG::Vector2D>> bossPositions;
 
