@@ -76,7 +76,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
