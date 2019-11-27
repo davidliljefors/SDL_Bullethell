@@ -7,7 +7,7 @@
 
 Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
 {
-	m_user = p_user;
+	user = p_user;
 	m_type = p_type;
 	AddCircleCollider(p_radius);
 	collisionLayer.set(6);
@@ -16,7 +16,7 @@ Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
 
 void Sensor::Update(float deltaTime)
 {
-	 position = m_user->position;
+	 position = user->position;
 }
 
 void Sensor::Render(FG::Camera* const camera)
@@ -33,8 +33,7 @@ void Sensor::OnCollision(Entity* other)
 	case Sensor::graze:
 		if (typeid(*other) == typeid(Projectile))
 		{
-			//Award puntos
-			//m_user->
+			user->OnGraze();
 		}
 		break;
 	case Sensor::itemGrab:

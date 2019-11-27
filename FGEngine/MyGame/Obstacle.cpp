@@ -12,7 +12,8 @@
 
 #include <iostream>
 
-Obstacle::Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera) : entityManager(eManager), audioManager(aManager), resourcecManager(rManager), camera(camera), entersScreen(false)
+Obstacle::Obstacle(FG::Vector2D pos, StateManager* stateManager) : entityManager(stateManager->entityManager), audioManager(stateManager->audioManager), resourcecManager(stateManager->resourceManager),
+camera(stateManager->camera), entersScreen(false), scoreController(stateManager->scoreController)
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
@@ -222,13 +223,18 @@ void Obstacle::OnCollision(FG::Entity* other)
 		if (health <= 0)
 		{
 			audioManager->PlaySFX("enemyHurt.wav", 2);
-		}
-		else if (health <= (currentMaxHealth / 6))
-		{
-			audioManager->PlaySFX("hit1.wav", 1);
+
+			
 		}
 		else
-			audioManager->PlaySFX("hit.wav", 1);
+		{
+			if (health <= (currentMaxHealth / 6))
+			{
+				audioManager->PlaySFX("hit1.wav", 1);
+			}
+			else
+				audioManager->PlaySFX("hit.wav", 1);
+		}
 	}
 	isColliding = true;
 }

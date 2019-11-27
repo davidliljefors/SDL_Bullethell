@@ -6,6 +6,11 @@
 #include "Circle.h"
 #include "Animation.h"
 
+enum EntityLayer {
+	Background,
+	Character,
+	Bullets
+};
 
 namespace FG
 {
@@ -42,6 +47,8 @@ namespace FG
 			return collider;
 		}
 		virtual void OnCollision(Entity* other) {}
+		
+		EntityLayer layer;
 
 		Animation* animation = nullptr;
 		Circle* collider = nullptr;

@@ -1,11 +1,9 @@
 #pragma once
-#include "EntityManager.h"
+#include "StateManager.h"
 #include "Vector2D.h"
 #include <SDL_pixels.h>
 #include "Projectile.h"
 #include "ProjectilePool.h"
-#include "ResourceManager.h"
-#include "AudioManager.h"
 #include <vector>
 
 static constexpr int s_HealthValues[4] = {30,50,75,9999};
@@ -29,7 +27,7 @@ class Obstacle : public FG::Entity
 public:
 	void Initialize();
 	void Update(float deltaTime) override;
-	Obstacle(FG::Vector2D pos, FG::EntityManager* eManager, AudioManager* aManager, FG::ResourceManager* rManager, FG::Camera* camera);
+	Obstacle(FG::Vector2D pos, StateManager* stateManager);
 	void Render(FG::Camera* const camera) override;
 	void EnterNextPhase();
 
@@ -78,6 +76,7 @@ private:
 	FG::EntityManager* entityManager;
 	FG::ResourceManager* resourcecManager;
 	AudioManager* audioManager;
+	ScoreController* scoreController;
 
 	FG::Camera* camera = nullptr;
 	std::vector<FG::Sprite*> sprites;

@@ -1,11 +1,14 @@
 #pragma once
 
 #include "GameState.h"
-#include "Player.h"
-#include "Obstacle.h"
+
 #include "AudioManager.h"
 #include "Healthbar.h"
 #include "ScoreController.h"
+#include <ResourceManager.h>
+
+class Player;
+class Obstacle;
 
 namespace FG
 {
@@ -27,15 +30,15 @@ public:
 	void Update();
 	void Render(Camera* const camera);
 
-private:
-
 	EntityManager* entityManager;
-	Vector2D screenBoundaries;
 	InputManager* inputManager;
 	AudioManager* audioManager;
 	ResourceManager* resourceManager;
 	ScoreController* scoreController;
 	Camera* camera;
+private:
+
+	Vector2D screenBoundaries;
 
 	Player* player;
 	Obstacle* boss;

@@ -1,11 +1,11 @@
 #pragma once
 #include <array>
 
+#include "StateManager.h"
 #include <Entity.h>
 #include <Vector2D.h>
 #include "Projectile.h"
 #include "ProjectilePool.h"
-#include "AudioManager.h"
 #include "Bomb.h"
 #include "Sensor.h"
 
@@ -21,14 +21,13 @@ namespace FG
 class Player : public FG::Entity
 {
 	static constexpr float focusMultiplier = 0.5f;
-
-
+	
 public:
 	float speed = 500.0f;
 	static constexpr int maxLives = 5;
 	static constexpr int maxBombs = 3;
 
-	Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::ResourceManager* resourcecManager, FG::Camera* camera, Projectile* projectile);
+	Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile);
 	~Player();
 
 	bool Respawning() { return respawnPauseTime > 0; }
@@ -45,6 +44,7 @@ public:
 
 	void OnVictory();
 	void OnStartBattle();
+	void OnGraze();
 
 	int CurrentLives();
 	int CurrentBombs();
@@ -53,6 +53,7 @@ private:
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	AudioManager* audioManager = nullptr;
+	ScoreController* scoreController = nullptr;
 
 	FG::Camera* camera = nullptr;
 	FG::Sprite* colliderSprite = nullptr;

@@ -22,5 +22,5 @@ public:
 private:
 
 	SENSOR_TYPE m_type;
-	Player* m_user;
+	Player* user;
 };

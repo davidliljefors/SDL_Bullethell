@@ -1,4 +1,3 @@
-
 #include <sstream>
 #include <iomanip>
 #include <ctime>
@@ -8,20 +7,22 @@
 #include <Sprite.h>
 #include <EntityManager.h>
 #include <InputManager.h>
-#include <ResourceManager.h>
 
 #include "Camera.h"
 #include "Config.h"
-#include <sstream>
-//#include <iomanip>
+
+#include "Player.h"
+#include "Obstacle.h"
 
 GAME_STATES State::state = GAME_STATES::start;
 
 StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, AudioManager* aManager, ResourceManager* rManager, Camera* camera) :
 	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), camera(camera), screenBoundaries(Config::screenBoundaries)
 {
+	scoreController = new ScoreController();
+
 	// ENTITIES
-	player = new Player({ 500, 650 }, entityManager, inputManager, audioManager, resourceManager, camera,
+	player = new Player({ 500, 650 }, this,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("friendlybullet.png"), true, FG::Vector2D::Down, 2500.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 
@@ -30,8 +31,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager->AddEntity(player);
 
 	//Boss
-	boss = new Obstacle({ 500, 100 }, entityManager, aManager, resourceManager, camera);
-
+	boss = new Obstacle({ 500, 100 }, this);
 	boss->AddCircleCollider(64);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
@@ -46,15 +46,15 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 
 	logo = new Text();
 	logo->SetText(camera->GetInternalRenderer(), "Help me irl", "radiospace.ttf", 128, { 250,250,250 });
-	resourceManager->AddResource("Help me irl", logo);
+	resourceManager->AddResource("logo", logo);
 
 	spacePrompt = new Text();
 	spacePrompt->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to dead", spacePrompt);
+	resourceManager->AddResource("spacePrompt", spacePrompt);
 
 	hiScoreDisplay = new Text();
 	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("0000dead", hiScoreDisplay);
+	resourceManager->AddResource("hiScoreDisplay", hiScoreDisplay);
 
 	playerLives = new Sprite * [player->maxLives];
 	liveContainers = new Sprite * [player->maxLives];
@@ -71,16 +71,14 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 		playerBombs[i] = resourceManager->GetResource<FG::Sprite>("bomb.png");
 		bombContainers[i] = resourceManager->GetResource<FG::Sprite>("bombcontainer.png");
 	}
-
-	scoreController = new ScoreController();
-
+	
 	currentScoreDisplay = new Text();
 	currentScoreDisplay->SetText(camera->GetInternalRenderer(), "0000000000", "radiospace.ttf", 48, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to e", currentScoreDisplay);
+	resourceManager->AddResource("currentScoreDisplay", currentScoreDisplay);
 
 	currentHiScoreDisplay = new Text();
 	currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - 0000000000", "radiospace.ttf", 36, { 225,225,225 });
-	resourceManager->AddResource("Press SPACE to dsead", currentHiScoreDisplay);
+	resourceManager->AddResource("currentHiScoreDisplay", currentHiScoreDisplay);
 
 	firstBattle = true;
 }

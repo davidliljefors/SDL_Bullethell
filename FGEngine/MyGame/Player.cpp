@@ -15,12 +15,13 @@
 #include "Config.h"
 #include <iostream>
 
-Player::Player(FG::Vector2D pos, FG::EntityManager* entityManager, FG::InputManager* inputManager, AudioManager* audioManager, FG::ResourceManager* rManager, FG::Camera* camera, Projectile* projectile) :
-	entityManager(entityManager), inputManager(inputManager), audioManager(audioManager), camera(camera), projectilePrefab(projectile)
+Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile) :
+	entityManager(stateManager->entityManager), inputManager(stateManager->inputManager), audioManager(stateManager->audioManager), camera(stateManager->camera), projectilePrefab(projectile),
+	scoreController(stateManager->scoreController)
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = Config::screenBoundaries;
-	bomb = new Bomb(camera, position, rManager->GetResource<FG::Sprite>("shockwave.png"));
+	bomb = new Bomb(camera, position, stateManager->resourceManager->GetResource<FG::Sprite>("shockwave.png"));
 	entityManager->AddEntity(bomb);
 	SetUp();
 
@@ -162,6 +163,13 @@ void Player::GetHit()
 		EnterScreen();
 		Respawn();
 	}
+}
+
+void Player::OnGraze()
+{
+	if (IgnoreCollision())
+		return;
+	scoreController->AddScore(25);
 }
 
 void Player::OnCollision(FG::Entity* other)
