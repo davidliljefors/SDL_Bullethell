@@ -23,8 +23,14 @@ public:
 		{
 			collider->SetRadius(collider->GetRadius() + 25*(1+deltaTime));
 
-			//sprite->size += FG::Vector2D::One * 20;// *deltaTime;
+			sprite->size += FG::Vector2D::One * 3750 * deltaTime;
 			timeleft -= deltaTime;
+			
+			if (currentAlpha > 0) {
+				currentAlpha -= 7.5f;
+				if (currentAlpha < 0)
+					currentAlpha = 0;
+			}
 		}
 	}
 
@@ -35,16 +41,18 @@ public:
   		position = pos;
 		collisionLayer.set(4);
 		collider->SetRadius(10.f);
-		//sprite->size = FG::Vector2D::One * 20;
+		sprite->size = FG::Vector2D::One * 20;
 		timeleft = time;
+		currentAlpha = 255;
 		return true;
 	}
 
 	void Render(FG::Camera* const camera) override
 	{
-		collider->Draw(camera, 255, 150, 0);
+		//collider->Draw(camera, 255, 150, 0);
 
-		Entity::Render(camera);
+		if (timeleft > 0)
+			sprite->Render(camera, position, currentAlpha);
 	}
 
 
@@ -55,4 +63,6 @@ public:
 private:
 	float timeleft = 0;
 	FG::Camera* camera = nullptr;
+
+	float currentAlpha;
 };

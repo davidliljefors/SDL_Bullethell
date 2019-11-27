@@ -93,7 +93,7 @@ void Player::Update(float deltaTime)
 
 		MovePlayer(deltaTime);
 		//MoveCamera(deltaTime);
-		if (bombs > 0 && inputManager->IsKeyDown(SDL_SCANCODE_SPACE))
+		if (bombs > 0 && inputManager->IsKeyPressed(SDL_SCANCODE_SPACE))
 		{
 			if (hit)
 			{

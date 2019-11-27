@@ -3,19 +3,20 @@
 #include <SDL_events.h>
 #include <SDL_timer.h>
 
+#include <algorithm>
+#include <iterator>
+
 namespace FG
 {
 	void InputManager::Initialize()
 	{
 		keys = SDL_GetKeyboardState(nullptr);
-		lastKeys = keys;
 	}
 
 	void InputManager::Update(bool& shouldQuit)
 	{
 		SDL_Event event;
-		lastKeys = keys;
-		keys = SDL_GetKeyboardState(nullptr);
+		std::copy(keys, keys + SDL_NUM_SCANCODES, std::begin(lastKeys));
 
 
 		while (SDL_PollEvent(&event))
