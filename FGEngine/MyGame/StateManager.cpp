@@ -121,6 +121,7 @@ void StateManager::Update()
 			//boss->Reset();
 			player->OnVictory();
 			State::state = start;
+			scoreController->ResetScore();
 		}
 		break;
 	default:

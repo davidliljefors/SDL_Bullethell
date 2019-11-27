@@ -89,6 +89,37 @@ Projectile::Projectile(const Projectile& other)
 	Reload();
 }
 
+Projectile& Projectile::operator=(const Projectile& other)
+{
+	camera = other.camera;
+	direction = other.direction;
+	playerFired = other.playerFired;
+	lifetime = other.lifetime;
+	sprite = other.sprite;
+	maxBoundaries = other.maxBoundaries;
+	speed = other.speed;
+	rotation = other.rotation;
+
+	type = other.type;
+	pool = other.pool;
+	explosionProjectile = other.explosionProjectile;
+	projectileCount = other.projectileCount;
+
+	AddSprite(other.sprite);
+	AddCircleCollider(sprite->size.x / 2.f);
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+	{
+		collisionLayer.set(6); // Layer 6 is for sensor
+		collisionLayer.set(5);
+		collisionLayer.set(4); // Layer 5 is for bomb
+	}
+	layer = EntityLayer::Bullets;
+	Reload();
+}
+
 Projectile::~Projectile()
 {
 }
@@ -238,5 +269,11 @@ void Projectile::SetValues(const Projectile& projectile)
 void Projectile::Reload()
 {
 	dead = true;
+	grazed = false;
+}
+
+void Projectile::OnGrazed()
+{
+	grazed = true;
 }
 

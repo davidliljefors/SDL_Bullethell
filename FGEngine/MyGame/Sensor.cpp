@@ -33,7 +33,11 @@ void Sensor::OnCollision(Entity* other)
 	case Sensor::graze:
 		if (typeid(*other) == typeid(Projectile))
 		{
-			user->OnGraze();
+			Projectile* sensedProjectile = static_cast<Projectile*>(other);
+			if (!sensedProjectile->Grazed()) {
+				sensedProjectile->OnGrazed();
+				user->OnGraze();
+			}
 		}
 		break;
 	case Sensor::itemGrab:

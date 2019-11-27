@@ -7,13 +7,13 @@
 
 #include "GameState.h"
 #include "Obstacle.h"
-#include "Projectile.h"
+#include "Player.h"
 #include "Config.h"
 
 #include <iostream>
 
 Obstacle::Obstacle(FG::Vector2D pos, StateManager* stateManager) : entityManager(stateManager->entityManager), audioManager(stateManager->audioManager), resourcecManager(stateManager->resourceManager),
-camera(stateManager->camera), entersScreen(false), scoreController(stateManager->scoreController)
+camera(stateManager->camera), entersScreen(false), scoreController(stateManager->scoreController), player(stateManager->player)
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
@@ -137,9 +137,14 @@ void Obstacle::Update(float deltaTime)
 
 void Obstacle::Fire()
 {
+	Vector2D directionToPlayer = player->position;
 	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera, projectilePool,
 		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Down, 500, camera, 5, 2), 6, .5f);
-	Projectile* proj = projectilePool->GetProjectile(*newBullet);
+	
+	Projectile* proj = projectilePool->GetProjectile();
+	*proj = *newBullet;
+	delete newBullet;
+	
 	if (proj) {
 		proj->Fire(position + FG::Vector2D(0, -15));
 		audioManager->PlaySFX("enemyFire.wav", 3);
@@ -281,7 +286,7 @@ void Obstacle::SetUp()
 	health = currentMaxHealth = s_HealthValues[0];
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
 	barrageTime = barrageDuration;
-	barragePauseTime = barragePauseDuration;
+	barragePauseTime = 0;
 	firePauseTime = firePauseDuration;
 }
 

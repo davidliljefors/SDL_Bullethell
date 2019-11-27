@@ -11,6 +11,7 @@ public:
 		Entity::position = position;
 		AddCircleCollider(0);
 		this->sprite = sprite;
+		layer = EntityLayer::Bullets;
 	}
 	void Update(float deltaTime) override
 	{

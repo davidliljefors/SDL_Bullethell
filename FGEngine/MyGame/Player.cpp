@@ -34,6 +34,7 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 	audioManager->ChangeChannelVolume(.25f, 4);
 	audioManager->ChangeChannelVolume(.5f, 5);
 	audioManager->ChangeChannelVolume(.5f, 6);
+	audioManager->ChangeChannelVolume(.25f, 7);
 	StartPosition(pos);
 	layer = EntityLayer::Character;
 }
@@ -171,40 +172,29 @@ void Player::OnGraze()
 	if (IgnoreCollision())
 		return;
 	scoreController->AddScore(25);
+
+	audioManager->PlaySFX("graze.wav", 7);
 }
 
 void Player::OnCollision(FG::Entity* other)
 {
 	isColliding = true;
 	if (typeid(*other) == typeid(Sensor))
-	{
 		return;
-	}
 
-	if (!hit)
+	if (bombs <= 0)
+		GetHit();
+	else if (!hit)
 	{
-		
-
 		hit = true;
 		timeSincelastHit = 0;
 		audioManager->PlaySFX("hitAlarm.wav", 5);
 	}
-
-	//lives--;
-
-	//PlaceOffscreenForEntrance();
-	//if (lives < 0) {
-	//	State::state = start;
-	//}
-	//else {
-	//	EnterScreen();
-	//	Respawn();
-	//}
 }
 
 bool Player::IgnoreCollision()
 {
-	return Invincible();
+	return Invincible() || hit;
 }
 
 void Player::StartPosition(FG::Vector2D pos)

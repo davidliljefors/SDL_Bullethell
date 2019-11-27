@@ -13,9 +13,10 @@ public:
 	void SetHiScore();
 	void NewHiScore();
 
-private:
 	void ResetScore();
 	void ResetMultiplier();
+
+private:
 
 	int score = 0;
 	int displayScore = 0;

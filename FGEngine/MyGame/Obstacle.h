@@ -87,6 +87,8 @@ private:
 	FG::Vector2D startPosition;
 	FG::Vector2D destination;
 
+	Player* player;
+
 	ProjectilePool* projectilePool = nullptr;
 
 	void StartPosition(FG::Vector2D pos);

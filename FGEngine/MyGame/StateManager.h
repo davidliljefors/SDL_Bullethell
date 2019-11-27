@@ -36,11 +36,12 @@ public:
 	ResourceManager* resourceManager;
 	ScoreController* scoreController;
 	Camera* camera;
+
+	Player* player;
 private:
 
 	Vector2D screenBoundaries;
 
-	Player* player;
 	Obstacle* boss;
 
 	Healthbar* bossHPBar;

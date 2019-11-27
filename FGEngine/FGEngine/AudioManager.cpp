@@ -44,6 +44,9 @@ AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManag
 		sfx = new FG::SFX("bomb.wav");
 		resourceManager->AddResource("bomb.wav", sfx);
 
+		sfx = new FG::SFX("graze.wav");
+		resourceManager->AddResource("graze.wav", sfx);
+
 	}
 }
 

@@ -25,6 +25,7 @@ public:
 	Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
 		FG::Camera* camera, ProjectilePool* pool, Projectile* explosionProjectile, int projectileCount, float lifetime = -1, float accelerationSpeed = 0, float rotation = 0);
 	Projectile(const Projectile&);
+	Projectile& operator=(const Projectile& other);
 	~Projectile();
 
 	void Update(float deltaTime) override;
@@ -33,11 +34,14 @@ public:
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
 	bool Expired() { return elapsedTime > lifetime; }
+	bool Grazed() { return grazed; }
 	void Fire(FG::Vector2D firePosition);
 	void SetValues(const Projectile& projectile);
 
 	bool IgnoreCollision() override;
 	void Reload();
+	void OnGrazed();
+
 private:
 	FG::Camera* camera = nullptr;
 
@@ -49,6 +53,7 @@ private:
 
 	bool isColliding = false;
 	bool playerFired;
+	bool grazed = false;
 
 	float elapsedTime = 0.f;
 	float lifetime;
@@ -60,8 +65,7 @@ private:
 	float angle;
 
 	void ExplodeProjectile();
-
-	
+		
 	virtual void OnLifetimeEnd() {}
 
 	constexpr static SDL_Color notCollidingColor = { 0, 255, 0, 255 };
