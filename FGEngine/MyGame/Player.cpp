@@ -24,11 +24,9 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 	bomb = new Bomb(camera, position, stateManager->resourceManager->GetResource<FG::Sprite>("shockwave.png"));
 	entityManager->AddEntity(bomb);
 	SetUp();
-
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
 	sensor = new Sensor(this, Sensor::graze, 25.f);
 	entityManager->AddEntity(sensor);
-
 	collisionLayer.set(0);
 	collisionLayer.set(5);
 	audioManager->ChangeChannelVolume(.25f, 4);
@@ -63,7 +61,9 @@ void Player::Update(float deltaTime)
 			GetHit();
 		}
 	}
-	
+	if (lives < 0)
+		return;
+
 	isColliding = false;
 	if (State::state == GAME_STATES::start) {
 		if (!firstBattle && lives >= 0) {
@@ -144,6 +144,20 @@ void Player::Render(FG::Camera* const camera)
 #endif _DEBUG
 }
 
+bool Player::AddSprite(FG::Sprite* sprite)
+{
+	assert(sprite);
+	if (sprite)
+	{
+		this->sprite = sprite;
+		straightSprite = sprite;
+		return true;
+	}
+
+	return false;
+}
+
+
 SDL_Rect Player::GetColliderRect()
 {
 	FG::Vector2D finalPosition = position - camera->position;
@@ -152,15 +166,15 @@ SDL_Rect Player::GetColliderRect()
 }
 
 //Used by counter bomb mechanic
-void Player::GetHit() 
+void Player::GetHit()
 {
 	hit = false;
 	lives--;
-	
+
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	PlaceOffscreenForEntrance();
 	if (lives < 0) {
-		//State::state = start;
+
 	}
 	else {
 		EnterScreen();
@@ -242,18 +256,20 @@ void Player::MovePlayer(float deltaTime)
 {
 	FG::Vector2D movement;
 	float multiplier = 1;
-
+	sprite = straightSprite;
 	if (inputManager->IsKeyDown(SDL_SCANCODE_C))
 	{
 		multiplier *= focusMultiplier;
 	}
 	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
 	{
+		sprite = leftSprite;
 		movement.x = -1.0f;
 	}
 
 	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
 	{
+		sprite = rightSprite;
 		movement.x = 1.0f;
 	}
 

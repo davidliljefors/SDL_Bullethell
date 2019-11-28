@@ -6,6 +6,10 @@
 
 void Healthbar::Render(FG::Camera* camera)
 {
+	if (!isActive)
+	{
+		return;
+	}
 	SDL_Renderer* r = camera->GetInternalRenderer();
 	SDL_Rect rect = 	{
 	static_cast<int>(position.x) - 2,
@@ -26,4 +30,9 @@ void Healthbar::Render(FG::Camera* camera)
 	SDL_SetRenderDrawColor(r, 232, 0, 0, 0);
 	SDL_RenderFillRect(r, &rect);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
+}
+
+void Healthbar::SetActive(bool state)
+{
+	isActive = state;
 }

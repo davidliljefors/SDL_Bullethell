@@ -23,8 +23,10 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	scoreController->SetHiScore(GetScoreFromFile("score.txt"));
 	// ENTITIES
 	player = new Player({ 500, 650 }, this,
-		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1000.f, camera, 5.0f));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1750.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
+	player->leftSprite = resourceManager->GetResource<FG::Sprite>("BullethellPlayerLeft.png");
+	player->rightSprite = resourceManager->GetResource<FG::Sprite>("BullethellPlayerRight.png");
 
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
 	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
@@ -99,7 +101,7 @@ void StateManager::Update()
 			State::state = game;
 			player->OnStartBattle();
 			boss->EnterScreen();
-
+			bossHPBar->SetActive(true);
 			std::stringstream s;
 			s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
 			currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
@@ -127,6 +129,7 @@ void StateManager::Update()
 			//boss->Reset();
 			player->OnVictory();
 			State::state = start;
+			bossHPBar->SetActive(false);
 
 			if (scoreController->NewHiScore())
 			{

@@ -12,9 +12,11 @@ public:
 
 	void Update() {};
 	void Render(FG::Camera* camera);
+	void SetActive(bool state);
 
 private:
 	FG::Vector2D position;
 	FG::Vector2D size;
 	Obstacle* boss;
+	bool isActive = false;
 };

@@ -75,27 +75,27 @@ namespace FG
 	//	SDL_RenderCopy(camera->GetInternalRenderer(), texture, &source, &destination);
 	//}
 
-	void Sprite::Render(Camera* camera, Vector2D position, const SDL_Rect* src)
+	void Sprite::Render(Camera* camera, Vector2D position, const SDL_Rect* src, float scale)
 	{
 		Vector2D finalPosition = position - camera->position;
-		destination = { static_cast<int>(finalPosition.x - (size.x / 2)), static_cast<int>(finalPosition.y - (size.y / 2)),
-		static_cast<int>(size.x), static_cast<int>(size.y) };
+		destination = { static_cast<int>(finalPosition.x - (size.x * scale / 2)), static_cast<int>(finalPosition.y - (size.y * scale / 2)),
+		static_cast<int>(size.x*scale), static_cast<int>(size.y*scale) };
 		SDL_RenderCopy(camera->GetInternalRenderer(), texture, src, &destination);
 	}
 
-	void Sprite::Render(Camera* camera, Vector2D position, SDL_Color tint, const SDL_Rect* src)
+	void Sprite::Render(Camera* camera, Vector2D position, SDL_Color tint, const SDL_Rect* src, float scale)
 	{
 		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_ADD);
 		SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
-		Render(camera, position, src);
+		Render(camera, position, src, scale);
 		SDL_SetTextureColorMod(texture, 255, 255, 255);
 		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 	}
 	
-	void Sprite::Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src)
+	void Sprite::Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src, float scale)
 	{
 		SDL_SetTextureAlphaMod(texture, alpha);
-		Render(camera, position, src);
+		Render(camera, position, src, scale);
 		SDL_SetTextureAlphaMod(texture, 255);
 	}
 }

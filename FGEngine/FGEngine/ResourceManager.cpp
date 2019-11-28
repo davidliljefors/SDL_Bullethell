@@ -29,11 +29,5 @@ namespace FG
 	bool ResourceManager::HasResource(const std::string& id) const
 	{
 		return resources.find(id) != resources.end();
-		//auto it = resources.find(id);
-		//if (it != resources.end())
-		//{
-		//	return true;
-		//}
-		//return false;
 	}
 }

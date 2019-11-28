@@ -15,6 +15,11 @@ void FG::Entity::Render(Camera* const camera)
 	sprite->Render(camera, position, animation->GetFrame());
 }
 
+void FG::Entity::Render(Camera* const camera, float scale)
+{
+	assert(sprite);
+	sprite->Render(camera, position, animation->GetFrame(), scale);
+}
 
 bool FG::Entity::AddSprite(Sprite* sprite)
 {

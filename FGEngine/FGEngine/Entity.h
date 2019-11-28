@@ -32,6 +32,7 @@ namespace FG
 		virtual void Update(float deltaTime);
 		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);
+		virtual void Render(Camera* const camera, float scale);
 		inline virtual bool IgnoreCollision() { return false; }
 		virtual bool AddSprite(Sprite* sprite);
 		void Destroy() { markedForDestroy = true; }

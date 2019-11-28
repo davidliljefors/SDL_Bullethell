@@ -24,7 +24,7 @@ class Player : public FG::Entity
 	
 public:
 	float speed = 500.0f;
-	static constexpr int maxLives = 5;
+	static constexpr int maxLives = 0;
 	static constexpr int maxBombs = 3;
 
 	Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile);
@@ -35,6 +35,7 @@ public:
 
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
+	bool AddSprite(FG::Sprite* sprite) override;
 	Projectile* projectilePrefab = nullptr;
 
 	virtual SDL_Rect GetColliderRect() override;
@@ -48,12 +49,18 @@ public:
 
 	int CurrentLives();
 	int CurrentBombs();
+
+	//todo private
+	FG::Sprite* leftSprite = nullptr;
+	FG::Sprite* straightSprite = nullptr;
+	FG::Sprite* rightSprite = nullptr;
 private:
 	Bomb* bomb = nullptr;
 	FG::InputManager* inputManager = nullptr;
 	FG::EntityManager* entityManager = nullptr;
 	AudioManager* audioManager = nullptr;
 	ScoreController* scoreController = nullptr;
+	
 
 	FG::Camera* camera = nullptr;
 	FG::Sprite* colliderSprite = nullptr;
