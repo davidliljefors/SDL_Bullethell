@@ -38,6 +38,7 @@ public:
 	void Fire(FG::Vector2D firePosition);
 	void SetValues(const Projectile& projectile);
 	void SetSpeed(float speed);
+	void SetDirection(FG::Vector2D direction);
 
 	bool IgnoreCollision() override;
 	void Reload();

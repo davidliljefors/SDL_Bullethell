@@ -272,6 +272,11 @@ void Projectile::SetSpeed(float speed)
 	this->speed = speed;
 }
 
+void Projectile::SetDirection(FG::Vector2D direction)
+{
+	this->direction = direction;
+}
+
 void Projectile::Reload()
 {
 	dead = true;
