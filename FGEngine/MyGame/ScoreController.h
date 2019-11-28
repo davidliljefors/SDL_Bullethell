@@ -6,12 +6,14 @@ public:
 	ScoreController() {}
 
 	int Update();
+	int Score();
+	int HiScore();
 
 	void AddScore(int amount);
 	void UpdateMultiplier(int amount);
 
-	void SetHiScore();
-	void NewHiScore();
+	void SetHiScore(int value);
+	bool NewHiScore();
 
 	void ResetScore();
 	void ResetMultiplier();

@@ -1,6 +1,3 @@
-#include <iostream>
-#include <fstream>
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <Logger.h>
@@ -54,7 +51,6 @@ bool GameApplication::Initialize()
 	resourceManager = new FG::ResourceManager();
 
 	audioManager = new AudioManager(resourceManager);
-	audioManager->PlayMusic("QuartzQuadrantBad.wav");
 
 	FG::Sprite* sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "Bullethellplayer.png");
@@ -196,6 +192,12 @@ void GameApplication::Shutdown()
 	delete testText;
 	testText = NULL;
 
+	if (stateManager)
+	{
+		delete stateManager;
+		stateManager = nullptr;
+	}
+
 	if (entityManager)
 	{
 		entityManager->Shutdown();
@@ -238,28 +240,4 @@ void GameApplication::Shutdown()
 	}
 	TTF_Quit();
 	SDL_Quit();
-}
-
-int GameApplication::GetScoreFromFile(const std::string& path)
-{
-	std::string score;
-	std::ifstream file(path);
-	if (!file.is_open()) {
-		return 0;
-	}
-
-	file >> score;
-	file.close();
-	return stoi(score);
-}
-
-void GameApplication::WriteScoreToFile(int score, const std::string& path)
-{
-	std::ofstream file(path);
-	if (!file.is_open()) {
-		return;
-	}
-
-	file << score << std::endl;
-	file.close();
 }

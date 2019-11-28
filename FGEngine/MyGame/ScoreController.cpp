@@ -2,18 +2,19 @@
 
 #include <math.h>
 #include <iostream>
+
 int ScoreController::Update()
 {
 
 	if (score > displayScore)
 	{
-		if (score - displayScore >= 1000)
+		if (score - displayScore > 111)
 		{
-			displayScore += 100;
+			displayScore += 111;
 		}
-		else if(score - displayScore > 50)
+		else if(score - displayScore > 11)
 		{
-			displayScore += 10;
+			displayScore += 11;
 		}
 		else
 		{
@@ -21,6 +22,16 @@ int ScoreController::Update()
 		}
 	}
 	return displayScore;
+}
+
+int ScoreController::Score()
+{
+	return score;
+}
+
+int ScoreController::HiScore()
+{
+	return hiScore;
 }
 
 void ScoreController::AddScore(int amount)
@@ -33,9 +44,18 @@ void ScoreController::UpdateMultiplier(int amount)
 	multiplier += amount;
 }
 
-void ScoreController::SetHiScore()
+void ScoreController::SetHiScore(int value)
 {
+	hiScore = value;
+}
 
+bool ScoreController::NewHiScore()
+{
+	if (score > hiScore) {
+		SetHiScore(score);
+		return true;
+	}
+	return false;
 }
 
 void ScoreController::ResetScore()

@@ -1,6 +1,6 @@
 #include <sstream>
 #include <iomanip>
-#include <ctime>
+#include <fstream>
 
 #include "StateManager.h"
 #include <Text.h>
@@ -20,7 +20,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager(eManager), inputManager(iManager), audioManager(aManager), resourceManager(rManager), camera(camera), screenBoundaries(Config::screenBoundaries)
 {
 	scoreController = new ScoreController();
-
+	scoreController->SetHiScore(GetScoreFromFile("score.txt"));
 	// ENTITIES
 	player = new Player({ 500, 650 }, this,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1000.f, camera, 5.0f));
@@ -53,7 +53,9 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	resourceManager->AddResource("spacePrompt", spacePrompt);
 
 	hiScoreDisplay = new Text();
-	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "Press SPACE to dead", "radiospace.ttf", 36, { 225,225,225 });
+	std::stringstream s;
+	s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
+	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
 	resourceManager->AddResource("hiScoreDisplay", hiScoreDisplay);
 
 	playerLives = new Sprite * [player->maxLives];
@@ -85,7 +87,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 
 StateManager::~StateManager()
 {
-
+	WriteScoreToFile(scoreController->HiScore(), "score.txt");
 }
 
 void StateManager::Update()
@@ -97,6 +99,11 @@ void StateManager::Update()
 			State::state = game;
 			player->OnStartBattle();
 			boss->EnterScreen();
+
+			std::stringstream s;
+			s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
+			currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
+			audioManager->PlayMusic("QuartzQuadrantBad.wav");
 		}
 		break;
 	case game:
@@ -111,16 +118,23 @@ void StateManager::Update()
 
 			s << std::setw(10) << std::setfill('0') << lastDisplayScore;
 			currentScoreDisplay->SetText(camera->GetInternalRenderer(), s.str(), "radiospace.ttf", 48, { 225,225,225 });
+			if (lastDisplayScore > scoreController->HiScore())
+				currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
+
 		}
-		/*
-		if (inputManager->IsKeyDown(SDL_SCANCODE_Z)) {
-			scoreController->AddScore(100);
-		}
-		*/
-		if (boss->CurrentPhase() == Phase::dead) {
+
+		if (boss->CurrentPhase() == Phase::dead || player->CurrentLives() < 0) {
 			//boss->Reset();
 			player->OnVictory();
 			State::state = start;
+
+			if (scoreController->NewHiScore())
+			{
+				std::stringstream s;
+
+				s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
+				hiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
+			}
 			scoreController->ResetScore();
 		}
 		break;
@@ -135,6 +149,7 @@ void StateManager::Render(Camera* const camera)
 	{
 	case start:
 		logo->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y / 2 });
+		hiScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .029f });
 		spacePrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
 		break;
 	case game:
@@ -160,3 +175,28 @@ void StateManager::Render(Camera* const camera)
 	}
 			
 }
+
+int StateManager::GetScoreFromFile(const std::string& path)
+{
+	std::string score;
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		return 0;
+	}
+
+	file >> score;
+	file.close();
+	return stoi(score);
+}
+
+void StateManager::WriteScoreToFile(int score, const std::string& path)
+{
+	std::ofstream file(path);
+	if (!file.is_open()) {
+		return;
+	}
+
+	file << score << std::endl;
+	file.close();
+}
+

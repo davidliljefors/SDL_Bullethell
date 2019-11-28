@@ -62,7 +62,7 @@ void AudioManager::PlaySFX(std::string filename, int channel, float volume, int 
 
 void AudioManager::PlayMusic(std::string filename, int loops)
 {
-	Mix_PlayMusic(resourceManager->GetResource<FG::Music>(filename)->music, loops);
+		Mix_PlayMusic(resourceManager->GetResource<FG::Music>(filename)->music, loops);
 }
 
 void AudioManager::PauseMusic()

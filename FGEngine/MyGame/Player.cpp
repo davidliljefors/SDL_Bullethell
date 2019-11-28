@@ -160,7 +160,7 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	PlaceOffscreenForEntrance();
 	if (lives < 0) {
-		State::state = start;
+		//State::state = start;
 	}
 	else {
 		EnterScreen();
@@ -216,7 +216,8 @@ void Player::PlaceOffscreenForEntrance()
 
 void Player::OnVictory()
 {
-	entersScreen = true;
+	if (lives >= 0)
+		entersScreen = true;
 	//SetUp();
 }
 

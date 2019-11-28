@@ -37,9 +37,6 @@ private:
 
 	FG::Time time;
 
-	int GetScoreFromFile(const std::string& path);
-	void WriteScoreToFile(int score, const std::string& path);
-
 	FG::Text* testText = nullptr;
 };
 
