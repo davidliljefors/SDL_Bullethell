@@ -65,5 +65,5 @@ private:
 	float timeleft = 0;
 	FG::Camera* camera = nullptr;
 
-	float currentAlpha;
+	float currentAlpha = 0;
 };
