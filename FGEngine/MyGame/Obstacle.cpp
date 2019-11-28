@@ -9,6 +9,7 @@
 #include "Obstacle.h"
 #include "Player.h"
 #include "Config.h"
+#include "EntityManager.h"
 
 #include <iostream>
 
@@ -17,6 +18,10 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 {
 	collisionLayer.set(1);
 	collisionLayer.set(0);
+
+	explosion = new Explosion(resourcecManager->GetResource<FG::Sprite>("explo.png"));
+	entityManager->AddEntity(explosion);
+
 	projectilePool = new ProjectilePool(1000, new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
@@ -40,7 +45,10 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPositions[2].push_back({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPositions[2].push_back({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
 	destination = bossPositions[0][0];
+	
 	layer = EntityLayer::Character;
+
+	emitter = new Emitter(position, stateManager);
 }
 
 void Obstacle::Initialize()
@@ -51,6 +59,7 @@ void Obstacle::Initialize()
 
 void Obstacle::Update(float deltaTime)
 {
+	explosion->Update(deltaTime);
 	if (health <= 0)
 	{
 		EnterNextPhase();
@@ -60,6 +69,8 @@ void Obstacle::Update(float deltaTime)
 		barragePauseTime = barragePauseDuration;
 		firePauseTime = firePauseDuration;
 		projectilePool->ReloadAll();
+
+		explosion->Explode(position);
 	}
 	isColliding = false;
 
@@ -116,10 +127,10 @@ void Obstacle::Update(float deltaTime)
 		}
 		else {
 			if (firePauseTime > 0) {
-				firePauseTime -= deltaTime;
+				/*firePauseTime -= deltaTime;
 				if (firePauseTime <= 0) {
 					Fire();
-				}
+				}*/
 			}
 			else
 				firePauseTime = firePauseDuration;
@@ -132,6 +143,13 @@ void Obstacle::Update(float deltaTime)
 			}
 		}
 	}
+	emitter->Move(position);
+	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
+;
+	if (emitter->Fire(*newBullet, deltaTime, 15, -90, 90, 2, .2f, FireModes::Linear))
+		;
+	delete newBullet;
+
 }
 
 
@@ -163,7 +181,6 @@ void Obstacle::MoveToAnotherPosition()
 
 void Obstacle::Render(FG::Camera* const camera)
 {
-	//Entity::Render(camera);
 	if (currentHitFlash > 0)
 	{
 		sprite->Render(camera, position, { 255, 255, 255 });

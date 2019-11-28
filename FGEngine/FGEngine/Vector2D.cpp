@@ -58,7 +58,7 @@ namespace FG
 
 	Vector2D Vector2D::AngleToVector2D(float angle)
 	{
-		return Vector2D(cosf(angle * (PI / 180.0f)), sinf(angle * (PI / 180.0f))) ;
+		return Vector2D(cosf(angle * (PI / 180.0f)), -1 * sinf(angle * (PI / 180.0f))) ;
 	}
 
 	float Vector2D::Vector2DToAngle(const Vector2D& from, const Vector2D& to)

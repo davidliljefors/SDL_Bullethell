@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Emitter.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="Healthbar.cpp" />
     <ClCompile Include="Obstacle.cpp" />
@@ -28,6 +29,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Emitter.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="GameApplication.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Healthbar.h" />

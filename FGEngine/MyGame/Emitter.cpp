@@ -34,9 +34,9 @@ bool Emitter::Fire(const Projectile& projectile, float deltaTime, int amount, fl
 
 	float currentAngle;
 
-	for (size_t i = 0; i < amount; i++)
+	for (size_t i = 0; i <= amount; i++)
 	{
-		currentAngle = minAngle + (i / amount * (maxAngle - minAngle));
+		currentAngle = minAngle + ((float)i / amount * (maxAngle - minAngle));
 
 		Projectile* proj = projectilePool->GetProjectile(projectile);
 
@@ -52,6 +52,7 @@ bool Emitter::Fire(const Projectile& projectile, float deltaTime, int amount, fl
 
 	if (projectilesFired >= waves)
 	{
+		projectilesFired = 0;
 		return true;
 	}
 

@@ -3,8 +3,9 @@
 #include "Vector2D.h"
 #include <SDL_pixels.h>
 #include "Projectile.h"
-#include "ProjectilePool.h"
 #include <vector>
+#include "Explosion.h"
+#include "Emitter.h"
 
 static constexpr int s_HealthValues[4] = {30,50,75,9999};
 
@@ -68,7 +69,6 @@ private:
 
 	std::vector<std::vector<FG::Vector2D>> bossPositions;
 
-
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
@@ -87,7 +87,11 @@ private:
 	FG::Vector2D startPosition;
 	FG::Vector2D destination;
 
+	Explosion* explosion;
+
 	Player* player;
+
+	Emitter* emitter;
 
 	ProjectilePool* projectilePool = nullptr;
 
