@@ -37,6 +37,7 @@ public:
 	bool Grazed() { return grazed; }
 	void Fire(FG::Vector2D firePosition);
 	void SetValues(const Projectile& projectile);
+	void SetSpeed(float speed);
 
 	bool IgnoreCollision() override;
 	void Reload();

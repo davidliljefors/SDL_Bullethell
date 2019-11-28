@@ -267,6 +267,11 @@ void Projectile::SetValues(const Projectile& projectile)
 	}
 }
 
+void Projectile::SetSpeed(float speed)
+{
+	this->speed = speed;
+}
+
 void Projectile::Reload()
 {
 	dead = true;
