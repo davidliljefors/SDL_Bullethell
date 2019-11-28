@@ -99,7 +99,7 @@ void StateManager::Update()
 			State::state = game;
 			player->OnStartBattle();
 			boss->EnterScreen();
-
+			bossHPBar->SetActive(true);
 			std::stringstream s;
 			s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
 			currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
@@ -127,6 +127,7 @@ void StateManager::Update()
 			//boss->Reset();
 			player->OnVictory();
 			State::state = start;
+			bossHPBar->SetActive(false);
 
 			if (scoreController->NewHiScore())
 			{
