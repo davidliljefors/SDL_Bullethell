@@ -9,6 +9,7 @@ Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
 {
 	user = p_user;
 	m_type = p_type;
+	layer = EntityLayer::Character;
 	AddCircleCollider(p_radius);
 	collisionLayer.set(6);
 	

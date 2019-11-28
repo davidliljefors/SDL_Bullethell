@@ -1,7 +1,5 @@
 #pragma once
 
-#include <array>
-
 class Projectile;
 
 namespace FG
