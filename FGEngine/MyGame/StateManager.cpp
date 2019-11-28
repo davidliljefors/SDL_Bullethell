@@ -25,6 +25,8 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	player = new Player({ 500, 650 }, this,
 		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1750.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
+	player->leftSprite = resourceManager->GetResource<FG::Sprite>("BullethellPlayerLeft.png");
+	player->rightSprite = resourceManager->GetResource<FG::Sprite>("BullethellPlayerRight.png");
 
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
 	player->AddColliderSprite(resourceManager->GetResource<FG::Sprite>("playercollider.png"));
