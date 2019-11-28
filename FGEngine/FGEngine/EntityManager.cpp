@@ -2,7 +2,6 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Collision.h"
-#include "Timer.h"
 
 namespace FG
 {
@@ -17,6 +16,12 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
+		std::lock_guard<std::mutex> lock(muEntities);
+		for (auto& entity : entities)
+		{
+			entity->Update(deltaTime);
+		}
+
 		if (addList.size() > 0)
 		{
 			for (auto entity : addList)
@@ -24,17 +29,15 @@ namespace FG
 				entities.push_back(entity);
 			}
 			addList.clear();
-			Sort();
-		}
-
-		for (auto& entity : entities)
-		{
-			entity->Update(deltaTime);
+			// Sort entities on separate thread to avoid stutter
+			t1 = std::thread([=] {Sort(); });
+			t1.detach();
 		}
 	}
 
 	void EntityManager::Render(Camera* const camera)
 	{
+		std::lock_guard<std::mutex> lock(muEntities);
 		for (auto entity : entities)
 		{
 			entity->Render(camera);
@@ -69,11 +72,14 @@ namespace FG
 
 	void EntityManager::Sort()
 	{
-		std::sort(entities.begin(), entities.end(), [](const Entity* e1, const Entity* e2)
+		auto copy = entities;
+		std::sort(copy.begin(), copy.end(), [](const Entity* e1, const Entity* e2)
 			{
 				return e1->layer < e2->layer;
 			}
 		);
+		std::lock_guard<std::mutex> lock(muEntities);
+		entities = copy;
 	}
 
 	void EntityManager::AddEntity(Entity* entity)

@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <cassert>
+#include <mutex>
+#include <thread>
 
 namespace FG
 {
@@ -40,6 +42,8 @@ namespace FG
 		void CleanDestroyedObjects();
 
 	private:
+		std::mutex muEntities;
+		std::thread t1;
 		std::vector<Entity*> entities;
 		std::vector<Entity*> inactiveEntities;
 		std::vector<Entity*> addList;

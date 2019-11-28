@@ -118,6 +118,7 @@ Projectile& Projectile::operator=(const Projectile& other)
 	}
 	layer = EntityLayer::Bullets;
 	Reload();
+	return *this;
 }
 
 Projectile::~Projectile()
