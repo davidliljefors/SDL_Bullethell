@@ -63,7 +63,9 @@ void Player::Update(float deltaTime)
 			GetHit();
 		}
 	}
-	
+	if (lives < 0)
+		return;
+
 	isColliding = false;
 	if (State::state == GAME_STATES::start) {
 		if (!firstBattle && lives >= 0) {
@@ -160,7 +162,7 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	PlaceOffscreenForEntrance();
 	if (lives < 0) {
-		//State::state = start;
+
 	}
 	else {
 		EnterScreen();

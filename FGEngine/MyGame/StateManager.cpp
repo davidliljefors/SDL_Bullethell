@@ -23,7 +23,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	scoreController->SetHiScore(GetScoreFromFile("score.txt"));
 	// ENTITIES
 	player = new Player({ 500, 650 }, this,
-		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1000.f, camera, 5.0f));
+		new Projectile(resourceManager->GetResource<FG::Sprite>("BullethellBullet.png"), true, FG::Vector2D::Down, 1750.f, camera, 5.0f));
 	player->AddSprite(resourceManager->GetResource<FG::Sprite>("Bullethellplayer.png"));
 
 	player->AddCircleCollider(player->sprite->size.x / 8.f);
