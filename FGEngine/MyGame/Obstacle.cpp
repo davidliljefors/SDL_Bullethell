@@ -48,7 +48,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	
 	layer = EntityLayer::Character;
 
-	emitter = new Emitter(position, stateManager);
+	emitter = new Emitter(position, projectilePool, stateManager);
 }
 
 void Obstacle::Initialize()
@@ -60,6 +60,7 @@ void Obstacle::Initialize()
 void Obstacle::Update(float deltaTime)
 {
 	explosion->Update(deltaTime);
+	emitter->Move(position);
 	if (health <= 0)
 	{
 		EnterNextPhase();
@@ -70,7 +71,7 @@ void Obstacle::Update(float deltaTime)
 		firePauseTime = firePauseDuration;
 		projectilePool->ReloadAll();
 
-		explosion->Explode(position);
+		explosion->Explode(position, 4);
 	}
 	isColliding = false;
 
@@ -126,14 +127,19 @@ void Obstacle::Update(float deltaTime)
 				barrageTime = barrageDuration;
 		}
 		else {
-			if (firePauseTime > 0) {
+			/*if (firePauseTime > 0) {
 				/*firePauseTime -= deltaTime;
 				if (firePauseTime <= 0) {
 					Fire();
-				}*/
+				}
 			}
 			else
-				firePauseTime = firePauseDuration;
+				firePauseTime = firePauseDuration;*/
+			
+			Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
+			if (emitter->Fire(*newBullet, deltaTime, 15, -90, 90, 2, .02f, FireModes::Linear))
+				;
+			delete newBullet;
 
 			barrageTime -= deltaTime;
 			if (barrageTime <= 0) {
@@ -143,12 +149,6 @@ void Obstacle::Update(float deltaTime)
 			}
 		}
 	}
-	emitter->Move(position);
-	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
-;
-	if (emitter->Fire(*newBullet, deltaTime, 15, -90, 90, 2, .2f, FireModes::Linear))
-		;
-	delete newBullet;
 
 }
 

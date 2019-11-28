@@ -8,6 +8,7 @@
 #include "ProjectilePool.h"
 #include "Bomb.h"
 #include "Sensor.h"
+#include "Explosion.h"
 
 namespace FG
 {
@@ -45,7 +46,7 @@ public:
 
 	void OnVictory();
 	void OnStartBattle();
-	void OnGraze();
+	bool OnGraze();
 
 	int CurrentLives();
 	int CurrentBombs();
@@ -97,6 +98,7 @@ private:
 	bool invincibleAlphaBlink;
 	bool hit = false;
 
+	Explosion* explosion;
 
 	static constexpr int MAX_BULLETS = 50;
 

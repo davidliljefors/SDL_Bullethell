@@ -1,11 +1,11 @@
 #include "Emitter.h"
 #include "ProjectilePool.h"
 
-Emitter::Emitter(FG::Vector2D position, StateManager* stateManager, float lifeTime, float angle)
+Emitter::Emitter(FG::Vector2D position, ProjectilePool* pool, StateManager* stateManager, float lifeTime, float angle)
 	: entityManager(stateManager->entityManager), resourceManager(stateManager->resourceManager), camera(stateManager->camera), position(position), angle(angle)
 {
-	projectilePool = new ProjectilePool(1000, 
-		new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
+	projectilePool = pool;//new ProjectilePool(1000, 
+		//new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 }
 
 void Emitter::Move(FG::Vector2D position)

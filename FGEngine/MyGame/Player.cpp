@@ -21,19 +21,29 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = Config::screenBoundaries;
+	
 	bomb = new Bomb(camera, position, stateManager->resourceManager->GetResource<FG::Sprite>("shockwave.png"));
 	entityManager->AddEntity(bomb);
+	
 	SetUp();
+	
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
+	
 	sensor = new Sensor(this, Sensor::graze, 25.f, stateManager->resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(sensor);
+
+	explosion = new Explosion(stateManager->resourceManager->GetResource<FG::Sprite>("explo.png"));
+	entityManager->AddEntity(explosion);
+
 	collisionLayer.set(0);
 	collisionLayer.set(5);
 	audioManager->ChangeChannelVolume(.25f, 4);
 	audioManager->ChangeChannelVolume(.5f, 5);
 	audioManager->ChangeChannelVolume(.5f, 6);
-	audioManager->ChangeChannelVolume(.25f, 7);
+	audioManager->ChangeChannelVolume(.125f, 7);
+	
 	StartPosition(pos);
+	
 	layer = EntityLayer::Character;
 }
 
@@ -44,6 +54,7 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
+	explosion->Update(deltaTime);
 	// Counter bomb mechanic
 	if (hit)
 	{
@@ -172,7 +183,9 @@ void Player::GetHit()
 	lives--;
 	sprite = straightSprite;
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
+	explosion->Explode(position, 2);
 	PlaceOffscreenForEntrance();
+
 	if (lives < 0) {
 
 	}
@@ -182,13 +195,14 @@ void Player::GetHit()
 	}
 }
 
-void Player::OnGraze()
+bool Player::OnGraze()
 {
 	if (IgnoreCollision())
-		return;
+		return false;
 	scoreController->AddScore(25);
 
 	audioManager->PlaySFX("graze.wav", 7);
+	return true;
 }
 
 void Player::OnCollision(FG::Entity* other)

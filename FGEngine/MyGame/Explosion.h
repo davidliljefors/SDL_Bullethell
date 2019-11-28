@@ -12,6 +12,10 @@ public:
 	void Update(float deltaTime) override;
 	void Render(FG::Camera* const camera) override;
 
-	void Explode(FG::Vector2D position);
+	void Explode(FG::Vector2D pos, float s);
+
+private:
+
+	float scale = 1;
 };
 

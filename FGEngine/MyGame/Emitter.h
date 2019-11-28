@@ -20,7 +20,7 @@ enum FireModes
 class Emitter : public FG::Entity
 {
 public:
-	Emitter(FG::Vector2D position, StateManager* stateManager, float lifeTime = -1, float angle = 270);
+	Emitter(FG::Vector2D position, ProjectilePool* pool, StateManager* stateManager, float lifeTime = -1, float angle = 270);
 
 	void Move(FG::Vector2D position);
 	void SetAngle(float newAngle);

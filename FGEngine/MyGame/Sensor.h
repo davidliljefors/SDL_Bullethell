@@ -24,7 +24,7 @@ public:
 	void OnCollision(Entity* other);
 
 private:
-	static constexpr float visualGrazeTime = 1.f;
+	static constexpr float visualGrazeTime = .15f;
 	std::vector<std::pair<FG::Vector2D, float>> grazeLocations;
 	FG::Sprite* grazeSprite;
 	SENSOR_TYPE m_type;

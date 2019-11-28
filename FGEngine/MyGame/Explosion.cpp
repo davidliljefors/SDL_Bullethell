@@ -22,12 +22,13 @@ void Explosion::Update(float deltaTime)
 void Explosion::Render(FG::Camera* const camera)
 {
 	if (!dead && !animation->AnimationDone())
-		Entity::Render(camera);
+		Entity::Render(camera, scale);
 }
 
-void Explosion::Explode(FG::Vector2D position)
+void Explosion::Explode(FG::Vector2D pos, float s)
 {
-	this->position = position;
+	this->position = pos;
+	this->scale = s;
 	animation->ReplayAnimation();
 	dead = false;
 }
