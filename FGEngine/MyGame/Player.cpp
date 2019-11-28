@@ -25,7 +25,7 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 	entityManager->AddEntity(bomb);
 	SetUp();
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
-	sensor = new Sensor(this, Sensor::graze, 25.f);
+	sensor = new Sensor(this, Sensor::graze, 25.f, stateManager->resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(sensor);
 	collisionLayer.set(0);
 	collisionLayer.set(5);
@@ -170,7 +170,7 @@ void Player::GetHit()
 {
 	hit = false;
 	lives--;
-
+	sprite = straightSprite;
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	PlaceOffscreenForEntrance();
 	if (lives < 0) {

@@ -5,27 +5,42 @@
 #include "Player.h"
 
 
-Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius)
+Sensor::Sensor(Player* p_user, SENSOR_TYPE p_type, float p_radius, Sprite* grazeSprite)
 {
 	user = p_user;
 	m_type = p_type;
 	layer = EntityLayer::Character;
 	AddCircleCollider(p_radius);
 	collisionLayer.set(6);
-	
+	this->grazeSprite = grazeSprite;
 }
 
 void Sensor::Update(float deltaTime)
 {
-	 position = user->position;
+	position = user->position;
+	for (auto& pair : grazeLocations)
+	{
+		pair.second -= deltaTime;
+	}
+
+	grazeLocations.erase(std::remove_if(grazeLocations.begin(), grazeLocations.end(), [](std::pair<FG::Vector2D, float> pair)
+		{
+			return pair.second < 0.f;
+		}
+	), grazeLocations.end());
+
 }
 
 void Sensor::Render(FG::Camera* const camera)
 {
+	for (auto& pair : grazeLocations)
+	{
+		grazeSprite->Render(camera, pair.first, nullptr, -5 * (pair.second - 2));
+	}
 #ifdef _DEBUG
 	collider->Draw(camera, 0, 255, 255);
 #endif _DEBUG
-}
+	}
 
 void Sensor::OnCollision(Entity* other)
 {
@@ -38,6 +53,7 @@ void Sensor::OnCollision(Entity* other)
 			if (!sensedProjectile->Grazed()) {
 				sensedProjectile->OnGrazed();
 				user->OnGraze();
+				grazeLocations.emplace_back(std::make_pair(sensedProjectile->position, visualGrazeTime));
 			}
 		}
 		break;
