@@ -114,6 +114,7 @@ void Player::Update(float deltaTime)
 			}
 			if (bomb->Activate(position, 0.5f))
 			{
+				invincibleTime -= .5f;
 				if (bombs > 0) {
 					bombs--;
 					audioManager->PlaySFX("bomb.wav", 6);
