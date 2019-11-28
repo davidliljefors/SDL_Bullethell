@@ -43,16 +43,18 @@ public:
 	bool IgnoreCollision() override;
 	void Reload();
 	void OnGrazed();
-
+	void SetPool(ProjectilePool* pool) { this->pool = pool; }
+	void SetIndex(int value) { index = value; }
+	int GetIndex() { return index; }
 private:
 	FG::Camera* camera = nullptr;
-
+	bool collided = false;
 	ProjectileType type;
 
 	ProjectilePool* pool = nullptr;
 	Projectile* explosionProjectile = nullptr;
 	int projectileCount;
-
+	int index;
 	bool isColliding = false;
 	bool playerFired;
 	bool grazed = false;
@@ -67,12 +69,12 @@ private:
 	float angle;
 
 	void ExplodeProjectile();
-		
+
 	virtual void OnLifetimeEnd() {}
 
 	constexpr static SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	constexpr static SDL_Color CollidingColor = { 255, 0, 0, 255 };
-	
+
 	constexpr static float OFFSCREEN_LIMIT = 50;
 	FG::Vector2D maxBoundaries;
 

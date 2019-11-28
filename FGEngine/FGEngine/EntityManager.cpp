@@ -2,6 +2,8 @@
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Collision.h"
+#include "Timer.h"
+
 
 namespace FG
 {
@@ -20,6 +22,15 @@ namespace FG
 		for (auto& entity : entities)
 		{
 			entity->Update(deltaTime);
+		}
+
+		for (auto& pool : pools)
+		{
+			auto vector = *pool;
+			for (auto e : vector)
+			{
+				e->Update(deltaTime);
+			}
 		}
 
 		if (addList.size() > 0)
@@ -42,10 +53,60 @@ namespace FG
 		{
 			entity->Render(camera);
 		}
+		for (auto& pool : pools)
+		{
+			auto vector = *pool;
+			for (auto e : vector)
+			{
+				e->Render(camera);
+			}
+		}
 	}
 
 	void EntityManager::DoCollisions()
 	{
+		Timer t("Collisions");
+
+		for (int x = 0; x < entities.size() - 1; x++)
+		{
+			if (entities[x]->Dead())
+			{ continue; }
+
+			for (int y = x + 1; y < entities.size(); y++)
+			{
+				if (entities[y]->Dead())
+				{ continue; }
+				if (entities[x]->IgnoreCollision() || entities[y]->IgnoreCollision())
+					continue;
+				if ((entities[x]->collisionLayer & entities[y]->collisionLayer).any() &&
+					Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *entities[y]->GetColliderCircle()))
+				{
+					entities[x]->OnCollision(entities[y]);
+					entities[y]->OnCollision(entities[x]);
+				}
+			}
+			for (auto pool : pools)
+			{
+				auto vector = *pool;
+				for (auto e : vector)
+				{
+					if (entities[x]->IgnoreCollision())
+						continue;
+					if ((entities[x]->collisionLayer & e->collisionLayer).any() &&
+						Collision::CircleIntersects(*entities[x]->GetColliderCircle(), *e->GetColliderCircle()))
+					{
+						entities[x]->OnCollision(e);
+						e->OnCollision(entities[x]);
+					}
+				}
+			}
+
+
+		}
+
+
+#if 0
+
 		for (int x = 0; x < entities.size() - 1; x++)
 		{
 			if (!entities[x] || entities[x]->Dead())
@@ -68,6 +129,7 @@ namespace FG
 				}
 			}
 		}
+#endif
 	}
 
 	void EntityManager::Sort()
@@ -85,6 +147,11 @@ namespace FG
 	void EntityManager::AddEntity(Entity* entity)
 	{
 		addList.push_back(entity);
+	}
+
+	void EntityManager::AddPool(std::vector<Entity*>* vec)
+	{
+		pools.push_back(vec);
 	}
 
 
@@ -105,4 +172,4 @@ namespace FG
 
 		entities.erase(newEnd, entities.end());
 	}
-}
+	}

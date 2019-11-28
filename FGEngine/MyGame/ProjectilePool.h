@@ -1,9 +1,11 @@
 #pragma once
+#include <vector>
 
 class Projectile;
 
 namespace FG
 {
+	class Entity;
 	class EntityManager;
 }
 
@@ -15,6 +17,7 @@ public:
 	~ProjectilePool() { Destroy(); }
 
 	void ReloadAll();
+	void PoolProjectile(Projectile* p);
 	Projectile* GetProjectile();
 	Projectile* GetProjectile(const Projectile& projectile);
 
@@ -22,5 +25,8 @@ public:
 
 private:
 	int maxBullets;
-	Projectile** projectiles;
+
+
+	Projectile** inactiveProjs;
+	std::vector<FG::Entity*> projectiles;
 };

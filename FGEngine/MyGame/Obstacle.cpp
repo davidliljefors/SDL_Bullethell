@@ -137,8 +137,7 @@ void Obstacle::Update(float deltaTime)
 				firePauseTime = firePauseDuration;*/
 			
 			Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
-			if (emitter->Fire(*newBullet, deltaTime, 15, -90, 90, 2, .02f, FireModes::Linear))
-				;
+			emitter->Fire(*newBullet, deltaTime, 15, -90, 90, 2, .02f, FireModes::Linear);
 			delete newBullet;
 
 			barrageTime -= deltaTime;

@@ -31,7 +31,8 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 	layer = EntityLayer::Bullets;
-	Reload();
+	dead = true;
+	grazed = false;
 }
 
 Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direction, float speed,
@@ -55,7 +56,8 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 	layer = EntityLayer::Bullets;
-	Reload();
+	dead = true;
+	grazed = false;
 }
 
 Projectile::Projectile(const Projectile& other)
@@ -86,7 +88,8 @@ Projectile::Projectile(const Projectile& other)
 		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 	layer = EntityLayer::Bullets;
-	Reload();
+	dead = true;
+	grazed = false;
 }
 
 Projectile& Projectile::operator=(const Projectile& other)
@@ -127,10 +130,11 @@ Projectile::~Projectile()
 
 void Projectile::Update(float deltaTime)
 {
-	isColliding = false;
-
 	if (dead)
 		return;
+
+	if (collided)
+		Reload();
 
 	Entity::Update(deltaTime);
 
@@ -199,11 +203,11 @@ void Projectile::OnCollision(FG::Entity* other)
 {
 	if (typeid(*other) == typeid(Obstacle)) {
 		//Obstacle* ba = static_cast<Obstacle*>(other);
-		Reload();
+		collided = true;
 	}
 	if (typeid(*other) == typeid(Bomb)) {
 		//Obstacle* ba = static_cast<Obstacle*>(other);
-		Reload();
+		collided = true;
 	}
 
 }
@@ -232,6 +236,7 @@ void Projectile::Fire(FG::Vector2D firePosition)
 {
 	position = firePosition;
 	elapsedTime = 0.0f;
+	collided = false;
 	dead = false;
 }
 
@@ -248,6 +253,7 @@ void Projectile::SetValues(const Projectile& projectile)
 		angle = projectile.angle;
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
+		pool = projectile.pool;
 	}
 
 	if (projectile.type == Exploding)
@@ -279,8 +285,13 @@ void Projectile::SetDirection(FG::Vector2D direction)
 
 void Projectile::Reload()
 {
+	
 	dead = true;
 	grazed = false;
+	if (pool)
+	{
+		pool->PoolProjectile(this);
+	}
 }
 
 void Projectile::OnGrazed()

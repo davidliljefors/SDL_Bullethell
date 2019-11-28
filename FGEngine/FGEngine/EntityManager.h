@@ -5,6 +5,7 @@
 #include <mutex>
 #include <thread>
 
+class Projectile;
 namespace FG
 {
 	class Entity;
@@ -19,6 +20,7 @@ namespace FG
 		void Sort();
 
 		void AddEntity(Entity* entity);
+		void AddPool(std::vector<Entity*>* vec);
 		template<typename T, typename... TArgs>
 		T* AddEntity(TArgs&&... args)
 		{
@@ -45,7 +47,7 @@ namespace FG
 		std::mutex muEntities;
 		std::thread t1;
 		std::vector<Entity*> entities;
-		std::vector<Entity*> inactiveEntities;
+		std::vector<std::vector<Entity*>*> pools;
 		std::vector<Entity*> addList;
 	};
 }
