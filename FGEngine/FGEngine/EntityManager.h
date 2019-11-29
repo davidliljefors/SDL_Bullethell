@@ -2,8 +2,6 @@
 
 #include <vector>
 #include <cassert>
-#include <mutex>
-#include <thread>
 
 class Projectile;
 namespace FG
@@ -44,8 +42,6 @@ namespace FG
 		void CleanDestroyedObjects();
 
 	private:
-		std::mutex muEntities;
-		std::thread t1;
 		std::vector<Entity*> entities;
 		std::vector<std::vector<Entity*>*> pools;
 		std::vector<Entity*> addList;

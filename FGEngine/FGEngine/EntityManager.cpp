@@ -18,7 +18,6 @@ namespace FG
 
 	void EntityManager::Update(float deltaTime)
 	{
-		std::lock_guard<std::mutex> lock(muEntities);
 		for (auto& entity : entities)
 		{
 			entity->Update(deltaTime);
@@ -41,14 +40,12 @@ namespace FG
 			}
 			addList.clear();
 			// Sort entities on separate thread to avoid stutter
-			t1 = std::thread([=] {Sort(); });
-			t1.detach();
+			Sort();
 		}
 	}
 
 	void EntityManager::Render(Camera* const camera)
 	{
-		std::lock_guard<std::mutex> lock(muEntities);
 		for (auto entity : entities)
 		{
 			entity->Render(camera);
@@ -130,14 +127,11 @@ namespace FG
 
 	void EntityManager::Sort()
 	{
-		auto copy = entities;
-		std::sort(copy.begin(), copy.end(), [](const Entity* e1, const Entity* e2)
+		std::sort(entities.begin(), entities.end(), [](const Entity* e1, const Entity* e2)
 			{
 				return e1->layer < e2->layer;
 			}
 		);
-		std::lock_guard<std::mutex> lock(muEntities);
-		entities = copy;
 	}
 
 	void EntityManager::AddEntity(Entity* entity)
