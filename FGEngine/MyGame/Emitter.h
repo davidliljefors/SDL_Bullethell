@@ -11,12 +11,6 @@ namespace FG
 	class Camera;
 }
 
-enum FireModes
-{
-	Linear,
-	Burst
-};
-
 class Emitter : public FG::Entity
 {
 public:
@@ -24,7 +18,7 @@ public:
 
 	void Move(FG::Vector2D position);
 	void SetAngle(float newAngle);
-	bool Fire(const Projectile& projectile, float deltaTime, int amount = 1, float minAngle = 0, float maxAngle = 360, int waves = 1, float timeBetweenWaves = 0, FireModes fireMode = Linear);
+	void Fire(const Projectile& projectile, int amount = 1, float minAngle = 0, float maxAngle = 360);
 
 private:
 	Sprite* sprite = nullptr;

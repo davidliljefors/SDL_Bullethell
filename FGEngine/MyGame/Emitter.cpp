@@ -18,20 +18,8 @@ void Emitter::SetAngle(float newAngle)
 	angle = newAngle;
 }
 
-//Returns true when projectile is done firing. Run in update until it returns true so fire all the waves.
-bool Emitter::Fire(const Projectile& projectile, float deltaTime, int amount, float minAngle, float maxAngle, int waves, float timeBetweenWaves, FireModes fireMode)
+void Emitter::Fire(const Projectile& projectile, int amount, float minAngle, float maxAngle)
 {
-	elapsedTime += deltaTime;
-
-	if (elapsedTime > timeBetweenWaves)
-	{
-		elapsedTime = 0;
-	}
-	else
-	{
-		return false;
-	}
-
 	float currentAngle;
 
 	for (size_t i = 0; i <= amount; i++)
@@ -42,19 +30,6 @@ bool Emitter::Fire(const Projectile& projectile, float deltaTime, int amount, fl
 
 		proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
 
-		if (fireMode == FireModes::Burst)
-		{
-			//proj->SetSpeed();
-		}
-
 		proj->Fire(position);
 	}
-
-	if (projectilesFired >= waves)
-	{
-		projectilesFired = 0;
-		return true;
-	}
-
-	return false;
 }
