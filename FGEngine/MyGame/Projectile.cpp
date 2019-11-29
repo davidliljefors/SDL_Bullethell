@@ -138,7 +138,7 @@ void Projectile::Update(float deltaTime)
 	if (collided)
 		Reload();
 
-	Entity::Update(deltaTime);
+	//Entity::Update(deltaTime);
 
 	if (rotation > 0)
 	{
@@ -279,7 +279,6 @@ void Projectile::SetDirection(FG::Vector2D direction)
 
 void Projectile::Reload()
 {
-	
 	dead = true;
 	grazed = false;
 	angle = originalAngle;
