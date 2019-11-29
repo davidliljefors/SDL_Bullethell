@@ -65,4 +65,6 @@ namespace FG
 	{
 		return acos((from.x * from.y + to.x * to.y) / (from.Magnitude() * to.Magnitude())) * 180.0f / PI;
 	}
+
+	
 }

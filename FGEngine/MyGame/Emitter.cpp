@@ -22,9 +22,20 @@ void Emitter::Fire(const Projectile& projectile, int amount, float minAngle, flo
 {
 	float currentAngle;
 
-	for (size_t i = 0; i <= amount; i++)
+	if (amount == 1)
 	{
-		currentAngle = minAngle + ((float)i / amount * (maxAngle - minAngle));
+		Projectile* proj = projectilePool->GetProjectile(projectile);
+
+		proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
+
+		proj->Fire(position);
+
+		return;
+	}
+
+	for (size_t i = 0; i < amount; i++)
+	{
+		currentAngle = minAngle + ((float)i / (amount - 1) * (maxAngle - minAngle));
 
 		Projectile* proj = projectilePool->GetProjectile(projectile);
 

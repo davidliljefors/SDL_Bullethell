@@ -65,6 +65,7 @@ private:
 	float speed = 1;
 	float accelerationSpeed;
 	float rotation;
+	float originalAngle;
 	float angle;
 
 	void ExplodeProjectile();

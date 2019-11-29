@@ -16,7 +16,7 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 {
 	type = Regular;
 	
-	angle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Zero ,direction);
+	angle = originalAngle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Right ,direction);
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -42,7 +42,7 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 {
 	type = Exploding;
 
-	angle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Zero, direction);
+	angle = originalAngle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Right, direction);
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -70,6 +70,7 @@ Projectile::Projectile(const Projectile& other)
 	maxBoundaries = other.maxBoundaries;
 	speed = other.speed;
 	rotation = other.rotation;
+	originalAngle = other.originalAngle;
 
 	type = other.type;
 	pool = other.pool;
@@ -102,6 +103,7 @@ Projectile& Projectile::operator=(const Projectile& other)
 	maxBoundaries = other.maxBoundaries;
 	speed = other.speed;
 	rotation = other.rotation;
+	originalAngle = other.originalAngle;
 
 	type = other.type;
 	pool = other.pool;
@@ -224,6 +226,7 @@ void Projectile::ExplodeProjectile()
 
 void Projectile::Fire(FG::Vector2D firePosition)
 {
+	angle = originalAngle;
 	position = firePosition;
 	elapsedTime = 0.0f;
 	collided = false;
@@ -244,6 +247,7 @@ void Projectile::SetValues(const Projectile& projectile)
 		camera = projectile.camera;
 		maxBoundaries = projectile.maxBoundaries;
 		pool = projectile.pool;
+		originalAngle = projectile.originalAngle;
 	}
 
 	if (projectile.type == Exploding)
@@ -259,7 +263,7 @@ void Projectile::SetValues(const Projectile& projectile)
 		pool = projectile.pool;
 		explosionProjectile = projectile.explosionProjectile;
 		projectileCount = projectile.projectileCount;
-
+		originalAngle = projectile.originalAngle;
 	}
 }
 
@@ -278,6 +282,9 @@ void Projectile::Reload()
 	
 	dead = true;
 	grazed = false;
+	angle = originalAngle;
+	direction = FG::Vector2D::AngleToVector2D(originalAngle);
+
 	if (pool)
 	{
 		pool->PoolProjectile(this);

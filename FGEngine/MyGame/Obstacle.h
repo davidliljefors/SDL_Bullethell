@@ -50,7 +50,7 @@ private:
 	int currentMaxHealth = s_HealthValues[0];
 	Phase phase = Phase::first;
 
-	static constexpr float firePauseDuration = .2f;
+	static constexpr float firePauseDuration = .025f;
 	static constexpr float barrageDuration = 1.0f;
 	static constexpr float barragePauseDuration = 2.0f;
 
