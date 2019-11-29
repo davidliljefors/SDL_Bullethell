@@ -37,8 +37,8 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	boss->AddCircleCollider(64);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
 	boss->Initialize();
 	entityManager->AddEntity(boss);
 
@@ -109,7 +109,6 @@ void StateManager::Update()
 		}
 		break;
 	case game:
-
 		int currentDisplayScore;
 		currentDisplayScore = scoreController->Update();
 

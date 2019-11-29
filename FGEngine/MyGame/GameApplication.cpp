@@ -73,6 +73,10 @@ bool GameApplication::Initialize()
 	resourceManager->AddResource("BullethellBoss2.png", sprite);
 
 	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellBoss3.png");
+	resourceManager->AddResource("BullethellBoss3.png", sprite);
+
+	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "explo.png", 4, 4, 16);
 	resourceManager->AddResource("explo.png", sprite);
 	
@@ -175,6 +179,7 @@ void GameApplication::Run()
 		entityManager->DoCollisions();
 	
 		stateManager->Update();
+		camera->Update(time.DeltaTime() * timescale);
 
 		camera->StartRenderFrame();
 		entityManager->Render(camera);

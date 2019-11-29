@@ -21,6 +21,9 @@ namespace FG
 		virtual void StartRenderFrame();
 		virtual void EndRenderFrame();
 
+		void Shake(float intensity, float duration);
+		void Update(float deltaTime);
+
 		void SetColor(const SDL_Color& color);
 		SDL_Color GetColor();
 
@@ -29,5 +32,13 @@ namespace FG
 	protected:
 		Window* ownerWindow = nullptr;
 		SDL_Renderer* renderer = nullptr;
+
+		bool ScreenShake() { return shakeTime > 0; }
+		
+		float shakeTime;
+		float shakeIntensity;
+
+		float shakePauseDuration = 0.0f;
+		float shakePauseTime;
 	};
 }
