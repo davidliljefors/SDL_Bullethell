@@ -1,7 +1,6 @@
 #include "ProjectilePool.h"
 #include "Projectile.h"
 #include "EntityManager.h"
-#include <iostream>
 
 ProjectilePool::ProjectilePool(int maxBullets, Projectile* projectilePrefab, FG::EntityManager* entityManager) : maxBullets(maxBullets)
 {
@@ -42,7 +41,6 @@ void ProjectilePool::PoolProjectile(Projectile* p)
 	}
 	if (indexInVector != -1)
 	{
-		std::cout << "deleted proj" << std::endl;
 		projectiles.erase(projectiles.begin() + indexInVector);
 	}
 }

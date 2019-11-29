@@ -69,6 +69,10 @@ bool GameApplication::Initialize()
 	resourceManager->AddResource("BullethellBoss.png", sprite);
 
 	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellBoss2.png");
+	resourceManager->AddResource("BullethellBoss2.png", sprite);
+
+	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "explo.png", 4, 4, 16);
 	resourceManager->AddResource("explo.png", sprite);
 	
