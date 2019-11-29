@@ -7,7 +7,7 @@
 #include "Explosion.h"
 #include "Emitter.h"
 
-static constexpr int s_HealthValues[4] = {30,50,75,9999};
+static constexpr int s_HealthValues[4] = { 30,50,75,9999 };
 
 namespace FG
 {
@@ -36,6 +36,7 @@ public:
 	void OnCollision(FG::Entity* other) override;
 	bool IgnoreCollision() override;
 	bool AddSprite(FG::Sprite* spr) override;
+	void SetIndicatorSprite(FG::Sprite* spr) { bottomIndicator = spr; }
 
 	void EnterScreen();
 	void PlaceOffscreenForEntrance();
@@ -56,7 +57,7 @@ private:
 
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
-	
+
 	float firePauseTime;
 	float barrageTime;
 	float barragePauseTime;
@@ -72,7 +73,7 @@ private:
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
 	static constexpr SDL_Color CollidingColor = { 255, 0, 0, 255 };
-	
+
 	FG::EntityManager* entityManager;
 	FG::ResourceManager* resourcecManager;
 	AudioManager* audioManager;
@@ -80,6 +81,8 @@ private:
 
 	FG::Camera* camera = nullptr;
 	std::vector<FG::Sprite*> sprites;
+	FG::Sprite* bottomIndicator = nullptr;
+	float indicatorYOffset = 700;
 
 	bool entersScreen;
 	bool firstBattle = true;

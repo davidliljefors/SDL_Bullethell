@@ -37,9 +37,10 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	boss->AddCircleCollider(64);
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
+	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
 	boss->Initialize();
+	boss->SetIndicatorSprite(resourceManager->GetResource<FG::Sprite>("indicator.png"));
 	entityManager->AddEntity(boss);
 
 	//UI ELEMENTS
@@ -109,7 +110,6 @@ void StateManager::Update()
 		}
 		break;
 	case game:
-
 		int currentDisplayScore;
 		currentDisplayScore = scoreController->Update();
 

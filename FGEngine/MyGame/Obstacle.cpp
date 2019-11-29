@@ -175,6 +175,10 @@ void Obstacle::MoveToAnotherPosition()
 
 void Obstacle::Render(FG::Camera* const camera)
 {
+	if (!Invincible())
+	{
+		bottomIndicator->Render(camera, { position.x, indicatorYOffset });
+	}
 	if (currentHitFlash > 0)
 	{
 		sprite->Render(camera, position, { 255, 255, 255 });
@@ -183,6 +187,8 @@ void Obstacle::Render(FG::Camera* const camera)
 	{
 		sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
 	}
+
+	
 
 #ifdef _DEBUG
 	collider->Draw(camera, 255, 0, 0);

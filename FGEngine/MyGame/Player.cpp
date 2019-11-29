@@ -185,6 +185,7 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	explosion->Explode(position, 2);
 	PlaceOffscreenForEntrance();
+	camera->Shake(5.0f, 1.0f);
 
 	if (lives < 0) {
 
@@ -246,7 +247,6 @@ void Player::OnVictory()
 {
 	if (lives >= 0)
 		entersScreen = true;
-	//SetUp();
 }
 
 void Player::OnStartBattle()

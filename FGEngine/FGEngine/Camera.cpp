@@ -37,6 +37,36 @@ void FG::Camera::EndRenderFrame()
 	SDL_RenderPresent(renderer);
 }
 
+void FG::Camera::Shake(float intensity, float duration)
+{
+	shakeTime = duration;
+	shakeIntensity = intensity;
+}
+
+void FG::Camera::Update(float deltaTime)
+{
+	if (ScreenShake())
+	{
+		shakeTime -= deltaTime;
+		shakePauseTime -= deltaTime;
+		if (shakePauseTime <= 0)
+		{
+			if (position.y <= 0) {
+				position = FG::Vector2D::Up * shakeIntensity;
+			}
+			else
+				position = FG::Vector2D::Down * shakeIntensity;
+
+			shakePauseTime = shakePauseDuration;
+			if (shakeIntensity > 0) {
+				shakeIntensity -= 5 * deltaTime;
+				if (shakeIntensity < 0)
+					shakeIntensity = 0;
+			}
+		}
+	}
+}
+
 void FG::Camera::SetColor(const SDL_Color& color)
 {
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
