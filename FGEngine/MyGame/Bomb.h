@@ -50,7 +50,7 @@ public:
 
 	void Render(FG::Camera* const camera) override
 	{
-		//collider->Draw(camera, 255, 150, 0);
+		collider->Draw(camera, 255, 150, 0);
 
 		if (timeleft > 0)
 			sprite->Render(camera, position, static_cast<unsigned char>(currentAlpha));

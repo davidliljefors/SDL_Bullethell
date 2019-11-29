@@ -182,16 +182,6 @@ void Projectile::Update(float deltaTime)
 
 }
 
-void Projectile::Render(FG::Camera* const camera)
-{
-	if (dead)
-		return;
-	Entity::Render(camera);
-#ifdef _DEBUG
-	collider->Draw(camera, 255, 255, 255);
-#endif _DEBUG
-}
-
 SDL_Rect Projectile::GetColliderRect()
 {
 	FG::Vector2D finalPosition = position - camera->position;

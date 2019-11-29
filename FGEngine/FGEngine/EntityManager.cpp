@@ -65,8 +65,6 @@ namespace FG
 
 	void EntityManager::DoCollisions()
 	{
-		Timer t("Collisions");
-
 		for (int x = 0; x < entities.size() - 1; x++)
 		{
 			if (entities[x]->Dead())
@@ -100,8 +98,6 @@ namespace FG
 					}
 				}
 			}
-
-
 		}
 
 

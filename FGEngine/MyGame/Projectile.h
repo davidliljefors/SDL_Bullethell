@@ -29,7 +29,6 @@ public:
 	~Projectile();
 
 	void Update(float deltaTime) override;
-	void Render(FG::Camera* const camera) override;
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
