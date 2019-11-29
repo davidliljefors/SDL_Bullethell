@@ -21,7 +21,7 @@ namespace FG
 		virtual void StartRenderFrame();
 		virtual void EndRenderFrame();
 
-		void Shake(float intensity, float duration);
+		void Shake(float intensity = 1.0f, float duration = 1.0f);
 		void Update(float deltaTime);
 
 		void SetColor(const SDL_Color& color);
@@ -37,6 +37,7 @@ namespace FG
 		
 		float shakeTime;
 		float shakeIntensity;
+		float shakeOriginalIntensity;
 
 		float shakePauseDuration = 0.0f;
 		float shakePauseTime;

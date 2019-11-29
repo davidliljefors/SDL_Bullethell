@@ -22,7 +22,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	explosion = new Explosion(resourcecManager->GetResource<FG::Sprite>("explo.png"));
 	entityManager->AddEntity(explosion);
 
-	projectilePool = new ProjectilePool(1000, new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
+	projectilePool = new ProjectilePool(10000, new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
 	audioManager->ChangeChannelVolume(.25f, 3);
 	audioManager->ChangeChannelVolume(.5f, 2);
 
@@ -71,6 +71,7 @@ void Obstacle::Update(float deltaTime)
 		firePauseTime = firePauseDuration;
 		projectilePool->ReloadAll();
 
+		camera->Shake(1.5f);
 		explosion->Explode(position, 4);
 	}
 	isColliding = false;
@@ -130,8 +131,10 @@ void Obstacle::Update(float deltaTime)
 			if (firePauseTime > 0) {
 				firePauseTime -= deltaTime;
 				if (firePauseTime <= 0) {
-					Fire(Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 250.f, camera),
-						360 * barrageTime/barrageDuration, false, 2, 0, 180);
+					Fire(Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera),
+						360 * barrageTime/barrageDuration, false, 6, 0, 180);
+					//Fire(Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 100.0f, camera),
+						//0, true, 60, 0, 360);
 				}
 			}
 			else
@@ -175,10 +178,9 @@ void Obstacle::MoveToAnotherPosition()
 
 void Obstacle::Render(FG::Camera* const camera)
 {
-	if (!Invincible())
-	{
-		bottomIndicator->Render(camera, { position.x, indicatorYOffset });
-	}
+	if (State::state == GAME_STATES::game)
+		bottomIndicator->Render(camera, { position.x, indicatorYOffset },(Invincible()? 128: 255));
+	
 	if (currentHitFlash > 0)
 	{
 		sprite->Render(camera, position, { 255, 255, 255 });

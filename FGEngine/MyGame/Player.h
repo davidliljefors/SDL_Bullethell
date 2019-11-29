@@ -111,6 +111,5 @@ private:
 
 	void Shoot();
 	void MovePlayer(float deltaTime);
-	void MoveCamera(float deltaTime);
 
 };

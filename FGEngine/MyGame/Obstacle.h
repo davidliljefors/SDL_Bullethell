@@ -52,8 +52,8 @@ private:
 	Phase phase = Phase::first;
 
 	static constexpr float firePauseDuration = .025f;
-	static constexpr float barrageDuration = 2.0f;
-	static constexpr float barragePauseDuration = 3.0f;
+	static constexpr float barrageDuration = 3.0f;
+	static constexpr float barragePauseDuration = 2.0f;
 
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
@@ -82,7 +82,7 @@ private:
 	FG::Camera* camera = nullptr;
 	std::vector<FG::Sprite*> sprites;
 	FG::Sprite* bottomIndicator = nullptr;
-	float indicatorYOffset = 700;
+	float indicatorYOffset = 760;
 
 	bool entersScreen;
 	bool firstBattle = true;

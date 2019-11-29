@@ -115,7 +115,6 @@ void Player::Update(float deltaTime)
 	else {
 
 		MovePlayer(deltaTime);
-		//MoveCamera(deltaTime);
 		if (bombs > 0 && inputManager->IsKeyPressed(SDL_SCANCODE_SPACE))
 		{
 			if (hit)
@@ -129,6 +128,7 @@ void Player::Update(float deltaTime)
 				if (bombs > 0) {
 					bombs--;
 					audioManager->PlaySFX("bomb.wav", 6);
+					camera->Shake(2.5f);
 				}
 			}
 		}
@@ -185,12 +185,13 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	explosion->Explode(position, 2);
 	PlaceOffscreenForEntrance();
-	camera->Shake(5.0f, 1.0f);
 
 	if (lives < 0) {
 
+		camera->Shake(7.5f, 3.0f);
 	}
 	else {
+		camera->Shake(5.0f, 2.0f);
 		EnterScreen();
 		Respawn();
 	}
@@ -308,32 +309,6 @@ void Player::MovePlayer(float deltaTime)
 	else if (position.y > maxBoundaries.y - sprite->size.y / 2)
 		position.y = maxBoundaries.y - sprite->size.y / 2;
 	sensor->position = position;
-}
-
-void Player::MoveCamera(float deltaTime)
-{
-	FG::Vector2D movement;
-	if (inputManager->IsKeyDown(SDL_SCANCODE_LEFT))
-	{
-		movement.x = -1.0f;
-	}
-
-	if (inputManager->IsKeyDown(SDL_SCANCODE_RIGHT))
-	{
-		movement.x = 1.0f;
-	}
-
-	if (inputManager->IsKeyDown(SDL_SCANCODE_UP))
-	{
-		movement.y = -1.0f;
-	}
-
-	if (inputManager->IsKeyDown(SDL_SCANCODE_DOWN))
-	{
-		movement.y = 1.0f;
-	}
-
-	camera->position += movement * speed * deltaTime;
 }
 
 void Player::SetUp()

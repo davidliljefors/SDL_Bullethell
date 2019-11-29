@@ -40,7 +40,7 @@ void FG::Camera::EndRenderFrame()
 void FG::Camera::Shake(float intensity, float duration)
 {
 	shakeTime = duration;
-	shakeIntensity = intensity;
+	shakeIntensity = shakeOriginalIntensity = intensity;
 }
 
 void FG::Camera::Update(float deltaTime)
@@ -59,9 +59,11 @@ void FG::Camera::Update(float deltaTime)
 
 			shakePauseTime = shakePauseDuration;
 			if (shakeIntensity > 0) {
-				shakeIntensity -= 5 * deltaTime;
-				if (shakeIntensity < 0)
+				shakeIntensity -= shakeOriginalIntensity * deltaTime;
+				if (shakeIntensity <= 0) {
 					shakeIntensity = 0;
+					shakeTime = 0;
+				}
 			}
 		}
 	}
