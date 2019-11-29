@@ -1,6 +1,6 @@
 #include "Vector2D.h"
 
-constexpr float PI = 3.141592f;
+
 
 namespace FG
 {

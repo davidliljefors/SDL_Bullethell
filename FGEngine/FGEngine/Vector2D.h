@@ -5,6 +5,7 @@ namespace FG
 {
 	class Vector2D
 	{
+		static constexpr float PI = 3.141592f;
 	public:
 		float x = 0.0f;
 		float y = 0.0f;
@@ -21,6 +22,10 @@ namespace FG
 		Vector2D operator-=(const Vector2D& other);
 		bool operator==(const Vector2D& other);
 
+
+		inline float GetAngle() const {
+			return atan2(-y, x) * 180.f / PI;
+		}
 		inline float Magnitude() const
 		{
 			return std::sqrt(x * x + y * y);

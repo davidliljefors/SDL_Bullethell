@@ -164,8 +164,7 @@ void Obstacle::Fire()
 		audioManager->PlaySFX("enemyFire.wav", 3);
 	}*/
 	
-	float garbage = Vector2D::Vector2DToAngle(position , player->position);
-	emitter->SetAngle(garbage);
+	emitter->SetAngle((player->position-position).GetAngle());
 	
 	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
 	emitter->Fire(*newBullet, 1, -90, 90);
