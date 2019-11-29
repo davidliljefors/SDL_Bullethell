@@ -55,6 +55,10 @@ bool GameApplication::Initialize()
 	FG::Sprite* sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "Bullethellplayer.png");
 	resourceManager->AddResource("Bullethellplayer.png", sprite);
+
+    sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "indicator.png");
+	resourceManager->AddResource("indicator.png", sprite);
 	
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellPlayerRight.png");

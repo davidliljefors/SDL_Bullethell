@@ -40,6 +40,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
 	boss->Initialize();
+	boss->SetIndicatorSprite(resourceManager->GetResource<FG::Sprite>("indicator.png"));
 	entityManager->AddEntity(boss);
 
 	//UI ELEMENTS
