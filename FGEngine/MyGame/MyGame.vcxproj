@@ -101,6 +101,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)FGEngine;$(SolutionDir)thirdParty\SDL2\include\;$(SolutionDir)thirdParty\SDL2_TTF\include\;$(SolutionDir)thirdParty\SDL2_Mixer\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
