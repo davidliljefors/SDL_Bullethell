@@ -51,8 +51,8 @@ private:
 	Phase phase = Phase::first;
 
 	static constexpr float firePauseDuration = .025f;
-	static constexpr float barrageDuration = 1.0f;
-	static constexpr float barragePauseDuration = 2.0f;
+	static constexpr float barrageDuration = 2.0f;
+	static constexpr float barragePauseDuration = 3.0f;
 
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
@@ -97,8 +97,11 @@ private:
 
 	void StartPosition(FG::Vector2D pos);
 	void OnDeath();
-	void Fire();
+
+	void Fire(Projectile projectile, float angle = 270, bool targetPlayer = false, int bullets = 1, float minAngle = 0, float maxAngle = 360);
+
 	void MoveToAnotherPosition();
+
 };
 
 

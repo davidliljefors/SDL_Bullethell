@@ -130,7 +130,8 @@ void Obstacle::Update(float deltaTime)
 			if (firePauseTime > 0) {
 				firePauseTime -= deltaTime;
 				if (firePauseTime <= 0) {
-					Fire();
+					Fire(Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 250.f, camera),
+						360 * barrageTime/barrageDuration, false, 2, 0, 180);
 				}
 			}
 			else
@@ -149,26 +150,15 @@ void Obstacle::Update(float deltaTime)
 }
 
 
-void Obstacle::Fire()
+void Obstacle::Fire(Projectile projectile, float angle, bool targetPlayer, int bullets, float minAngle, float maxAngle)
 {
-	/*Vector2D directionToPlayer = player->position;
-	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera, projectilePool,
-		new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Down, 500, camera, 5, 2), 6, .5f);
-	
-	Projectile* proj = projectilePool->GetProjectile();
-	*proj = *newBullet;
-	delete newBullet;
-	
-	if (proj) {
-		proj->Fire(position + FG::Vector2D(0, -15));
-		audioManager->PlaySFX("enemyFire.wav", 3);
-	}*/
-	
-	emitter->SetAngle((player->position-position).GetAngle());
-	
-	Projectile* newBullet = new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 500, camera);
-	emitter->Fire(*newBullet, 1, -90, 90);
-	delete newBullet;
+	if (targetPlayer)
+	{
+		angle = (player->position - position).GetAngle();
+	}
+
+	emitter->SetAngle(angle);
+	emitter->Fire(projectile, bullets, minAngle, maxAngle);
 
 	audioManager->PlaySFX("enemyFire.wav", 3);
 }
