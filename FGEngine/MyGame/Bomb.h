@@ -2,7 +2,7 @@
 #include <Entity.h>
 #include <Camera.h>
 
-class Bomb : public FG::Entity 
+class Bomb : public FG::Entity
 {
 
 public:
@@ -22,11 +22,11 @@ public:
 		}
 		if (timeleft > 0)
 		{
-			collider->SetRadius(collider->GetRadius() + 25*(1+deltaTime));
+			collider->SetRadius(collider->GetRadius() + 25 * (1 + deltaTime));
 
 			sprite->size += FG::Vector2D::One * 3750 * deltaTime;
 			timeleft -= deltaTime;
-			
+
 			if (currentAlpha > 0) {
 				currentAlpha -= 7.5f;
 				if (currentAlpha < 0)
@@ -37,9 +37,9 @@ public:
 
 	bool Activate(FG::Vector2D pos, float time)
 	{
-		if (timeleft > 0 )
+		if (timeleft > 0)
 			return false;
-  		position = pos;
+		position = pos;
 		collisionLayer.set(4);
 		collider->SetRadius(10.f);
 		sprite->size = FG::Vector2D::One * 20;
@@ -50,10 +50,13 @@ public:
 
 	void Render(FG::Camera* const camera) override
 	{
-		collider->Draw(camera, 255, 150, 0);
-
 		if (timeleft > 0)
+		{
+#ifdef _DEBUG
+			collider->Draw(camera, 255, 150, 0);
+#endif _DEBUG
 			sprite->Render(camera, position, static_cast<unsigned char>(currentAlpha));
+		}
 	}
 
 
