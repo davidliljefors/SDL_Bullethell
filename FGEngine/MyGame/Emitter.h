@@ -29,7 +29,7 @@ public:
 	float spinSpeed;
 	bool aimAtPlayer;
 
-	EmitterProperties(Projectile& projectile, float firePause = 0.2f, float barrage = 2.0f, float barragePause = 2.0f, int bulletsAtOnce = 1, float angle = 270, float minOffsetAngle = 0, float maxOffsetAngle = 360,
+	EmitterProperties(Projectile& projectile, float firePause = 0.2f, float barrage = 2.0f, float barragePause = .5f, int bulletsAtOnce = 1, float angle = 270, float minOffsetAngle = 0, float maxOffsetAngle = 360,
 		bool spinning = false, float spinSpeed = 1, bool aimAtPlayer = false)
 		: projectile(&projectile), firePauseDuration(firePause), barrageDuration(barrage), barragePauseDuration(barragePause), bulletsAtOnce(bulletsAtOnce), angle(angle),
 		minOffsetAngle(minOffsetAngle), maxOffsetAngle(maxOffsetAngle), spinning(spinning), spinSpeed(spinSpeed), aimAtPlayer(aimAtPlayer)

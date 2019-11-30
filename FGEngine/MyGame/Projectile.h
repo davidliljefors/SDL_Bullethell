@@ -68,7 +68,7 @@ private:
 	float fadingElapsedTime = 0.f;
 	bool fadingOut = false;
 	float scale = 1.f;
-	float growSpeed = 25.f;
+	float growSpeed = 6.125f;
 
 
 

@@ -28,18 +28,16 @@ struct BossPhase {
 public:
 	int health;
 
-	Sprite* sprite;
-
-	float barragePauseDuration;
+	//float barragePauseDuration;
 
 	std::vector<FG::Vector2D> positions;
-	bool moveAfterBarrage;
+	bool moveWhileFiring;
 	float movePauseDuration;
 
 	std::vector<EmitterProperties*> emitters;
 	
-	BossPhase(std::vector<EmitterProperties*> emitters, FG::Vector2D initialPos, int health = 35, float barragePauseDuration = 2.0f, bool moveAfterBarrage = true, float movePauseDuration = 1.0f)
-	: emitters(emitters), health(health), barragePauseDuration(barragePauseDuration), moveAfterBarrage(moveAfterBarrage), movePauseDuration(movePauseDuration)
+	BossPhase(std::vector<EmitterProperties*> emitters, FG::Vector2D initialPos, int health = 35, bool moveWhileFiring = true, float movePauseDuration = 5.0f)
+	: emitters(emitters), health(health), moveWhileFiring(moveWhileFiring), movePauseDuration(movePauseDuration)
 	{
 		positions.push_back(initialPos);
 	};
@@ -90,7 +88,7 @@ private:
 
 	//float firePauseTime;
 	//float barrageTime;
-	float barragePauseTime;
+	//float barragePauseTime;
 	float movePauseTime;
 
 	float invincibleTime;

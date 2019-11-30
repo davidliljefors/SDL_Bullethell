@@ -56,8 +56,8 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.1f, 10, 2, 10, 270, 0, 360, true, 3) } ),
-			FG::Vector2D( pos.x, pos.y ))
+			.1f, 1, 2, 10, 270, 0, 360, true, 3) } ),
+			FG::Vector2D( pos.x, pos.y ), 35, false)
 	);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
@@ -65,10 +65,10 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.2f, 10, 2, 10,270, 0, 360, false, 0, false),
+			.2f, 1, .5, 10, 270, 0, 360, false, 0, false),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.02f, 1, 2, 1, 270, 0, 360, false, 0, true) }),
-			FG::Vector2D( pos.x, pos.y ),35, 0)
+			.02f, 1, .5, 1, 270, 0, 360, false, 0, true) }),
+			FG::Vector2D( pos.x, pos.y ),35)
 			);
 	
 	// CALCULATING STUFF
@@ -112,11 +112,8 @@ void Obstacle::Update(float deltaTime)
 	}
 	isColliding = false;
 
-
 	if (currentHitFlash > 0)
-	{
 		currentHitFlash -= deltaTime;
-	}
 
 	if (phase == Phase::dead)
 		return;
@@ -137,8 +134,8 @@ void Obstacle::Update(float deltaTime)
 	if (entersScreen) {
 		if (position.y != startPosition.y || position.x != startPosition.x) {
 			position = Lerp(position, startPosition, 5 * deltaTime);
-			if ((position.y <= startPosition.y + 5 && position.y >= startPosition.y - 5) &&
-				(position.x <= startPosition.x + 5 && position.x >= startPosition.x - 5)) {
+			if ((position.y <= startPosition.y + 2.5 && position.y >= startPosition.y - 2.5) &&
+				(position.x <= startPosition.x + 2.5 && position.x >= startPosition.x - 2.5)) {
 				entersScreen = false;
 			}
 		}
@@ -147,11 +144,11 @@ void Obstacle::Update(float deltaTime)
 
 
 		if (position.y != destination.y || position.x != destination.x) {
-			position = Lerp(position, destination, 1.5f * deltaTime);
-			/*if ((position.y <= destination.y + 5 && position.y >= destination.y - 5) &&
-				(position.x <= destination.x + 5 && position.x >= destination.x - 5)) {
-				position
-			}*/
+			position = Lerp(position, destination, 2.5f * deltaTime);
+			if ((position.y <= destination.y + 2.5f && position.y >= destination.y - 2.5f) &&
+				(position.x <= destination.x + 2.5f && position.x >= destination.x - 2.5f)) {
+				position = destination;
+			}
 		}
 
 		if (Invincible()) {
@@ -165,6 +162,32 @@ void Obstacle::Update(float deltaTime)
 			return;
 		}
 
+		if (bossPhases[currentBossPhase]->moveWhileFiring) {
+			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
+				emitters[i]->Fire(deltaTime, player->position);
+		}
+		else if (position == destination) {
+			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
+				emitters[i]->Fire(deltaTime, player->position);
+		}/*
+		else {
+
+			bool emittersDone = true;
+			for (auto& e : emitters) {
+				e->Fire(deltaTime, player->position);
+				if (!e->FinishedBarrage())
+					emittersDone = false;
+			}
+		}*/
+		if (position == destination)
+			movePauseTime -= deltaTime;
+		if (movePauseTime <= 0) {
+			movePauseTime = bossPhases[currentBossPhase]->movePauseDuration;
+			ResetEmittersTime();
+			if (bossPhases[currentBossPhase]->positions.size() > 1)
+				MoveToAnotherPosition();
+		}
+		/*
 		if (barragePauseTime > 0) {
 			barragePauseTime -= deltaTime;
 			if (barragePauseTime <= 0)
@@ -187,7 +210,7 @@ void Obstacle::Update(float deltaTime)
 			else
 				firePauseTime = firePauseDuration;
 			*/
-
+		/*
 			bool emittersDone = true;
 			for (auto& e : emitters) {
 
@@ -198,13 +221,14 @@ void Obstacle::Update(float deltaTime)
 
 			if (emittersDone)
 			{
-				barragePauseTime = bossPhases[currentBossPhase]->barragePauseDuration;
+				//barragePauseTime = bossPhases[currentBossPhase]->barragePauseDuration;
 				ResetEmittersTime();
 				//if (bossPositions[static_cast<int>(phase)].size() > 1)
 				if (bossPhases[currentBossPhase]->positions.size() > 1)
 					MoveToAnotherPosition();
 			}
 		}
+		*/
 	}
 
 }
@@ -264,9 +288,10 @@ void Obstacle::EnterNextPhase()
 
 	currentBossPhase++;
 	if (currentBossPhase < bossPhases.size() ) {
+		movePauseTime = bossPhases[currentBossPhase]->movePauseDuration;
 		destination = bossPhases[currentBossPhase]->positions[0];
 		health = bossPhases[currentBossPhase]->health;
-		barragePauseTime = bossPhases[currentBossPhase]->barragePauseDuration;
+		//barragePauseTime = bossPhases[currentBossPhase]->barragePauseDuration;
 
 		for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
 			emitters[i]->SetEmitter(bossPhases[currentBossPhase]->emitters[i]);
@@ -354,7 +379,8 @@ void Obstacle::StartPosition(FG::Vector2D pos)
 }
 void Obstacle::EnterScreen()
 {
-	entersScreen = true;
+	if(phase == Phase::dead)
+		entersScreen = true;
 	SetUp();
 	firstBattle = false;
 }
@@ -379,7 +405,7 @@ void Obstacle::SetUp()
 	phase = Phase::first;
 	health = currentMaxHealth = bossPhases[0]->health;
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
-	barragePauseTime = 0;
+	//barragePauseTime = 0;
 	ResetEmittersTime();
 	currentBossPhase = -1;
 	EnterNextPhase();

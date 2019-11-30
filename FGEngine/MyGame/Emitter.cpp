@@ -35,6 +35,7 @@ void Emitter::ResetTime()
 {
 	barrageTime = properties->barrageDuration;
 	firePauseTime = properties->firePauseDuration;
+	barragePauseTime = properties->barragePauseDuration/2;
 	angle = originalAngle;
 }
 /*
@@ -69,48 +70,58 @@ void Emitter::Fire(int amount, float minAngle, float maxAngle)
 
 void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 {
-	if (barrageTime > 0) {
-		if (firePauseTime > 0) {
-			firePauseTime -= deltaTime;
-			if (firePauseTime <= 0) {
+	if (barragePauseTime <= 0) {
+		if (barrageTime > 0) {
+			if (firePauseTime > 0) {
+				firePauseTime -= deltaTime;
+				if (firePauseTime <= 0) {
 
-				if (properties->aimAtPlayer)
-					angle = (targetPosition - position).GetAngle();
-				else
-					angle += (properties->spinning ? properties->spinSpeed : 0);
+					if (properties->aimAtPlayer)
+						angle = (targetPosition - position).GetAngle();
+					else
+						angle += (properties->spinning ? properties->spinSpeed : 0);
 					//angle *= (properties->spinning ? barrageTime / properties->barrageDuration : 1);
-				
+
 				//std::cout << angle << std::endl;
-				
-				SetAngle(angle);
 
-				float currentAngle;
+					SetAngle(angle);
 
-				if (properties->bulletsAtOnce == 1)
-				{
-					Projectile* proj = projectilePool->GetProjectile(*projectile);
+					float currentAngle;
 
-					proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
-
-					proj->Fire(position);
-				}
-				else
-				{
-					for (size_t i = 0; i < properties->bulletsAtOnce; i++)
+					if (properties->bulletsAtOnce == 1)
 					{
-						currentAngle = properties->minOffsetAngle + ((float)i / (properties->bulletsAtOnce - 1) * (properties->maxOffsetAngle - properties->minOffsetAngle));
-
 						Projectile* proj = projectilePool->GetProjectile(*projectile);
 
-						proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
+						proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
 
 						proj->Fire(position);
 					}
+					else
+					{
+						for (size_t i = 0; i < properties->bulletsAtOnce; i++)
+						{
+							currentAngle = properties->minOffsetAngle + ((float)i / (properties->bulletsAtOnce - 1) * (properties->maxOffsetAngle - properties->minOffsetAngle));
+
+							Projectile* proj = projectilePool->GetProjectile(*projectile);
+
+							proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
+
+							proj->Fire(position);
+						}
+					}
 				}
 			}
+			else
+				firePauseTime = properties->firePauseDuration;
 		}
-		else
-			firePauseTime = properties->firePauseDuration;
+		barrageTime -= deltaTime;
+		if (barrageTime <= 0)
+		{
+			barrageTime = properties->barrageDuration;
+			barragePauseTime = properties->barragePauseDuration;
+		}
 	}
-	barrageTime -= deltaTime;
+	else {
+		barragePauseTime -= deltaTime;
+	}
 }
