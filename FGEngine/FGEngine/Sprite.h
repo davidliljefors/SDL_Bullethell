@@ -34,7 +34,7 @@ namespace FG
 		unsigned int frames = 1;
 		unsigned int columns = 1;
 		unsigned int rows = 1;
-		//Frames to show each sprite
+		//Time to show each sprite in an animation
 		float timePerFrame = 0.1f;
 
 	};
