@@ -17,6 +17,7 @@ void Emitter::SetEmitter(Projectile& proj, int amount, float minAngle, float max
 void Emitter::SetEmitter(EmitterProperties* emitterProperties)
 {
 	properties = emitterProperties;
+	angle = originalAngle = properties->angle;
 	ResetTime();
 	projectile = properties->projectile;
 }

@@ -48,18 +48,36 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	*/
 	layer = EntityLayer::Character;
 
-	emitter = new Emitter(position, projectilePool, stateManager);
+	//emitter = new Emitter(position, projectilePool, stateManager);
 	//emitter->SetEmitter(*new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera), 1);
 	
 	// ADD NEW STUFF
-
+	/*
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.1f, 1, 2, 10, 270, 0, 360, true, 3, true) }),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 750.0f, camera),
+			.02f, .5, .5, 1, 270, -22.5f, 22.5f, true) }),
 			FG::Vector2D(pos.x, pos.y), 35, false)
 			);
 	
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
+			.075f, .75f, .5f, 3, 270, -22.5f, 22.5f, true ) }),
+			FG::Vector2D(pos.x, pos.y), 35, false, .75f)
+			);
+	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
+	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
+	*/
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 50.0f, camera, -1, 25),
+			.075f, .75f, .5f, 6, 270, -90, 90, false, true, 5),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 50.0f, camera, -1, 25),
+			.075f, .75f, .5f, 6, 90, -90, 90, false, true, 5) }),
+			FG::Vector2D(pos.x, pos.y), 35, false)
+			);
+	/*
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
@@ -77,7 +95,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			.02f, 1, .5, 1, 270, 0, 360, true, false, 0 ) }),
 			FG::Vector2D( pos.x, pos.y ), 35)
 			);
-	
+	*/
 	// CALCULATING STUFF
 
 	int totalEmitters = 1;
@@ -150,9 +168,9 @@ void Obstacle::Update(float deltaTime)
 
 
 		if (position.y != destination.y || position.x != destination.x) {
-			position = Lerp(position, destination, 2.5f * deltaTime);
-			if ((position.y <= destination.y + 2.5f && position.y >= destination.y - 2.5f) &&
-				(position.x <= destination.x + 2.5f && position.x >= destination.x - 2.5f)) {
+			position = Lerp(position, destination, 5 * deltaTime);
+			if ((position.y <= destination.y + 2.5 && position.y >= destination.y - 2.5) &&
+				(position.x <= destination.x + 2.5 && position.x >= destination.x - 2.5)) {
 				position = destination;
 			}
 		}
