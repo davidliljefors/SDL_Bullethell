@@ -28,8 +28,6 @@ struct BossPhase {
 public:
 	int health;
 
-	//float barragePauseDuration;
-
 	std::vector<FG::Vector2D> positions;
 	bool moveWhileFiring;
 	float movePauseDuration;
@@ -79,16 +77,9 @@ private:
 	int currentMaxHealth = s_HealthValues[0];
 	Phase phase = Phase::first;
 
-	//static constexpr float firePauseDuration = .025f;
-	//static constexpr float barrageDuration = 3.0f;
-	//static constexpr float barragePauseDuration = 2.0f;
-
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
 
-	//float firePauseTime;
-	//float barrageTime;
-	//float barragePauseTime;
 	float movePauseTime;
 
 	float invincibleTime;
@@ -96,8 +87,6 @@ private:
 	bool invincibleAlphaBlink;
 	static constexpr float hitFlashDuration = 0.07f;
 	float currentHitFlash = 0;
-
-	//std::vector<std::vector<FG::Vector2D>> bossPositions;
 
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
@@ -126,7 +115,6 @@ private:
 	std::vector<BossPhase*> bossPhases;
 	int currentBossPhase = 0;
 
-	Emitter* emitter;
 	std::vector<Emitter*> emitters;
 
 	ProjectilePool* projectilePool = nullptr;
@@ -135,7 +123,6 @@ private:
 	void OnDeath();
 
 	void ResetEmittersTime();
-	void Fire(Projectile projectile, float angle = 270, bool targetPlayer = false, int bullets = 1, float minAngle = 0, float maxAngle = 360);
 
 	void MoveToAnotherPosition();
 

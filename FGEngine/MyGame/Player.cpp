@@ -208,6 +208,7 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	explosion->Explode(position, 2);
 	PlaceOffscreenForEntrance();
+	rewardPlayer = false;
 
 	if (lives < 0) {
 
@@ -288,6 +289,19 @@ int Player::CurrentLives()
 int Player::CurrentBombs()
 {
 	return bombs;
+}
+
+void Player::AwardReward()
+{
+	if (rewardPlayer) {
+		if (bombs >= maxBombs)
+		{
+			if (lives < maxLives)
+				lives++;
+		}
+		else bombs++;
+	}
+	else rewardPlayer = true;
 }
 
 void Player::MovePlayer(float deltaTime)

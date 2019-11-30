@@ -51,6 +51,8 @@ public:
 	int CurrentLives();
 	int CurrentBombs();
 
+	void AwardReward();
+
 	//todo private
 	FG::Sprite* leftSprite = nullptr;
 	FG::Sprite* straightSprite = nullptr;
@@ -77,6 +79,7 @@ private:
 
 	int lives;
 	int bombs;
+	bool rewardPlayer = true;
 
 	bool entersScreen = false;
 	bool firstBattle = true;

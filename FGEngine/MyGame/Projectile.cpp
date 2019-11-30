@@ -262,34 +262,22 @@ void Projectile::Fire(FG::Vector2D firePosition)
 void Projectile::SetValues(const Projectile& projectile)
 {
 	type = projectile.type;
-	if (projectile.type == Regular)
-	{
-		sprite = projectile.sprite;
-		lifetime = projectile.lifetime;
-		direction = projectile.direction;
-		accelerationSpeed = projectile.accelerationSpeed;
-		speed = projectile.speed;
-		angle = projectile.angle;
-		camera = projectile.camera;
-		maxBoundaries = projectile.maxBoundaries;
-		pool = projectile.pool;
-		originalAngle = projectile.originalAngle;
-	}
+	sprite = projectile.sprite;
+	lifetime = projectile.lifetime;
+	direction = projectile.direction;
+	accelerationSpeed = projectile.accelerationSpeed;
+	speed = projectile.speed;
+	angle = projectile.angle;
+	rotation = projectile.rotation;
+	camera = projectile.camera;
+	maxBoundaries = projectile.maxBoundaries;
+	pool = projectile.pool;
+	originalAngle = projectile.originalAngle;
 
 	if (projectile.type == Exploding)
 	{
-		sprite = projectile.sprite;
-		lifetime = projectile.lifetime;
-		direction = projectile.direction;
-		accelerationSpeed = projectile.accelerationSpeed;
-		speed = projectile.speed;
-		angle = projectile.angle;
-		camera = projectile.camera;
-		maxBoundaries = projectile.maxBoundaries;
-		pool = projectile.pool;
 		explosionProjectile = projectile.explosionProjectile;
 		projectileCount = projectile.projectileCount;
-		originalAngle = projectile.originalAngle;
 	}
 }
 
