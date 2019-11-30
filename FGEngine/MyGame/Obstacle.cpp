@@ -64,11 +64,11 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
 			.2f, 1, .5, 10, 270, 0, 360, false, 0, false),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
 			.02f, 1, .5, 1, 270, 0, 360, false, 0, true) }),
-			FG::Vector2D( pos.x, pos.y ),35)
+			FG::Vector2D( pos.x, pos.y ), 35)
 			);
 	
 	// CALCULATING STUFF
@@ -102,13 +102,12 @@ void Obstacle::Update(float deltaTime)
 	//emitter->Move(position);
 	if (health <= 0)
 	{
+		explosion->Explode(position, 4);
 		EnterNextPhase();
 		invincibleTime = 0;
 
 		projectilePool->ReloadAll();
-
 		camera->Shake(1.5f);
-		explosion->Explode(position, 4);
 	}
 	isColliding = false;
 

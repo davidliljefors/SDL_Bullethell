@@ -36,7 +36,7 @@ public:
 
 	std::vector<EmitterProperties*> emitters;
 	
-	BossPhase(std::vector<EmitterProperties*> emitters, FG::Vector2D initialPos, int health = 35, bool moveWhileFiring = true, float movePauseDuration = 5.0f)
+	BossPhase(std::vector<EmitterProperties*> emitters, FG::Vector2D initialPos, int health = 35, bool moveWhileFiring = false, float movePauseDuration = 5.0f)
 	: emitters(emitters), health(health), moveWhileFiring(moveWhileFiring), movePauseDuration(movePauseDuration)
 	{
 		positions.push_back(initialPos);
