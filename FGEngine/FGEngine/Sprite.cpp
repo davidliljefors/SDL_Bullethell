@@ -101,7 +101,7 @@ namespace FG
 
 	}
 	
-	void Sprite::Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src, float scale)
+	void Sprite::Render(Camera* camera, Vector2D position, unsigned char alpha, const SDL_Rect* src, float scale)
 	{
 		SDL_SetTextureAlphaMod(texture, alpha);
 		Render(camera, position, src, scale);

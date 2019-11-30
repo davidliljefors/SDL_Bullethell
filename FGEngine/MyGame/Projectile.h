@@ -29,6 +29,7 @@ public:
 	~Projectile();
 
 	void Update(float deltaTime) override;
+	void Render(FG::Camera* const camera);
 
 	virtual SDL_Rect GetColliderRect() override;
 	void OnCollision(FG::Entity* other) override;
@@ -44,9 +45,11 @@ public:
 	void OnGrazed();
 	void SetPool(ProjectilePool* pool) { this->pool = pool; }
 	void SetIndex(int value) { index = value; }
+	void FadeOut();
 	int GetIndex() { return index; }
 private:
 	FG::Camera* camera = nullptr;
+	
 	bool collided = false;
 	ProjectileType type;
 
@@ -60,6 +63,15 @@ private:
 
 	float elapsedTime = 0.f;
 	float lifetime;
+
+	static constexpr float fadeOutTime = .2f;
+	float fadingElapsedTime = 0.f;
+	bool fadingOut = false;
+	float scale = 1.f;
+	float growSpeed = 25.f;
+
+
+
 
 	FG::Vector2D direction;
 	float speed = 1;

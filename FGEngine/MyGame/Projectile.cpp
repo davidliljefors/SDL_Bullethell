@@ -15,8 +15,8 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 	lifetime(lifetime), playerFired(playerFired), direction(direction), speed(speed), accelerationSpeed(accelerationSpeed), rotation(rotation), camera(camera), maxBoundaries(Config::screenBoundaries)
 {
 	type = Regular;
-	
-	angle = originalAngle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Right ,direction);
+
+	angle = originalAngle = FG::Vector2D::Vector2DToAngle(FG::Vector2D::Right, direction);
 
 	FG::Entity::sprite = sprite;
 	AddCircleCollider(sprite->size.x / 2.f);
@@ -25,9 +25,9 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(1);
 	else
 	{
-		
+
 		collisionLayer.set(6); // Layer 6 is for sensor
-		collisionLayer.set(5); 
+		collisionLayer.set(5);
 		collisionLayer.set(4); // Layer 5 is for bomb
 	}
 	layer = EntityLayer::Bullets;
@@ -136,7 +136,21 @@ void Projectile::Update(float deltaTime)
 		return;
 
 	if (collided)
-		Reload();
+		FadeOut();
+
+	if (fadingOut)
+	{
+		fadingElapsedTime += deltaTime;
+		scale += deltaTime * growSpeed;
+		if (fadingElapsedTime > fadeOutTime)
+		{
+			scale = 1.f;
+			Reload();
+		}
+		return;
+	}
+
+
 
 	//Entity::Update(deltaTime);
 
@@ -161,11 +175,11 @@ void Projectile::Update(float deltaTime)
 
 	speed += accelerationSpeed;
 
-	if (position.x < -OFFSCREEN_LIMIT   ||
+	if (position.x < -OFFSCREEN_LIMIT ||
 		position.x > maxBoundaries.x + OFFSCREEN_LIMIT ||
 		position.y < -OFFSCREEN_LIMIT ||
 		position.y > maxBoundaries.y + OFFSCREEN_LIMIT)
-		Reload();	
+		Reload();
 
 	if (lifetime != -1)
 	{
@@ -182,6 +196,17 @@ void Projectile::Update(float deltaTime)
 
 	}
 
+}
+
+void Projectile::Render(FG::Camera* const camera)
+{
+	if (fadingOut) {
+		sprite->Render(camera, position, (unsigned char)((1.f - fadingElapsedTime / fadeOutTime) * 255), nullptr, scale);
+	}
+	else
+	{
+		sprite->Render(camera, position);
+	}
 }
 
 SDL_Rect Projectile::GetColliderRect()
@@ -213,7 +238,7 @@ void Projectile::ExplodeProjectile()
 {
 	for (size_t i = 0; i < projectileCount; i++)
 	{
-		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360/projectileCount) * static_cast<float>(i));
+		FG::Vector2D direction = FG::Vector2D::AngleToVector2D((360 / projectileCount) * static_cast<float>(i));
 
 		Projectile* proj = pool->GetProjectile();
 		if (proj) {
@@ -226,6 +251,7 @@ void Projectile::ExplodeProjectile()
 
 void Projectile::Fire(FG::Vector2D firePosition)
 {
+	fadingOut = false;
 	angle = originalAngle;
 	position = firePosition;
 	elapsedTime = 0.0f;
@@ -279,10 +305,21 @@ void Projectile::SetDirection(FG::Vector2D direction)
 
 void Projectile::Reload()
 {
+
 	dead = true;
 	grazed = false;
 	angle = originalAngle;
 	direction = FG::Vector2D::AngleToVector2D(originalAngle);
+
+	if (playerFired)
+		collisionLayer.set(1);
+	else
+	{
+
+		collisionLayer.set(6); // Layer 6 is for sensor
+		collisionLayer.set(5);
+		collisionLayer.set(4); // Layer 5 is for bomb
+	}
 
 	if (pool)
 	{
@@ -293,5 +330,13 @@ void Projectile::Reload()
 void Projectile::OnGrazed()
 {
 	grazed = true;
+}
+
+void Projectile::FadeOut()
+{
+	collided = false;
+	fadingElapsedTime = 0.f;
+	collisionLayer.reset();
+	fadingOut = true;
 }
 
