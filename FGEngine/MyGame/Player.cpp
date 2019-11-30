@@ -21,14 +21,14 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 {
 	minBoundaries = FG::Vector2D::Zero;
 	maxBoundaries = Config::screenBoundaries;
-	
+
 	bomb = new Bomb(camera, position, stateManager->resourceManager->GetResource<FG::Sprite>("shockwave.png"));
 	entityManager->AddEntity(bomb);
-	
+
 	SetUp();
-	
+
 	projectilePool = new ProjectilePool(MAX_BULLETS, projectilePrefab, entityManager);
-	
+
 	sensor = new Sensor(this, Sensor::graze, 25.f, stateManager->resourceManager->GetResource<FG::Sprite>("playercollider.png"));
 	entityManager->AddEntity(sensor);
 
@@ -41,9 +41,9 @@ Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* project
 	audioManager->ChangeChannelVolume(.5f, 5);
 	audioManager->ChangeChannelVolume(.5f, 6);
 	audioManager->ChangeChannelVolume(.125f, 7);
-	
+
 	StartPosition(pos);
-	
+
 	layer = EntityLayer::Character;
 }
 
@@ -58,6 +58,12 @@ void Player::Update(float deltaTime)
 	// Counter bomb mechanic
 	if (hit)
 	{
+		hitFlashElapsedTime += deltaTime;
+		if (hitFlashElapsedTime > hitFlashDuration)
+		{
+			hitFlashElapsedTime = 0;
+			hitFlash = !hitFlash;
+		}
 		int slowMoEvent = SDL_RegisterEvents(1);
 		if (slowMoEvent != ((Uint32)-1)) {
 			SDL_Event event;
@@ -146,7 +152,24 @@ void Player::Render(FG::Camera* const camera)
 		return;
 
 	assert(sprite);
-	sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
+	if (hit)
+	{
+
+		if (hitFlash)
+		{
+			sprite->Render(camera, position, SDL_Color({ 255,75,75 }), SDL_BLENDMODE_BLEND);
+		}
+		else
+		{
+			sprite->Render(camera, position, SDL_Color({ 255,175,175 }), SDL_BLENDMODE_BLEND);
+		}
+	}
+	else
+	{
+		sprite->Render(camera, position, (Invincible() ? (invincibleAlphaBlink ? 125 : 100) : 255));
+	}
+
+
 
 	assert(colliderSprite);
 	colliderSprite->Render(camera, position);

@@ -97,6 +97,9 @@ private:
 
 	bool invincibleAlphaBlink;
 	bool hit = false;
+	static constexpr float hitFlashDuration = 0.02f;
+	float hitFlashElapsedTime = 0.f;
+	bool hitFlash = false; // used to change between flash colour during slowmo
 
 	Explosion* explosion;
 
