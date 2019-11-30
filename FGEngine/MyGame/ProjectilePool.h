@@ -16,6 +16,7 @@ public:
 
 	~ProjectilePool() { Destroy(); }
 
+	void FadeOutAll();
 	void ReloadAll();
 	void PoolProjectile(Projectile* p);
 	Projectile* GetProjectile();

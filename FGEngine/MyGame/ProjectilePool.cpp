@@ -18,6 +18,15 @@ ProjectilePool::ProjectilePool(int maxBullets, Projectile* projectilePrefab, FG:
 	entityManager->AddPool(&projectiles);
 }
 
+void ProjectilePool::FadeOutAll()
+{
+	for (auto it = projectiles.begin(); it != projectiles.end(); it++)
+	{
+		static_cast<Projectile*>(*it)->FadeOut();
+	}
+	//projectiles.clear();
+}
+
 void ProjectilePool::ReloadAll()
 {
 	for (auto it = projectiles.begin(); it != projectiles.end(); it++)
@@ -27,6 +36,7 @@ void ProjectilePool::ReloadAll()
 	}
 	projectiles.clear();
 }
+
 void ProjectilePool::PoolProjectile(Projectile* p)
 {
 	int indexInVector = -1;

@@ -162,7 +162,7 @@ void Obstacle::Update(float deltaTime)
 		EnterNextPhase();
 		invincibleTime = 0;
 
-		projectilePool->ReloadAll();
+		projectilePool->FadeOutAll();
 		camera->Shake(1.5f);
 	}
 	isColliding = false;

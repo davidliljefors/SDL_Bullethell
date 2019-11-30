@@ -25,7 +25,6 @@ Projectile::Projectile(FG::Sprite* sprite, bool playerFired, FG::Vector2D direct
 		collisionLayer.set(1);
 	else
 	{
-
 		collisionLayer.set(6); // Layer 6 is for sensor
 		collisionLayer.set(5);
 		collisionLayer.set(4); // Layer 5 is for bomb
