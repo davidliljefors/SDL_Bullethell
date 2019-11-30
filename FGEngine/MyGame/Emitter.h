@@ -11,14 +11,44 @@ namespace FG
 	class Camera;
 }
 
+
+struct EmitterProperties {
+
+public:
+	float firePauseDuration;
+	float barrageDuration;
+	float barragePauseDuration;
+	int bulletsAtOnce;
+
+	float angle;
+	float minOffsetAngle;
+	float maxOffsetAngle;
+
+	Projectile* projectile;
+	bool spinning;
+	float spinSpeed;
+	bool aimAtPlayer;
+
+	EmitterProperties(Projectile& projectile, float firePause = 0.2f, float barrage = 2.0f, float barragePause = 2.0f, int bulletsAtOnce = 1, float angle = 270, float minOffsetAngle = 0, float maxOffsetAngle = 360,
+		bool spinning = false, float spinSpeed = 1, bool aimAtPlayer = false)
+		: projectile(&projectile), firePauseDuration(firePause), barrageDuration(barrage), barragePauseDuration(barragePause), bulletsAtOnce(bulletsAtOnce), angle(angle),
+		minOffsetAngle(minOffsetAngle), maxOffsetAngle(maxOffsetAngle), spinning(spinning), spinSpeed(spinSpeed), aimAtPlayer(aimAtPlayer)
+	{}
+};
+
 class Emitter : public FG::Entity
 {
 public:
 	Emitter(FG::Vector2D position, ProjectilePool* pool, StateManager* stateManager, float lifeTime = -1, float angle = 270);
 
+	//void SetEmitter(Projectile& proj, int amount, float minAngle = 0, float maxAngle = 360);
+	void SetEmitter(EmitterProperties* emitterProperties);
 	void Move(FG::Vector2D position);
 	void SetAngle(float newAngle);
-	void Fire(const Projectile& projectile, int amount = 1, float minAngle = 0, float maxAngle = 360);
+	void ResetTime();
+	//void Fire(int amount = 1, float minAngle = 0, float maxAngle = 360);
+	void Fire(float deltaTime, FG::Vector2D targetPosition);
+	bool FinishedBarrage() { return barrageTime <= 0; };
 
 private:
 	Sprite* sprite = nullptr;
@@ -30,8 +60,14 @@ private:
 
 	FG::Vector2D position;
 	float angle = 0;
+	float originalAngle = 0;
 
-	float elapsedTime = 0;
-	float projectilesFired = 0;
+	float firePauseTime;
+	float barrageTime;
+	float barragePauseTime;
+	
+	EmitterProperties* properties;
+
+	Projectile* projectile;
 };
 

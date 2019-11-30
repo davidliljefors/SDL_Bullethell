@@ -23,6 +23,33 @@ enum class Phase
 	dead
 };
 
+struct BossPhase {
+
+public:
+	int health;
+
+	Sprite* sprite;
+
+	float barragePauseDuration;
+
+	std::vector<FG::Vector2D> positions;
+	bool moveAfterBarrage;
+	float movePauseDuration;
+
+	std::vector<EmitterProperties*> emitters;
+	
+	BossPhase(std::vector<EmitterProperties*> emitters, FG::Vector2D initialPos, int health = 35, float barragePauseDuration = 2.0f, bool moveAfterBarrage = true, float movePauseDuration = 1.0f)
+	: emitters(emitters), health(health), barragePauseDuration(barragePauseDuration), moveAfterBarrage(moveAfterBarrage), movePauseDuration(movePauseDuration)
+	{
+		positions.push_back(initialPos);
+	};
+
+	void AddPosition(FG::Vector2D pos)
+	{
+		positions.push_back(pos);
+	};
+};
+
 class Obstacle : public FG::Entity
 {
 public:
@@ -43,7 +70,8 @@ public:
 	Phase CurrentPhase();
 	void SetUp();
 	int GetHealth() { return health; }
-	int GetMaxHealth() { return s_HealthValues[static_cast<int>(phase)]; }
+	//int GetMaxHealth() { return s_HealthValues[static_cast<int>(phase)]; }
+	int GetMaxHealth() { return bossPhases[currentBossPhase]->health; }
 	bool Invincible() { return invincibleTime < invincibleDuration; }
 private:
 
@@ -51,16 +79,17 @@ private:
 	int currentMaxHealth = s_HealthValues[0];
 	Phase phase = Phase::first;
 
-	static constexpr float firePauseDuration = .025f;
-	static constexpr float barrageDuration = 3.0f;
-	static constexpr float barragePauseDuration = 2.0f;
+	//static constexpr float firePauseDuration = .025f;
+	//static constexpr float barrageDuration = 3.0f;
+	//static constexpr float barragePauseDuration = 2.0f;
 
 	static constexpr float invincibleDuration = 1.0f;
 	static constexpr float invincibleAlphaBlinkDuration = .1f;
 
-	float firePauseTime;
-	float barrageTime;
+	//float firePauseTime;
+	//float barrageTime;
 	float barragePauseTime;
+	float movePauseTime;
 
 	float invincibleTime;
 	float invincibleAlphaBlinkTime;
@@ -68,7 +97,7 @@ private:
 	static constexpr float hitFlashDuration = 0.07f;
 	float currentHitFlash = 0;
 
-	std::vector<std::vector<FG::Vector2D>> bossPositions;
+	//std::vector<std::vector<FG::Vector2D>> bossPositions;
 
 	bool isColliding = false;
 	static constexpr SDL_Color notCollidingColor = { 0, 255, 0, 255 };
@@ -94,13 +123,18 @@ private:
 
 	Player* player;
 
+	std::vector<BossPhase*> bossPhases;
+	int currentBossPhase = 0;
+
 	Emitter* emitter;
+	std::vector<Emitter*> emitters;
 
 	ProjectilePool* projectilePool = nullptr;
-
+	
 	void StartPosition(FG::Vector2D pos);
 	void OnDeath();
 
+	void ResetEmittersTime();
 	void Fire(Projectile projectile, float angle = 270, bool targetPlayer = false, int bullets = 1, float minAngle = 0, float maxAngle = 360);
 
 	void MoveToAnotherPosition();

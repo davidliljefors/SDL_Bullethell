@@ -2,10 +2,23 @@
 #include "ProjectilePool.h"
 
 Emitter::Emitter(FG::Vector2D position, ProjectilePool* pool, StateManager* stateManager, float lifeTime, float angle)
-	: entityManager(stateManager->entityManager), resourceManager(stateManager->resourceManager), camera(stateManager->camera), position(position), angle(angle)
+	: entityManager(stateManager->entityManager), resourceManager(stateManager->resourceManager), camera(stateManager->camera),
+	position(position), projectilePool(pool), angle(angle)
 {
-	projectilePool = pool;//new ProjectilePool(1000, 
-		//new Projectile(resourceManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.f, camera), entityManager);
+	originalAngle = angle;
+}
+/*
+void Emitter::SetEmitter(Projectile& proj, int amount, float minAngle, float maxAngle)
+{
+	projectile = &proj;
+}
+*/
+
+void Emitter::SetEmitter(EmitterProperties* emitterProperties)
+{
+	properties = emitterProperties;
+	ResetTime();
+	projectile = properties->projectile;
 }
 
 void Emitter::Move(FG::Vector2D position)
@@ -18,29 +31,86 @@ void Emitter::SetAngle(float newAngle)
 	angle = newAngle;
 }
 
-void Emitter::Fire(const Projectile& projectile, int amount, float minAngle, float maxAngle)
+void Emitter::ResetTime()
+{
+	barrageTime = properties->barrageDuration;
+	firePauseTime = properties->firePauseDuration;
+	angle = originalAngle;
+}
+/*
+void Emitter::Fire(int amount, float minAngle, float maxAngle)
 {
 	float currentAngle;
 
 	if (amount == 1)
 	{
-		Projectile* proj = projectilePool->GetProjectile(projectile);
+		Projectile* proj = projectilePool->GetProjectile(*projectile);
 
 		proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
 
 		proj->Fire(position);
-
-		return;
 	}
-
-	for (size_t i = 0; i < amount; i++)
+	else
 	{
-		currentAngle = minAngle + ((float)i / (amount - 1) * (maxAngle - minAngle));
+		for (size_t i = 0; i < amount; i++)
+		{
+			currentAngle = minAngle + ((float)i / (amount - 1) * (maxAngle - minAngle));
 
-		Projectile* proj = projectilePool->GetProjectile(projectile);
+			Projectile* proj = projectilePool->GetProjectile(*projectile);
 
-		proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
+			proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
 
-		proj->Fire(position);
+			proj->Fire(position);
+		}
 	}
+}
+*/
+#include <iostream>
+
+void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
+{
+	if (barrageTime > 0) {
+		if (firePauseTime > 0) {
+			firePauseTime -= deltaTime;
+			if (firePauseTime <= 0) {
+
+				if (properties->aimAtPlayer)
+					angle = (targetPosition - position).GetAngle();
+				else
+					angle += (properties->spinning ? properties->spinSpeed : 0);
+					//angle *= (properties->spinning ? barrageTime / properties->barrageDuration : 1);
+				
+				//std::cout << angle << std::endl;
+				
+				SetAngle(angle);
+
+				float currentAngle;
+
+				if (properties->bulletsAtOnce == 1)
+				{
+					Projectile* proj = projectilePool->GetProjectile(*projectile);
+
+					proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
+
+					proj->Fire(position);
+				}
+				else
+				{
+					for (size_t i = 0; i < properties->bulletsAtOnce; i++)
+					{
+						currentAngle = properties->minOffsetAngle + ((float)i / (properties->bulletsAtOnce - 1) * (properties->maxOffsetAngle - properties->minOffsetAngle));
+
+						Projectile* proj = projectilePool->GetProjectile(*projectile);
+
+						proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
+
+						proj->Fire(position);
+					}
+				}
+			}
+		}
+		else
+			firePauseTime = properties->firePauseDuration;
+	}
+	barrageTime -= deltaTime;
 }

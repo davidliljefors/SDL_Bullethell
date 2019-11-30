@@ -38,7 +38,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss2.png"));
 	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
-	boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
+	//boss->AddSprite(resourceManager->GetResource<FG::Sprite>("BullethellBoss3.png"));
 	boss->Initialize();
 	boss->SetIndicatorSprite(resourceManager->GetResource<FG::Sprite>("indicator.png"));
 	entityManager->AddEntity(boss);
@@ -48,7 +48,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	entityManager->AddEntity(bossHPBar);
 
 	logo = new Text();
-	logo->SetText(camera->GetInternalRenderer(), "Help me irl", "radiospace.ttf", 128, { 250,250,250 });
+	logo->SetText(camera->GetInternalRenderer(), "UniVersus", "radiospace.ttf", 128, { 250,250,250 });
 	resourceManager->AddResource("logo", logo);
 
 	spacePrompt = new Text();
@@ -98,7 +98,7 @@ void StateManager::Update()
 	switch (State::state)
 	{
 	case start:
-		if (inputManager->IsKeyDown(SDL_SCANCODE_SPACE)) {
+		if (inputManager->IsKeyPressed(SDL_SCANCODE_SPACE)) {
 			State::state = game;
 			player->OnStartBattle();
 			boss->EnterScreen();
