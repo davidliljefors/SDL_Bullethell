@@ -46,8 +46,8 @@ public:
 	void Move(FG::Vector2D position);
 	void SetAngle(float newAngle);
 	void ResetTime();
-	//void Fire(int amount = 1, float minAngle = 0, float maxAngle = 360);
-	void Fire(float deltaTime, FG::Vector2D targetPosition);
+
+	bool Fire(float deltaTime, FG::Vector2D targetPosition);
 	bool FinishedBarrage() { return barrageTime <= 0; };
 
 private:

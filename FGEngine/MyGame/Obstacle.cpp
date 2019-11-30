@@ -52,12 +52,12 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	//emitter->SetEmitter(*new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera), 1);
 	
 	// ADD NEW STUFF
-	/*
+	/**/
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 750.0f, camera),
 			.02f, .5, .5, 1, 270, -22.5f, 22.5f, true) }),
-			FG::Vector2D(pos.x, pos.y), 35, false)
+			FG::Vector2D(pos.x, pos.y))
 			);
 	
 	bossPhases.push_back(new BossPhase(
@@ -68,14 +68,27 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
-	*/
+	
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 50.0f, camera, -1, 25),
-			.075f, .75f, .5f, 6, 270, -90, 90, false, true, 5),
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 50.0f, camera, -1, 25),
-			.075f, .75f, .5f, 6, 90, -90, 90, false, true, 5) }),
-			FG::Vector2D(pos.x, pos.y), 35, false)
+			.075f, .75f, .5f, 5, 270, -80, 80, false, true, 5),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera, -1, -5),
+			.075f, .75f, .5f, 5, 90, -80, 80, false, true, 5) }),
+			FG::Vector2D(pos.x, pos.y))
+			);
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, -250.0f, camera, -1, 12.5),
+			.075f, 5, .5f, 5, 90, -30, 30, true)}),
+			FG::Vector2D(pos.x, pos.y))
+			);
+	
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, -250.0f, camera, -1, 12.5),
+			.075f, 5, .5f, 5, 90, -30, 30, true) }),
+			FG::Vector2D(pos.x, pos.y))
 			);
 	/*
 	bossPhases.push_back(new BossPhase(
@@ -185,15 +198,22 @@ void Obstacle::Update(float deltaTime)
 			}
 			return;
 		}
-
+		bool hasFired = false;
 		if (bossPhases[currentBossPhase]->moveWhileFiring) {
-			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
-				emitters[i]->Fire(deltaTime, player->position);
+			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++) {
+				if (emitters[i]->Fire(deltaTime, player->position))
+					hasFired = true;
+			}
 		}
 		else if (position == destination) {
-			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
-				emitters[i]->Fire(deltaTime, player->position);
-		}/*
+			for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++) {
+				if (emitters[i]->Fire(deltaTime, player->position))
+					hasFired = true;
+			}
+		}
+		if (hasFired)
+			audioManager->PlaySFX("enemyFire.wav", 3);
+		/*
 		else {
 
 			bool emittersDone = true;

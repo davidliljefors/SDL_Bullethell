@@ -86,6 +86,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	resourceManager->AddResource("currentHiScoreDisplay", currentHiScoreDisplay);
 
 	firstBattle = true;
+	audioManager->PlayMusic("IronFossil.wav");
 }
 
 StateManager::~StateManager()
@@ -106,7 +107,7 @@ void StateManager::Update()
 			std::stringstream s;
 			s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
 			currentHiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
-			audioManager->PlayMusic("QuartzQuadrantBad.wav");
+			audioManager->PlayMusic("BurningHalloweenTown.wav");
 		}
 		break;
 	case game:

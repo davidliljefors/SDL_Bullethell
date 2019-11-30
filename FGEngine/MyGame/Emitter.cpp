@@ -69,8 +69,9 @@ void Emitter::Fire(int amount, float minAngle, float maxAngle)
 */
 #include <iostream>
 
-void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
+bool Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 {
+	bool hasFired = false;
 	if (barragePauseTime <= 0) {
 		if (barrageTime > 0) {
 			if (firePauseTime > 0) {
@@ -95,7 +96,7 @@ void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 
 						proj->SetDirection(FG::Vector2D::AngleToVector2D(angle));
 
-						proj->Fire(position);
+						proj->Fire(position + firePosOffset);
 					}
 					else
 					{
@@ -110,6 +111,7 @@ void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 							proj->Fire(position + firePosOffset);
 						}
 					}
+					hasFired = true;
 				}
 			}
 			else
@@ -126,4 +128,5 @@ void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 	else {
 		barragePauseTime -= deltaTime;
 	}
+	return hasFired;
 }

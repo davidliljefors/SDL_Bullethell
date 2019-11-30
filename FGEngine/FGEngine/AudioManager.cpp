@@ -3,22 +3,23 @@
 #include "Music.h"
 #include "SFX.h"
 
-
 #pragma warning(push)
 #pragma warning(disable : 4244)
-
-
 
 AudioManager::AudioManager(FG::ResourceManager* resourceManager) : resourceManager(resourceManager)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
 		printf("Mixer Initialization Error: %s\n", Mix_GetError());
 	else {
-		ChangeMusicVolume(.25f);
+		ChangeMusicVolume(.4f);
 
-		FG::Music* music = new FG::Music("QuartzQuadrantBad.wav");
-		resourceManager->AddResource("QuartzQuadrantBad.wav", music);
-
+		//FG::Music* music = new FG::Music("QuartzQuadrantBad.wav");
+		//resourceManager->AddResource("QuartzQuadrantBad.wav", music);
+		FG::Music* music = new FG::Music("BurningHalloweenTown.wav");
+		resourceManager->AddResource("BurningHalloweenTown.wav", music);
+		music = new FG::Music("IronFossil.wav");
+		resourceManager->AddResource("IronFossil.wav", music);
+		
 		FG::SFX* sfx = new FG::SFX("fire.wav");
 		resourceManager->AddResource("fire.wav", sfx);
 
@@ -62,8 +63,10 @@ void AudioManager::PlaySFX(std::string filename, int channel, float volume, int 
 
 void AudioManager::PlayMusic(std::string filename, int loops)
 {
-	if (Mix_PlayingMusic() == 0)
+	if (currentMusic != filename) {
+		currentMusic = filename;
 		Mix_PlayMusic(resourceManager->GetResource<FG::Music>(filename)->music, loops);
+	}
 }
 
 void AudioManager::PauseMusic()

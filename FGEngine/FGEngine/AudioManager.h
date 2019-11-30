@@ -35,4 +35,6 @@ public:
 private:
 
 	FG::ResourceManager* resourceManager;
+
+	std::string currentMusic;
 };
