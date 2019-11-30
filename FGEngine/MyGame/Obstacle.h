@@ -67,7 +67,9 @@ public:
 
 	void EnterScreen();
 	void PlaceOffscreenForEntrance();
-	Phase CurrentPhase();
+	int GetCurrentPhase();
+	int GetPhaseCount();
+	Phase CurrentPhase(){ return phase; }
 	void SetUp();
 	int GetHealth() { return health; }
 	//int GetMaxHealth() { return s_HealthValues[static_cast<int>(phase)]; }

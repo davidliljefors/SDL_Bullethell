@@ -56,7 +56,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.1, 10, 2, 10, 270, 0, 360, true, 3) } ),
+			.1f, 10, 2, 10, 270, 0, 360, true, 3) } ),
 			FG::Vector2D( pos.x, pos.y ))
 	);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
@@ -65,9 +65,9 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.2, 10, 2, 10,270, 0, 360, false, 0, false),
+			.2f, 10, 2, 10,270, 0, 360, false, 0, false),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("bullet.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.02, 1, 2, 1, 270, 0, 360, false, 0, true) }),
+			.02f, 1, 2, 1, 270, 0, 360, false, 0, true) }),
 			FG::Vector2D( pos.x, pos.y ),35, 0)
 			);
 	
@@ -76,7 +76,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	int totalEmitters = 1;
 	for (auto& bp : bossPhases)	{
 		if (bp->emitters.size() > totalEmitters)
-			totalEmitters = bp->emitters.size();
+			totalEmitters = (int)bp->emitters.size();
 	}
 	for (size_t i = 0; i < totalEmitters; i++)
 	{
@@ -364,9 +364,14 @@ void Obstacle::PlaceOffscreenForEntrance()
 	position = startPosition - FG::Vector2D::Up * 250;
 }
 
-Phase Obstacle::CurrentPhase()
+int Obstacle::GetCurrentPhase()
 {
-	return phase;
+	return currentBossPhase;
+}
+
+int Obstacle::GetPhaseCount()
+{
+	return static_cast<int>(bossPhases.size());
 }
 
 void Obstacle::SetUp()
