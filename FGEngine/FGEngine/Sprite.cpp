@@ -3,7 +3,7 @@
 #include "Camera.h"
 
 
-#include "SDL_render.h"
+
 #include "SDL_surface.h"
 #include "SDL_stbimage.h"
 
@@ -88,6 +88,17 @@ namespace FG
 		Render(camera, position, src, scale);
 		SDL_SetTextureColorMod(texture, 255, 255, 255);
 		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	}
+
+	void Sprite::Render(Camera* camera, Vector2D position, SDL_Color tint, SDL_BlendMode mode, const SDL_Rect* src, float scale)
+	{
+
+		SDL_SetTextureBlendMode(texture, mode);
+		SDL_SetTextureColorMod(texture, tint.r, tint.g, tint.b);
+		Render(camera, position, src, scale);
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
+		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
 	}
 	
 	void Sprite::Render(Camera* camera, Vector2D position, char alpha, const SDL_Rect* src, float scale)

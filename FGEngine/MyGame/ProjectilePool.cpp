@@ -83,7 +83,10 @@ void ProjectilePool::Destroy()
 {
 	for (int i = 0; i < maxBullets; i++)
 	{
-		delete inactiveProjs[i];
+		if (inactiveProjs[i])
+		{
+			delete inactiveProjs[i];
+		}
 	}
 	inactiveProjs = nullptr;
 }
