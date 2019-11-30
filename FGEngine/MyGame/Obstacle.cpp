@@ -178,13 +178,15 @@ void Obstacle::Update(float deltaTime)
 					emittersDone = false;
 			}
 		}*/
-		if (position == destination)
-			movePauseTime -= deltaTime;
-		if (movePauseTime <= 0) {
-			movePauseTime = bossPhases[currentBossPhase]->movePauseDuration;
-			ResetEmittersTime();
-			if (bossPhases[currentBossPhase]->positions.size() > 1)
+
+		if (bossPhases[currentBossPhase]->positions.size() > 1) {
+			if (position == destination)
+				movePauseTime -= deltaTime;
+			if (movePauseTime <= 0) {
+				movePauseTime = bossPhases[currentBossPhase]->movePauseDuration;
+				ResetEmittersTime();
 				MoveToAnotherPosition();
+			}
 		}
 		/*
 		if (barragePauseTime > 0) {

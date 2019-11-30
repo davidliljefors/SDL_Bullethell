@@ -106,7 +106,7 @@ void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 
 							proj->SetDirection(FG::Vector2D::AngleToVector2D(currentAngle + angle));
 
-							proj->Fire(position);
+							proj->Fire(position + firePosOffset);
 						}
 					}
 				}
@@ -119,6 +119,7 @@ void Emitter::Fire(float deltaTime, FG::Vector2D targetPosition)
 		{
 			barrageTime = properties->barrageDuration;
 			barragePauseTime = properties->barragePauseDuration;
+			firePauseTime = properties->firePauseDuration;
 		}
 	}
 	else {

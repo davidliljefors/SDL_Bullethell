@@ -59,6 +59,7 @@ private:
 	FG::ResourceManager* resourceManager = nullptr;
 
 	FG::Vector2D position;
+	FG::Vector2D firePosOffset = FG::Vector2D::Down * 20;
 	float angle = 0;
 	float originalAngle = 0;
 
