@@ -56,6 +56,13 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
+			.1f, 1, 2, 10, 270, 0, 360, true, 3, true) }),
+			FG::Vector2D(pos.x, pos.y), 35, false)
+			);
+	
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
 			.1f, 1, 2, 10, 270, 0, 360, true, 3) } ),
 			FG::Vector2D( pos.x, pos.y ), 35, false)
 	);
@@ -65,9 +72,9 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
-			.2f, 1, .5, 10, 270, 0, 360, false, 0, false),
+			.2f, 1, .5, 10, 270, 0, 360, false, false, 0 ),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.02f, 1, .5, 1, 270, 0, 360, false, 0, true) }),
+			.02f, 1, .5, 1, 270, 0, 360, true, false, 0 ) }),
 			FG::Vector2D( pos.x, pos.y ), 35)
 			);
 	
