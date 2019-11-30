@@ -15,7 +15,11 @@ Healthbar::Healthbar(FG::Vector2D position, FG::Vector2D size, Obstacle* boss)
 Healthbar::~Healthbar()
 {
 	if (textBarsLeft)
+	{
+		textBarsLeft->Dispose();
 		delete textBarsLeft;
+	}
+	
 }
 
 void Healthbar::Render(FG::Camera* camera)

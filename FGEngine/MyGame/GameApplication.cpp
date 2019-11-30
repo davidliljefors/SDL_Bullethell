@@ -103,6 +103,11 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullet.png");
 	resourceManager->AddResource("bullet.png", sprite);
+
+	sprite = new FG::Sprite();
+	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellBulletPurple.png");
+	resourceManager->AddResource("BullethellBulletPurple.png", sprite);
+
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellBullet.png");
 	resourceManager->AddResource("BullethellBullet.png", sprite);
