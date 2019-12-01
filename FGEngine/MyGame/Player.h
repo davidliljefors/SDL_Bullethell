@@ -25,7 +25,7 @@ class Player : public FG::Entity
 	
 public:
 	float speed = 500.0f;
-	static constexpr int maxLives = 5;
+	static constexpr int maxLives = 1;
 	static constexpr int maxBombs = 3;
 
 	Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile);
@@ -50,6 +50,7 @@ public:
 
 	int CurrentLives();
 	int CurrentBombs();
+	
 
 	void AwardReward();
 
@@ -104,10 +105,11 @@ private:
 	float hitFlashElapsedTime = 0.f;
 	bool hitFlash = false; // used to change between flash colour during slowmo
 
+
 	Explosion* explosion;
 
 	static constexpr int MAX_BULLETS = 50;
-
+	bool godMode = false;
 	void StartPosition(FG::Vector2D pos);
 	void SetUp();
 	void Respawn();

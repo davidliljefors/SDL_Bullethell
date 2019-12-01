@@ -415,6 +415,7 @@ void Obstacle::SetUp()
 	phase = Phase::first;
 	health = currentMaxHealth = bossPhases[0]->health;
 	Entity::AddSprite(sprites[static_cast<int>(phase)]);
+	projectilePool->FadeOutAll();
 	//barragePauseTime = 0;
 	ResetEmittersTime();
 	currentBossPhase = -1;

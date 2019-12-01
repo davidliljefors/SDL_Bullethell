@@ -1,4 +1,4 @@
-#include <initializer_list>
+
 #include <cmath>
 
 #include "Player.h"
@@ -13,7 +13,6 @@
 
 #include "GameState.h"
 #include "Config.h"
-#include <iostream>
 
 Player::Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile) :
 	entityManager(stateManager->entityManager), inputManager(stateManager->inputManager), audioManager(stateManager->audioManager), camera(stateManager->camera), projectilePrefab(projectile),
@@ -125,7 +124,6 @@ void Player::Update(float deltaTime)
 		{
 			if (hit)
 			{
-				std::cout << "counter bomb\n";
 				hit = false;
 			}
 			if (bomb->Activate(position, 0.5f))
@@ -144,14 +142,25 @@ void Player::Update(float deltaTime)
 			Shoot();
 		}
 	}
+
+	if (inputManager->IsKeyPressed(SDL_SCANCODE_Y))
+	{
+		godMode = !godMode;
+	}
 }
 
 void Player::Render(FG::Camera* const camera)
 {
 	if (Respawning())
 		return;
-
 	assert(sprite);
+
+	if (godMode)
+	{
+		sprite->Render(camera, position, SDL_Color({ 0,255,0 }), SDL_BLENDMODE_ADD);
+		return;
+	}
+
 	if (hit)
 	{
 
@@ -233,17 +242,20 @@ bool Player::OnGraze()
 
 void Player::OnCollision(FG::Entity* other)
 {
-	isColliding = true;
-	if (typeid(*other) == typeid(Sensor))
-		return;
-
-	if (bombs <= 0)
-		GetHit();
-	else if (!hit)
+	if (!godMode)
 	{
-		hit = true;
-		timeSincelastHit = 0;
-		audioManager->PlaySFX("hitAlarm.wav", 5);
+		isColliding = true;
+		if (typeid(*other) == typeid(Sensor))
+			return;
+
+		if (bombs <= 0)
+			GetHit();
+		else if (!hit)
+		{
+			hit = true;
+			timeSincelastHit = 0;
+			audioManager->PlaySFX("hitAlarm.wav", 5);
+		}
 	}
 }
 
