@@ -25,8 +25,9 @@ namespace FG
 
 		for (auto& pool : pools)
 		{
-			auto vector = *pool;
-			for (auto e : vector)
+			//not making copy of pools anmyre, of crash or weird behaviour change back
+				//auto vector = pool;
+			for (auto& e : *pool)
 			{
 				e->Update(deltaTime);
 			}
@@ -52,8 +53,9 @@ namespace FG
 		}
 		for (auto& pool : pools)
 		{
-			auto vector = *pool;
-			for (auto e : vector)
+			//not making copy of pools anmyre, of crash or weird behaviour change back
+				//auto vector = pool;
+			for (auto& e : *pool)
 			{
 				e->Render(camera);
 			}
@@ -80,10 +82,11 @@ namespace FG
 					entities[y]->OnCollision(entities[x]);
 				}
 			}
-			for (auto pool : pools)
+			for (auto& pool : pools)
 			{
-				auto vector = *pool;
-				for (auto e : vector)
+				//not making copy of pools anmyre, of crash or weird behaviour change back
+				//auto vector = pool;
+				for (auto& e : *pool)
 				{
 					if (entities[x]->IgnoreCollision())
 						continue;
@@ -119,9 +122,9 @@ namespace FG
 				{
 					entities[x]->OnCollision(entities[y]);
 					entities[y]->OnCollision(entities[x]);
-				}
-			}
 		}
+	}
+}
 #endif
 	}
 

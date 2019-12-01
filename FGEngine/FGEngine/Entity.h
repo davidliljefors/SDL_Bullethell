@@ -22,13 +22,7 @@ namespace FG
 		friend class EntityManager;
 	public:
 		
-		virtual ~Entity() 
-		{
-			if (animation)
-			{
-				delete animation;
-			}
-		}
+		virtual ~Entity();
 		virtual void Update(float deltaTime);
 		virtual SDL_Rect GetColliderRect() { return { 0,0,0,0 }; }
 		virtual void Render(Camera* const camera);

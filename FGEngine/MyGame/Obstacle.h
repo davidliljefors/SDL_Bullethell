@@ -52,6 +52,7 @@ public:
 	void Initialize();
 	void Update(float deltaTime) override;
 	Obstacle(FG::Vector2D pos, StateManager* stateManager);
+	~Obstacle();
 	void Render(FG::Camera* const camera) override;
 	void EnterNextPhase();
 

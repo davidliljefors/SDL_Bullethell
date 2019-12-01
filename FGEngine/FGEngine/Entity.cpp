@@ -1,6 +1,18 @@
 #include "Entity.h"
 #include "Circle.h"
 
+FG::Entity::~Entity()
+{
+	if (animation)
+	{
+		delete animation;
+	}
+	if (collider)
+	{
+		delete collider;
+	}
+}
+
 void FG::Entity::Update(float deltaTime)
 {
 	if (animation)

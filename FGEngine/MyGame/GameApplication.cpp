@@ -1,3 +1,20 @@
+#include <iostream>
+static int alloc = 0;
+void* operator new(size_t size)
+{
+	++alloc;
+	std::cout << alloc << std::endl;
+	return malloc(size);
+}
+
+void operator delete(void* block)
+{
+	--alloc;
+	std::cout << alloc << std::endl;
+	free(block);
+}
+
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <Logger.h>
@@ -56,14 +73,14 @@ bool GameApplication::Initialize()
 	sprite->LoadImage(camera->GetInternalRenderer(), "Bullethellplayer.png");
 	resourceManager->AddResource("Bullethellplayer.png", sprite);
 
-    sprite = new FG::Sprite();
+	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "indicator.png");
 	resourceManager->AddResource("indicator.png", sprite);
-	
+
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellPlayerRight.png");
-	resourceManager->AddResource("BullethellPlayerRight.png", sprite); 
-	
+	resourceManager->AddResource("BullethellPlayerRight.png", sprite);
+
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "BullethellPlayerLeft.png");
 	resourceManager->AddResource("BullethellPlayerLeft.png", sprite);
@@ -83,7 +100,7 @@ bool GameApplication::Initialize()
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "explo.png", 4, 4, 16);
 	resourceManager->AddResource("explo.png", sprite);
-	
+
 	sprite = new FG::Sprite();
 	sprite->LoadImage(camera->GetInternalRenderer(), "bullethellbg.png");
 	resourceManager->AddResource("bullethellbg.png", sprite);
@@ -161,7 +178,7 @@ bool GameApplication::Initialize()
 	entityManager->AddEntity(bg4);
 
 	stateManager = new StateManager(entityManager, inputManager, audioManager, resourceManager, camera);
-	
+
 	return true;
 }
 
@@ -186,7 +203,7 @@ void GameApplication::Run()
 		}
 
 		entityManager->DoCollisions();
-	
+
 		stateManager->Update();
 		camera->Update(time.DeltaTime() * timescale);
 

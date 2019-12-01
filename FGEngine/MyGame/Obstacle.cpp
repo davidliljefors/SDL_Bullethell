@@ -32,7 +32,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 
 	StartPosition(pos);
 	layer = EntityLayer::Character;
-	
+
 	// ADD NEW STUFF
 
 	bossPhases.push_back(new BossPhase(
@@ -41,29 +41,31 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			.02f, .5, .5, 1, 270, -22.5f, 22.5f, true) }),
 			FG::Vector2D(pos.x, pos.y))
 			);
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
-			.075f, .75f, .5f, 3, 270, -22.5f, 22.5f, true ) }),
+			.075f, .75f, .5f, 3, 270, -22.5f, 22.5f, true) }),
 			FG::Vector2D(pos.x, pos.y), 16, false, .75f)
 			);
-	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
+	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 }
+
+	);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, -250.0f, camera, -1, 12.5),
-			.075f, 5, .5f, 5, 90, -30, 30, true)}),
+			.075f, 5, .5f, 5, 90, -30, 30, true) }),
 			FG::Vector2D(pos.x, pos.y))
 			);
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 200, camera),
 			.15f, 50, .5f, 20, 270, 0, 360, false) }),
 		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 }, 35, true, 2.5)
-			);
+		);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .5 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .5 });
 
@@ -81,14 +83,14 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			.075f, .75f, .5f, 5, 90, -80, 80, false, true, 5) }),
 			FG::Vector2D(pos.x, pos.y))
 			);
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 250, camera),
 			.075f, 60, 0, 15, 90, 0, 360, false, true, 10) }),
 			FG::Vector2D(pos.x, pos.y), 35)
 			);
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
@@ -96,10 +98,10 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
 			.02f, 60, 0, 2, 270, -22.5, 22.5, false, false, 0),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 750, camera),
-			.02f, 1, .5, 1, 270, 0, 360, true, false, 0 ) }),
-			FG::Vector2D( pos.x, pos.y ), 35)
+			.02f, 1, .5, 1, 270, 0, 360, true, false, 0) }),
+			FG::Vector2D(pos.x, pos.y), 35)
 			);
-	
+
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 250, camera),
@@ -107,7 +109,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 400.0f, camera),
 			1.5f, 60, 0, 30, 270, 0, 360, false, false, 0) }),
 		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 }, 35)
-			);
+		);
 
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
@@ -131,7 +133,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	// CALCULATING STUFF
 
 	int totalEmitters = 1;
-	for (auto& bp : bossPhases)	{
+	for (auto& bp : bossPhases) {
 		if (bp->emitters.size() > totalEmitters)
 			totalEmitters = (int)bp->emitters.size();
 	}
@@ -146,6 +148,21 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 
 	for (size_t i = 0; i < bossPhases[currentBossPhase]->emitters.size(); i++)
 		emitters[i]->SetEmitter(bossPhases[currentBossPhase]->emitters[i]);
+}
+
+Obstacle::~Obstacle()
+{
+	projectilePool->Destroy();
+	for (auto e : emitters)
+		delete e;
+	for (auto phase : bossPhases)
+	{
+		for (auto ep : phase->emitters)
+		{
+			delete ep;
+		}
+		delete phase;
+	}
 }
 
 void Obstacle::Initialize()
@@ -231,7 +248,7 @@ void Obstacle::Update(float deltaTime)
 		}
 		if (hasFired)
 			audioManager->PlaySFX("enemyFire.wav", 3);
-		
+
 		if (bossPhases[currentBossPhase]->positions.size() > 1) {
 			if (position == destination)
 				movePauseTime -= deltaTime;
@@ -265,8 +282,8 @@ void Obstacle::MoveToAnotherPosition()
 void Obstacle::Render(FG::Camera* const camera)
 {
 	if (State::state == GAME_STATES::game)
-		bottomIndicator->Render(camera, { position.x, indicatorYOffset },(Invincible()? 128: 255));
-	
+		bottomIndicator->Render(camera, { position.x, indicatorYOffset }, (Invincible() ? 128 : 255));
+
 	if (currentHitFlash > 0)
 	{
 		sprite->Render(camera, position, { 255, 255, 255 });
@@ -287,7 +304,7 @@ void Obstacle::EnterNextPhase()
 	//assert(sprites.size() > static_cast<int>(Phase::dead)); // Make sure we have enough sprites for all phasess
 
 	currentBossPhase++;
-	if (currentBossPhase < bossPhases.size() ) {
+	if (currentBossPhase < bossPhases.size()) {
 		movePauseTime = bossPhases[currentBossPhase]->movePauseDuration;
 		destination = bossPhases[currentBossPhase]->positions[0];
 		health = bossPhases[currentBossPhase]->health;
@@ -301,7 +318,7 @@ void Obstacle::EnterNextPhase()
 		float spriteStage = (float)1 / sprites.size();
 		for (size_t i = 0; i < sprites.size(); i++)
 		{
-			float currentStage = (i+1) * spriteStage;
+			float currentStage = (i + 1) * spriteStage;
 			if (progress <= currentStage) {
 				Entity::AddSprite(sprites[i]);
 				break;
@@ -372,7 +389,7 @@ void Obstacle::StartPosition(FG::Vector2D pos)
 }
 void Obstacle::EnterScreen()
 {
-	if(phase == Phase::dead)
+	if (phase == Phase::dead)
 		entersScreen = true;
 	SetUp();
 	firstBattle = false;

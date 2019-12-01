@@ -98,5 +98,6 @@ void ProjectilePool::Destroy()
 			delete inactiveProjs[i];
 		}
 	}
+	delete[] inactiveProjs;
 	inactiveProjs = nullptr;
 }

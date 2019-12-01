@@ -127,6 +127,7 @@ Projectile& Projectile::operator=(const Projectile& other)
 
 Projectile::~Projectile()
 {
+
 }
 
 void Projectile::Update(float deltaTime)
