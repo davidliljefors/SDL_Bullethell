@@ -8,7 +8,11 @@ int ScoreController::Update()
 
 	if (score > displayScore)
 	{
-		if (score - displayScore > 111)
+		if (score - displayScore > 1111)
+		{
+			displayScore += 1111;
+		}
+		else if (score - displayScore > 111)
 		{
 			displayScore += 111;
 		}
