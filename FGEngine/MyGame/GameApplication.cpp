@@ -1,20 +1,3 @@
-#include <iostream>
-static int alloc = 0;
-void* operator new(size_t size)
-{
-	++alloc;
-	std::cout << alloc << std::endl;
-	return malloc(size);
-}
-
-void operator delete(void* block)
-{
-	--alloc;
-	std::cout << alloc << std::endl;
-	free(block);
-}
-
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <Logger.h>

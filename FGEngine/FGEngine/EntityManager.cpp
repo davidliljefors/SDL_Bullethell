@@ -25,9 +25,9 @@ namespace FG
 
 		for (auto& pool : pools)
 		{
-			//not making copy of pools anmyre, of crash or weird behaviour change back
-				//auto vector = pool;
-			for (auto& e : *pool)
+			//make copy cause update can edit pool contents
+			auto vector = *pool;
+			for (auto& e : vector)
 			{
 				e->Update(deltaTime);
 			}
@@ -54,7 +54,7 @@ namespace FG
 		for (auto& pool : pools)
 		{
 			//not making copy of pools anmyre, of crash or weird behaviour change back
-				//auto vector = pool;
+			//auto vector = *pool;
 			for (auto& e : *pool)
 			{
 				e->Render(camera);
