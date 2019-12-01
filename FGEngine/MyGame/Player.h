@@ -24,8 +24,8 @@ class Player : public FG::Entity
 	static constexpr float focusMultiplier = 0.5f;
 	
 public:
-	float speed = 500.0f;
-	static constexpr int maxLives = 1;
+	static constexpr float speed = 500.0f;
+	static constexpr int maxLives = 5;
 	static constexpr int maxBombs = 3;
 
 	Player(FG::Vector2D pos, StateManager* stateManager, Projectile* projectile);

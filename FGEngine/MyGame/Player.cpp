@@ -143,7 +143,7 @@ void Player::Update(float deltaTime)
 		}
 	}
 
-	if (inputManager->IsKeyPressed(SDL_SCANCODE_Y))
+	if (inputManager->IsKeyPressed(SDL_SCANCODE_F10))
 	{
 		godMode = !godMode;
 	}
