@@ -217,7 +217,6 @@ void Player::GetHit()
 	audioManager->PlaySFX("playerDestroyed.wav", 4);
 	explosion->Explode(position, 2);
 	PlaceOffscreenForEntrance();
-	rewardPlayer = false;
 
 	if (lives < 0) {
 
@@ -256,6 +255,10 @@ void Player::OnCollision(FG::Entity* other)
 			timeSincelastHit = 0;
 			audioManager->PlaySFX("hitAlarm.wav", 5);
 		}
+		hit = true;
+		timeSincelastHit = 0;
+		audioManager->PlaySFX("hitAlarm.wav", 5);
+		rewardPlayer = false;
 	}
 }
 

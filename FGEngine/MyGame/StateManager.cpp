@@ -58,7 +58,7 @@ StateManager::StateManager(FG::EntityManager* eManager, InputManager* iManager, 
 	hiScoreDisplay = new Text();
 	std::stringstream s;
 	s << std::setw(10) << std::setfill('0') << scoreController->HiScore();
-	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 36, { 255,255,255 });
+	hiScoreDisplay->SetText(camera->GetInternalRenderer(), "HI - " + s.str(), "radiospace.ttf", 48, { 255,255,255 });
 	resourceManager->AddResource("hiScoreDisplay", hiScoreDisplay);
 
 	playerLives = new Sprite * [player->maxLives];
@@ -152,8 +152,8 @@ void StateManager::Render(Camera* const camera)
 	switch (State::state)
 	{
 	case start:
-		logo->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y / 2 });
-		hiScoreDisplay->Render(camera, { screenBoundaries.x * .84f, screenBoundaries.y * .029f });
+		logo->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y * .5f });
+		hiScoreDisplay->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y * .65f });
 		spacePrompt->Render(camera, { screenBoundaries.x / 2, screenBoundaries.y *.75f });
 		break;
 	case game:

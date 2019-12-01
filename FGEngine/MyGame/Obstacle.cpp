@@ -37,7 +37,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 625.0f, camera),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletRed.png"), false, FG::Vector2D::Up, 625.0f, camera),
 			.02f, .5, .5, 1, 270, -22.5f, 22.5f, true) }),
 			FG::Vector2D(pos.x, pos.y))
 			);
@@ -48,15 +48,13 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 			.075f, .75f, .5f, 3, 270, -22.5f, 22.5f, true) }),
 			FG::Vector2D(pos.x, pos.y), 16, false, .75f)
 			);
-	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 }
-
-	);
+	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
 
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, -250.0f, camera, -1, 12.5),
-			.075f, 5, .5f, 5, 90, -30, 30, true) }),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletRed.png"), false, FG::Vector2D::Up, -250.0f, camera, -1, 12.5),
+			.075f, 5, .5f, 5, 90, -30, 30, true)}),
 			FG::Vector2D(pos.x, pos.y))
 			);
 
@@ -79,7 +77,7 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 50.0f, camera, -1, 25),
 			.075f, .75f, .5f, 5, 270, -80, 80, false, true, 5),
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera, -1, -5),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletCyan.png"), false, FG::Vector2D::Up, 1000.0f, camera, -1, -5),
 			.075f, .75f, .5f, 5, 90, -80, 80, false, true, 5) }),
 			FG::Vector2D(pos.x, pos.y))
 			);
@@ -93,18 +91,18 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletCyan.png"), false, FG::Vector2D::Up, 500.0f, camera),
 			.02f, 60, 0, 15, 90, -130, 130, false, false, 0),
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 500.0f, camera),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletCyan.png"), false, FG::Vector2D::Up, 500.0f, camera),
 			.02f, 60, 0, 2, 270, -22.5, 22.5, false, false, 0),
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 750, camera),
-			.02f, 1, .5, 1, 270, 0, 360, true, false, 0) }),
-			FG::Vector2D(pos.x, pos.y), 35)
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletRed.png"), false, FG::Vector2D::Up, 750, camera),
+			.02f, 1, .5, 1, 270, 0, 360, true, false, 0 ) }),
+			FG::Vector2D( pos.x, pos.y ), 35)
 			);
 
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 250, camera),
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletRed.png"), false, FG::Vector2D::Up, 250, camera),
 			.001f, 60, 0, 5, 270, 0, 360, false, true, 1.5),
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 400.0f, camera),
 			1.5f, 60, 0, 30, 270, 0, 360, false, false, 0) }),
@@ -114,21 +112,21 @@ camera(stateManager->camera), entersScreen(false), scoreController(stateManager-
 	bossPhases.push_back(new BossPhase(
 		std::vector<EmitterProperties*>({
 			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
-			.02f, 60, 0, 105, 270, -90, 90, false, false, 5) }),
-		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 }, 105)
-		);
-	/*
-	bossPhases.push_back(new BossPhase(
-		std::vector<EmitterProperties*>({
-			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
 			.02f, 60, 0, 105, 90, -90, 90, false, true, 5) }),
-		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 },105)
+		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 }, 70)
 		);
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .25 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .25 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .25, Config::SCREENHEIGHT * .5 });
 	bossPhases[bossPhases.size() - 1]->AddPosition({ Config::SCREENWIDTH * .75, Config::SCREENHEIGHT * .5 });
 
+	/*
+	bossPhases.push_back(new BossPhase(
+		std::vector<EmitterProperties*>({
+			new EmitterProperties(*new Projectile(resourcecManager->GetResource<FG::Sprite>("BullethellBulletPurple.png"), false, FG::Vector2D::Up, 1000.0f, camera),
+			.02f, 60, 0, 105, 270, -90, 90, false, false, 5) }),
+		{ Config::SCREENWIDTH * .5, Config::SCREENHEIGHT * .5 }, 105)
+		);
 	*/
 	// CALCULATING STUFF
 
